@@ -36,7 +36,7 @@ namespace Yelp_Business_App
             server = "127.0.0.1";
             database = "milestone1db";
             uid = "root";
-            password = "Kahle$$0217";
+            password = "password";
             // server=127.0.0.1;user id=root;password=Kahle$$0217;persistsecurityinfo=True;database=milestone1db
             string connectionString = "server=" + server + ";" + "user id=" + uid + ";" + "password=" + password + ";" + "persistsecurityinfo=True;"+ "database=" + database + ";";
             connection = new MySqlConnection(connectionString);

@@ -27,14 +27,14 @@ namespace Yelp_Business_App
         void init()
         {
             //businessInit();
-            //reviewInit();
+            reviewInit();
             //userInit();
             //intitCategories();
         }
         protected void intitCategories()
         {
             Categories c = new Categories();
-            foreach(string s in c.mainCategories)
+            foreach (string s in c.mainCategories)
             {
                 listBox3.Items.Add(s);
             }
@@ -42,19 +42,19 @@ namespace Yelp_Business_App
         protected void businessInit()
         {
             String dataDir = ".\\..\\..\\yelp\\";
-
-            List<Business> bizList = new List<Business>();
+            //int count = 0;
             string contents;
             using (System.IO.StreamReader jsonFile = new System.IO.StreamReader(dataDir + "yelp_business.json"))
             {
                 using (System.IO.StreamWriter outfile = new System.IO.StreamWriter(dataDir + "business.sql"))
                 {
+                    StringBuilder sb = new StringBuilder();
+
                     while ((contents = jsonFile.ReadLine()) != null)
                     {
-                        StringBuilder sb = new StringBuilder();
-                        var jObj = JObject.Parse(contents);
                         Business biz = JsonConvert.DeserializeObject<Business>(contents);
                         sb.Append(biz.writeBiz());
+                        sb.Append(";\r\n");
                         outfile.Write(sb);
                     }
                 }
@@ -76,7 +76,7 @@ namespace Yelp_Business_App
                         Review rev = JsonConvert.DeserializeObject<Review>(contents);
                         if (count % 3000 == 0)
                         {
-                            if(count > 0)
+                            if (count > 0)
                             {
                                 sb.Append(";\r\n");
                                 outfile.Write(sb);
@@ -112,7 +112,7 @@ namespace Yelp_Business_App
 
                         if (count % 5000 == 0)
                         {
-                            if(count > 0)
+                            if (count > 0)
                             {
                                 sb.Append(";\r\n");
                             }

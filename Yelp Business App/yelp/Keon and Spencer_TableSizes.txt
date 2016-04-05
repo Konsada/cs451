@@ -1,0 +1,48 @@
+mysql> SELECT COUNT(*) FROM attributes;
++----------+
+| COUNT(*) |
++----------+
+|     7009 |
++----------+
+1 row in set (0.12 sec)
+
+mysql> SELECT COUNT(*) FROM businesses;
++----------+
+| COUNT(*) |
++----------+
+|     7008 |
++----------+
+1 row in set (0.12 sec)
+
+mysql> SELECT COUNT(*) FROM categories;
++----------+
+| COUNT(*) |
++----------+
+|    20643 |
++----------+
+1 row in set (0.24 sec)
+
+mysql> SELECT COUNT(*) FROM demographics;
++----------+
+| COUNT(*) |
++----------+
+|    32301 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> SELECT COUNT(*) FROM reviews;
++----------+
+| COUNT(*) |
++----------+
+|  2225213 |
++----------+
+1 row in set (6.51 sec)
+
+mysql> SELECT COUNT(*) FROM users;
++----------+
+| COUNT(*) |
++----------+
+|   552338 |
++----------+
+1 row in set (1.62 sec)
+
