@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using System.Reflection;
 
 
-namespace parse_yelp
+namespace Yelp_Business_App
 {
     public class Business
     {
@@ -25,8 +25,10 @@ namespace parse_yelp
         public float stars { get; set; }
         public float latitude { get; set; }
         public Attributes attributes { get; set; }
+        //public List<string> aTable { get; set; }
         public string type { get; set; }
-
+        public StringBuilder ab { get; set; } = new StringBuilder();
+        public StringBuilder cb { get; set; } = new StringBuilder();
         public StringBuilder writeBiz()
         {
             StringBuilder insertsb = new StringBuilder();
@@ -44,27 +46,33 @@ namespace parse_yelp
             {
                 if (p.Name == "categories") // appends categories to sb
                 {
+                    StringBuilder insertcb = new StringBuilder("INSERT INTO categories (name, bid) \r\nVALUES ");
+                    StringBuilder valuecb = new StringBuilder();
                     foreach (string c in categories)
                     {
-                        StringBuilder cb = new StringBuilder();
-                        cb.Append("INSERT INTO categories (name, bid) VALUES (\"");
-                        cb.Append(c + "\", " + "\"" + business_id + "\"" + ");\r\n");
-                        cb.Append(sb);
-                        sb = cb;
+                        if (valuecb.Length > 0)
+                        {
+                            valuecb.Append(",\r\n");
+                        }
+                        valuecb.Append("(\"" + c + "\", " + "\"" + business_id + "\"" + ")");
                     }
+                    cb.Append(insertcb.ToString() + valuecb.ToString());
+                }
+                else if (p.Name == "ab" || p.Name == "cb" || p.Name == "aTable")
+                {
+
                 }
                 else if (p.Name == "business_id")
                 {
 
                 }
-                else if(p.Name == "neighborhoods")
+                else if (p.Name == "neighborhoods")
                 {
 
                 }
                 else if (p.Name == "attributes")
                 {
-                    StringBuilder ab = new StringBuilder();
-                    StringBuilder insertab = new StringBuilder("INSERT INTO attributes(bid");
+                    StringBuilder insertab = new StringBuilder("INSERT INTO attributes (bid");
                     StringBuilder valueab = new StringBuilder("VALUES (\"" + business_id + "\"");
                     foreach (PropertyInfo q in typeof(Attributes).GetProperties())
                     {
@@ -76,6 +84,7 @@ namespace parse_yelp
                                 {
                                     insertab.Append(", " + k);
                                     valueab.Append(", " + attributes.Music[k]);
+                                    //aTable.Add(k);
                                 }
                             }
                         }
@@ -87,10 +96,11 @@ namespace parse_yelp
                                 {
                                     insertab.Append(", " + k);
                                     valueab.Append(", " + attributes.Ambience[k]);
+                                    //aTable.Add(k);
                                 }
                             }
                         }
-                        else if (q.Name == "Goodfor" )
+                        else if (q.Name == "Goodfor")
                         {
                             if (attributes.Goodfor != null)
                             {
@@ -98,6 +108,7 @@ namespace parse_yelp
                                 {
                                     insertab.Append(", " + k);
                                     valueab.Append(", " + attributes.Goodfor[k]);
+                                    //aTable.Add(k);
                                 }
                             }
                         }
@@ -109,6 +120,7 @@ namespace parse_yelp
                                 {
                                     insertab.Append(", " + k);
                                     valueab.Append(", " + attributes.Parking[k]);
+                                    //aTable.Add(k);
                                 }
                             }
                         }
@@ -123,14 +135,12 @@ namespace parse_yelp
                             else
                                 valueab.Append(q.GetValue(this.attributes));
                             //valuesb.Append(this.attributes.GetType().GetProperty(q.ToString()).GetValue(this.attributes, null));
+                            //aTable.Add(q.Name);
                         }
                     }
                     insertab.Append(") ");
-                    valueab.Append(");\r\n");
                     ab.Append(insertab);
-                    ab.Append(valueab);
-                    ab.Append(sb);
-                    sb = ab;
+                    ab.Append(valueab + ");\r\n");
                 }
 
                 else if (p.Name == "hours")
@@ -157,14 +167,17 @@ namespace parse_yelp
                     valuesb.Append(", ");
                     if (p.PropertyType == typeof(string))
                     {
-                        valuesb.Append("\"" + p.GetValue(this) + "\"");
+                        string text = (string)p.GetValue(this);
+                        text = text.Replace("\n", ", ");
+                        text = text.Replace("\"", "");
+                        valuesb.Append("\"" + text + "\"");
                     }
                     else
                         valuesb.Append(p.GetValue(this));
+                    //aTable.Add(p.Name);
                 }
-
             }
-            sb.Append(insertsb + ") VALUES (" + valuesb + ");\r\n");
+            sb.Append(insertsb + ") \r\nVALUES (" + valuesb + ")");
 
             /// BRUTE FORCE
             /*
@@ -186,8 +199,8 @@ namespace parse_yelp
         }
         public StringBuilder writeBizValue()
         {
-            StringBuilder valuesb = new StringBuilder(",\r\n");
-            StringBuilder sb = new StringBuilder();
+            StringBuilder valuesb = new StringBuilder();
+            StringBuilder sb = new StringBuilder(",\r\n(");
 
             //sb.Append("bid, name, city, state_code, zipcode, open) VALUES (" + business_id + ", " + name + ", ");
             //sb.Append(city + ", " + state + ", " + full_address.Substring(full_address.Length-5) + ", " + open + ");\r\n");
@@ -198,22 +211,21 @@ namespace parse_yelp
             {
                 if (p.Name == "categories") // appends categories to sb
                 {
-                    foreach (string c in categories)
+                    if (categories.Count > 0)
                     {
-                        StringBuilder cb = new StringBuilder();
-                        if (cb[cb.Length] == ';')
-                            cb.Append("INSERT INTO categories (name, bid) VALUES (\"");
-                        else
-                            cb.Append(");\r\n INSERT INTO categories (name, bid) VALUES (\"");
-
-                        cb.Append(c + "\", " + "\"" + business_id + "\"" + ");\r\n");
-                        cb.Append(sb);
-                        sb = cb;
+                        foreach (string c in categories)
+                        {
+                            cb.Append(",\r\n(\"" + c + "\", " + "\"" + business_id + "\"" + ")");
+                        }
                     }
+                }
+                else if (p.Name == "ab" || p.Name == "cb" || p.Name == "aTable")
+                {
+
                 }
                 else if (p.Name == "business_id")
                 {
-
+                    valuesb.Append("\"" + business_id + "\"");
                 }
                 else if (p.Name == "neighborhoods")
                 {
@@ -221,7 +233,6 @@ namespace parse_yelp
                 }
                 else if (p.Name == "attributes")
                 {
-                    StringBuilder ab = new StringBuilder();
                     StringBuilder insertab = new StringBuilder("INSERT INTO attributes(bid");
                     StringBuilder valueab = new StringBuilder("VALUES (\"" + business_id + "\"");
                     foreach (PropertyInfo q in typeof(Attributes).GetProperties())
@@ -234,6 +245,7 @@ namespace parse_yelp
                                 {
                                     insertab.Append(", " + k);
                                     valueab.Append(", " + attributes.Music[k]);
+                                    //aTable.Add(k);
                                 }
                             }
                         }
@@ -245,6 +257,7 @@ namespace parse_yelp
                                 {
                                     insertab.Append(", " + k);
                                     valueab.Append(", " + attributes.Ambience[k]);
+                                    //aTable.Add(k);
                                 }
                             }
                         }
@@ -256,6 +269,7 @@ namespace parse_yelp
                                 {
                                     insertab.Append(", " + k);
                                     valueab.Append(", " + attributes.Goodfor[k]);
+                                    //aTable.Add(k);
                                 }
                             }
                         }
@@ -267,6 +281,7 @@ namespace parse_yelp
                                 {
                                     insertab.Append(", " + k);
                                     valueab.Append(", " + attributes.Parking[k]);
+                                    //aTable.Add(k);
                                 }
                             }
                         }
@@ -281,14 +296,12 @@ namespace parse_yelp
                             else
                                 valueab.Append(q.GetValue(this.attributes));
                             //valuesb.Append(this.attributes.GetType().GetProperty(q.ToString()).GetValue(this.attributes, null));
+                            //aTable.Add(q.Name);
                         }
                     }
                     insertab.Append(") ");
-                    valueab.Append(");\r\n");
                     ab.Append(insertab);
-                    ab.Append(valueab);
-                    ab.Append(sb);
-                    sb = ab;
+                    ab.Append(valueab + ");\r\n");
                 }
 
                 else if (p.Name == "hours")
@@ -315,10 +328,14 @@ namespace parse_yelp
                     valuesb.Append(", ");
                     if (p.PropertyType == typeof(string))
                     {
-                        valuesb.Append("\"" + p.GetValue(this) + "\"");
+                        string text = (string)p.GetValue(this);
+                        text = text.Replace("\n",", ");
+                        text = text.Replace("\"", "");
+                        valuesb.Append("\"" + text + "\"");
                     }
                     else
                         valuesb.Append(p.GetValue(this));
+                    //aTable.Add(p.Name);
                 }
 
             }
@@ -340,8 +357,30 @@ namespace parse_yelp
                    this.attributes.Attire + "," + this.attributes.Alcohol + "," + this.attributes.Waiter_service + "," + this.attributes.Accept_credit_cards
                     + "," + this.attributes.Good_for_kids + "," + this.attributes.Good_for_groups + "," + this.attributes.Price_range);
             */
+            sb.Append(valuesb + ")");
             return sb;
         }
+        //public HashSet<string> hashAttributes(HashSet<string> oldHash)
+        //{
+        //    foreach(string s in aTable)
+        //    {
+        //        oldHash.Add(s);
+        //    }
+        //    return oldHash;
+        //}
+        //    public string writeAttInsert(HashSet<string> list)
+        //    {
+        //        StringBuilder line = new StringBuilder("INSERT INTO attributes (\"");
+        //        string first = list.First();
+
+        //        foreach(string s in list)
+        //        {
+        //            if (s != first)
+        //                line.Append(",");
+        //            line.Append("\"" + s + "\"");
+        //        }
+        //        return line.ToString();
+        //    }
     }
     public class Hoods
     {

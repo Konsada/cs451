@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using parse_yelp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,27 +15,49 @@ namespace Yelp_Business_App
     public partial class Form1 : Form
     {
         MySql_Connection mydb;
+        List<string> categories;
 
         public Form1()
         {
-            init();
+            //init();
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
             mydb = new MySql_Connection();
             UpdateComboBox1();
+            intitCategories();
+            initControls();
         }
         void init()
         {
             //businessInit();
-            reviewInit();
+            //reviewInit();
             //userInit();
-            //intitCategories();
+        }
+        void initControls()
+        {
+            businessSearchResultsDataGridView.AutoResizeColumns();
+            businessSearchResultsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            businessSearchResultsDataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomCenter;
+            businessSearchResultsDataGridView.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+            stateDataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomCenter;
+            stateDataGridView.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+            cityDataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomCenter;
+            cityDataGridView.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+            zipcodeDataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomCenter;
+            zipcodeDataGridView.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+            zipcodeDataGridView.AutoResizeColumns();
+            zipcodeDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            zipcodeDataGridView.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
         }
         protected void intitCategories()
         {
-            Categories c = new Categories();
-            foreach (string s in c.mainCategories)
+            string qStr = "SELECT DISTINCT name FROM categories";
+            categories = mydb.SQLSELECTExec(qStr, "name");
+            foreach (string s in categories)
             {
-                listBox3.Items.Add(s);
+                zipcodeBusinessSearchListBox.Items.Add(s);
+                categoriesListBox.Items.Add(s);
             }
         }
         protected void businessInit()
@@ -49,14 +70,46 @@ namespace Yelp_Business_App
                 using (System.IO.StreamWriter outfile = new System.IO.StreamWriter(dataDir + "business.sql"))
                 {
                     StringBuilder sb = new StringBuilder();
+                    StringBuilder ab = new StringBuilder();
+                    StringBuilder cb = new StringBuilder();
+                    int count = 0;
 
                     while ((contents = jsonFile.ReadLine()) != null)
                     {
                         Business biz = JsonConvert.DeserializeObject<Business>(contents);
-                        sb.Append(biz.writeBiz());
-                        sb.Append(";\r\n");
-                        outfile.Write(sb);
+                        //HashSet <string> atts = new HashSet<string>();
+                        if (count % 15000 == 0)
+                        {
+                            if (count > 0)
+                            {
+                                sb.Append(";\r\n");
+                                cb.Append(";\r\n");
+                                outfile.Write(sb);
+                                outfile.Write(cb);
+                                sb.Clear();
+                                cb.Clear();
+                                //atts.Clear();
+                            }
+                            sb.Append(biz.writeBiz());
+                            //biz.hashAttributes(atts);
+                            ab.Append(biz.ab);
+                            cb.Append(biz.cb);
+                        }
+                        else
+                        {
+                            sb.Append(biz.writeBizValue());
+                            //biz.hashAttributes(atts);
+                            ab.Append(biz.ab);
+                            cb.Append(biz.cb);
+                        }
+                        count++;
                     }
+                    sb.Append(";\r\n");
+                    cb.Append(";\r\n");
+
+                    outfile.Write(sb);
+                    outfile.Write(cb);
+                    outfile.Write(ab);
                 }
             }
         }
@@ -131,14 +184,14 @@ namespace Yelp_Business_App
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            string qstr = "SELECT distinct state_code FROM censusdata ORDER BY state_code;";
+            string qstr = "SELECT distinct state_code FROM demographics ORDER BY state_code;";
             //execute query
             List<String> qResult = mydb.SQLSELECTExec(qstr, "maincategory");
 
             //copy query results to listBox1
             for (int i = 0; i < qResult.Count; i++)
             {
-                listBox1.Items.Add(qResult[i]);
+                cityListBox.Items.Add(qResult[i]);
             }
         }
 
@@ -222,73 +275,226 @@ namespace Yelp_Business_App
         }
         protected void UpdateComboBox1()
         {
-            comboBox1.Items.Clear();
-            string qstr = "SELECT state_code FROM censusdata GROUP BY state_code;";
+            stateComboBox.Items.Clear();
+            string qstr = "SELECT state_code FROM demographics GROUP BY state_code;";
             //execute query
             List<String> qResult = mydb.SQLSELECTExec(qstr, "state_code");
 
             //copy query results to listBox1
             for (int i = 0; i < qResult.Count; i++)
             {
-                comboBox1.Items.Add(qResult[i]);
+                stateComboBox.Items.Add(qResult[i]);
             }
         }
 
         private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
-            listBox1.Items.Clear();
-            listBox2.Items.Clear();
-            textBox1.Clear();
-            textBox2.Clear();
-            textBox3.Clear();
-            dataTable.Rows.Clear();
-            string qstr = "SELECT city FROM censusdata WHERE state_code = " + "'" + comboBox1.SelectedItem.ToString() + "'" + "GROUP BY city;";
+            cityListBox.Items.Clear();
+            zipcodeListBox.Items.Clear();
+
+            zipcodePopulationTextBox.Clear();
+            zipcodeAverageIncomeTextBox.Clear();
+            zipcodeMedianAgeTextBox.Clear();
+            zipcodeDataGridView.Rows.Clear();
+            statePopulationTextBox.Clear();
+            stateAverageIncomeTextBox.Clear();
+            stateMedianAgeTextBox.Clear();
+            stateDataGridView.Rows.Clear();
+            cityPopulationTextBox.Clear();
+            cityAverageIncomeTextBox.Clear();
+            cityMedianAgeTextBox.Clear();
+            cityDataGridView.Rows.Clear();
+
+            string qstr = "SELECT city FROM demographics WHERE state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "'" + "GROUP BY city;";
 
             List<String> qResult = mydb.SQLSELECTExec(qstr, "city");
 
             for (int i = 0; i < qResult.Count; i++)
             {
-                listBox1.Items.Add(qResult[i]);
+                cityListBox.Items.Add(qResult[i]);
             }
+
+            qstr = "SELECT SUM(population) FROM demographics where state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "'";
+
+            string qPopulationResult = mydb.SQLCOUNTExec(qstr).ToString("N0");
+            statePopulationTextBox.Text = qPopulationResult;
+
+            qstr = "SELECT AVG(avg_income) FROM demographics WHERE state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "'";
+            string qAverageIncomeResult = mydb.SQLAVGExec(qstr).ToString("C2");
+            stateAverageIncomeTextBox.Text = qAverageIncomeResult;
+
+            qstr = "SELECT AVG(median_age) FROM demographics WHERE state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "'";
+            string qAverageMedianAgeResult = mydb.SQLAVGExec(qstr).ToString("N0");
+            stateMedianAgeTextBox.Text = qAverageMedianAgeResult;
+
+            stateDataGridView.Rows.Add(5);
+            stateDataGridView.Rows[0].HeaderCell.Value = "Under 18 years";
+            stateDataGridView.Rows[1].HeaderCell.Value = "18 to 24 years";
+            stateDataGridView.Rows[2].HeaderCell.Value = "25 to 44 years";
+            stateDataGridView.Rows[3].HeaderCell.Value = "45 to 64 years";
+            stateDataGridView.Rows[4].HeaderCell.Value = "65 and over";
+
+            Dictionary<string, double> qStateResults = mydb.QueryState(stateComboBox.SelectedItem.ToString());
+            int j = 0;
+            foreach(string s in qStateResults.Keys)
+            {
+                //stateDataGridView.Rows.Add(1);
+                //stateDataGridView.Rows[j].HeaderCell.Value = s;
+                stateDataGridView.Rows[j].Cells[0].Value = qStateResults[s].ToString("N2");
+                j++;
+            }
+            stateDataGridView.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
+
+            initControls();
+            //qstr = "SELECT "
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            listBox2.Items.Clear();
-            string qstr = "SELECT zipcode FROM censusdata WHERE city = " + "'" + listBox1.SelectedItem.ToString() + "' AND state_code = " + "'" +
-                comboBox1.SelectedItem.ToString() + "'" + "GROUP BY zipcode;";
+            zipcodeListBox.Items.Clear();
+            cityPopulationTextBox.Clear();
+            cityAverageIncomeTextBox.Clear();
+            cityMedianAgeTextBox.Clear();
+            zipcodePopulationTextBox.Clear();
+            zipcodeAverageIncomeTextBox.Clear();
+            zipcodeMedianAgeTextBox.Clear();
+            zipcodeDataGridView.Rows.Clear();
+
+            string qstr = "SELECT zipcode FROM demographics WHERE city = " + "'" + cityListBox.SelectedItem.ToString() + "' AND state_code = " + "'" +
+                stateComboBox.SelectedItem.ToString() + "'" + "GROUP BY zipcode;";
 
             List<String> qResult = mydb.SQLSELECTExec(qstr, "zipcode");
 
             for (int i = 0; i < qResult.Count; i++)
             {
-                listBox2.Items.Add(qResult[i]);
+                zipcodeListBox.Items.Add(qResult[i]);
             }
+
+            qstr = "SELECT SUM(population) FROM demographics where state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "' AND city = " + "'" + cityListBox.SelectedItem.ToString() + "'";
+
+            string qPopulationResult = mydb.SQLCOUNTExec(qstr).ToString("N0");
+            cityPopulationTextBox.Text = qPopulationResult;
+
+            qstr = "SELECT AVG(avg_income) FROM demographics WHERE state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "' AND city = " + "'" + cityListBox.SelectedItem.ToString() + "'";
+            string qAverageIncomeResult = mydb.SQLAVGExec(qstr).ToString("C2");
+            cityAverageIncomeTextBox.Text = qAverageIncomeResult;
+
+            qstr = "SELECT AVG(median_age) FROM demographics WHERE state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "' AND city = " + "'" + cityListBox.SelectedItem.ToString() + "'";
+            string qAverageMedianAgeResult = mydb.SQLAVGExec(qstr).ToString("N0");
+            cityMedianAgeTextBox.Text = qAverageMedianAgeResult;
+
+            cityDataGridView.Rows.Add(5);
+            cityDataGridView.Rows[0].HeaderCell.Value = "Under 18 years";
+            cityDataGridView.Rows[1].HeaderCell.Value = "18 to 24 years";
+            cityDataGridView.Rows[2].HeaderCell.Value = "25 to 44 years";
+            cityDataGridView.Rows[3].HeaderCell.Value = "45 to 64 years";
+            cityDataGridView.Rows[4].HeaderCell.Value = "65 and over";
+
+            Dictionary<string, double> qCityResults = mydb.QueryCity(stateComboBox.SelectedItem.ToString(), cityListBox.SelectedItem.ToString());
+            int j = 0;
+            foreach (string s in qCityResults.Keys)
+            {
+                //stateDataGridView.Rows.Add(1);
+                //stateDataGridView.Rows[j].HeaderCell.Value = s;
+                cityDataGridView.Rows[j].Cells[0].Value = qCityResults[s].ToString("N2");
+                j++;
+            }
+            cityDataGridView.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
+
+            initControls();
+
         }
 
         private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            textBox1.Clear();
-            textBox2.Clear();
-            textBox3.Clear();
-            dataTable.Rows.Clear();
+            zipcodePopulationTextBox.Clear();
+            zipcodeAverageIncomeTextBox.Clear();
+            zipcodeMedianAgeTextBox.Clear();
+            zipcodeDataGridView.Rows.Clear();
 
-            string zip = listBox2.SelectedItem.ToString();
+            if (zipcodeListBox.SelectedItems.Count > 0)
+            {
+                string zip = zipcodeListBox.SelectedItem.ToString();
+                double avgInc = 0.0;
+                int temp = 0;
+                int.TryParse(mydb.QueryZipcode("population", zip), out temp);
+                zipcodePopulationTextBox.Text = temp.ToString("N0");
+                zipcodeAverageIncomeTextBox.Text = mydb.QueryZipcode("avg_income", zip);
+                double.TryParse(zipcodeAverageIncomeTextBox.Text, out avgInc);
+                zipcodeAverageIncomeTextBox.Text = avgInc.ToString("C2");
+                zipcodeMedianAgeTextBox.Text = mydb.QueryZipcode("median_age", zip);
+                zipcodeDataGridView.Rows.Add(5);
+                zipcodeDataGridView.Rows[0].HeaderCell.Value = "Under 18 years";
+                zipcodeDataGridView.Rows[1].HeaderCell.Value = "18 to 24 years";
+                zipcodeDataGridView.Rows[2].HeaderCell.Value = "25 to 44 years";
+                zipcodeDataGridView.Rows[3].HeaderCell.Value = "45 to 64 years";
+                zipcodeDataGridView.Rows[4].HeaderCell.Value = "65 and over";
+                zipcodeDataGridView.Rows[0].Cells[0].Value = mydb.QueryZipcode("under18years", zip);
+                zipcodeDataGridView.Rows[1].Cells[0].Value = mydb.QueryZipcode("18_to_24years", zip);
+                zipcodeDataGridView.Rows[2].Cells[0].Value = mydb.QueryZipcode("25_to_44years", zip);
+                zipcodeDataGridView.Rows[3].Cells[0].Value = mydb.QueryZipcode("45_to_64years", zip);
+                zipcodeDataGridView.Rows[4].Cells[0].Value = mydb.QueryZipcode("65_and_over", zip);
+                zipcodeDataGridView.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
+            }
+        }
 
-            textBox1.Text = mydb.QueryZipcode("population", zip);
-            textBox2.Text = mydb.QueryZipcode("avg_income", zip);
-            textBox3.Text = mydb.QueryZipcode("median_age", zip);
-            dataTable.Rows.Add(5);
-            dataTable.Rows[0].HeaderCell.Value = "Under 18 years";
-            dataTable.Rows[1].HeaderCell.Value = "18 to 24 years";
-            dataTable.Rows[2].HeaderCell.Value = "25 to 44 years";
-            dataTable.Rows[3].HeaderCell.Value = "45 to 64 years";
-            dataTable.Rows[4].HeaderCell.Value = "65 and over";
-            dataTable.Rows[0].Cells[0].Value = mydb.QueryZipcode("under18years", zip);
-            dataTable.Rows[1].Cells[0].Value = mydb.QueryZipcode("18_to_24years", zip);
-            dataTable.Rows[2].Cells[0].Value = mydb.QueryZipcode("25_to_44years", zip);
-            dataTable.Rows[3].Cells[0].Value = mydb.QueryZipcode("45_to_64years", zip);
-            dataTable.Rows[4].Cells[0].Value = mydb.QueryZipcode("65_and_over", zip);
+        private void listBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            attributesListBox.Items.Clear();
+            if (zipcodeBusinessSearchListBox.SelectedItems.Count > 0)
+            {
+                StringBuilder qstr = new StringBuilder();
+
+                if (zipcodeBusinessSearchListBox.SelectedItems.Count > 1)
+                {
+                    foreach (object item in zipcodeBusinessSearchListBox.SelectedItems)
+                    {
+                        if (qstr.Length == 0)
+                        {
+                            //qstr.Append("SELECT * FROM attributes WHERE attributes.bid IN ( SELECT categories.bid FROM categories WHERE categories.name = '"
+                            //    + item.ToString() + "'");
+                            qstr.Append("SELECT a.*,c.name FROM attributes AS a JOIN categories AS c ON a.bid = c.bid HAVING c.name = '" + item.ToString() + "'");
+                        }
+                        else
+                        {
+                            qstr.Append(" OR '" + item + "'");
+                        }
+                    }
+                    //qstr.Append(";");
+                }
+                else
+                {
+                    //qstr.Append("SELECT * FROM attributes WHERE attributes.bid IN ( SELECT categories.bid FROM categories WHERE categories.name = '"
+                    //    + listBox3.SelectedItem.ToString() + "');\r\n");
+                    qstr.Append("SELECT a.*,c.name FROM attributes AS a JOIN categories AS c ON a.bid = c.bid HAVING c.name = '" + zipcodeBusinessSearchListBox.SelectedItem.ToString() + "'");
+                }
+                //List<String> qResult = mydb.SQLSELECTExec(qstr.ToString(), "*");
+                List<String> qResult = mydb.SQLTABLEExec(qstr.ToString());
+                foreach (String str in qResult)
+                {
+                    attributesListBox.Items.Add(str);
+                }
+            }
+            initControls();
+        }
+
+        private void addCategoryButton_Click(object sender, EventArgs e)
+        {
+            foreach (string s in categoriesListBox.SelectedItems)
+            {
+                if (!categoryQueryListBox.Items.Contains(s))
+                    categoryQueryListBox.Items.Add(s);
+            }
+        }
+
+        private void listBox5_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

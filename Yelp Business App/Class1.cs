@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
+using System.Data;
 
 namespace Yelp_Business_App
 {
@@ -23,7 +24,8 @@ namespace Yelp_Business_App
             try
             {
                 Initialize();
-            }catch(MySqlException ex)
+            }
+            catch (MySqlException ex)
             {
                 MessageBox.Show(ex.Message);
                 // handle exception here
@@ -34,11 +36,11 @@ namespace Yelp_Business_App
         private void Initialize()
         {
             server = "127.0.0.1";
-            database = "milestone1db";
+            database = "milestone2db";
             uid = "root";
             password = "password";
             // server=127.0.0.1;user id=root;password=Kahle$$0217;persistsecurityinfo=True;database=milestone1db
-            string connectionString = "server=" + server + ";" + "user id=" + uid + ";" + "password=" + password + ";" + "persistsecurityinfo=True;"+ "database=" + database + ";";
+            string connectionString = "server=" + server + ";" + "user id=" + uid + ";" + "password=" + password + ";" + "persistsecurityinfo=True;" + "database=" + database + ";";
             connection = new MySqlConnection(connectionString);
         }
 
@@ -83,12 +85,55 @@ namespace Yelp_Business_App
                 connection.Close();
                 return true;
             }
-            catch(MySqlException ex)
+            catch (MySqlException ex)
             {
                 MessageBox.Show(ex.Message);
                 // handle exception here
             }
             return false;
+        }
+        public List<String> SQLTABLEExec(string querySTR)
+        {
+            List<String> qResult = new List<String>();
+
+            if (OpenConnection() == true)
+            {
+                DataTable schemaTable = new DataTable();
+                Dictionary<String,bool> attDict = new Dictionary<string, bool>();
+                MySqlCommand cmd = new MySqlCommand(querySTR, connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                schemaTable = dataReader.GetSchemaTable();
+                foreach (DataRow row in schemaTable.Rows)
+                {
+                    attDict.Add(row[0].ToString(), false);
+                }
+                while (dataReader.Read())
+                {
+                    for (int i = 0; i < attDict.Keys.Count; i++)
+                    {
+                        if (!dataReader.IsDBNull(i))
+                        {
+                            String str = dataReader.GetString(attDict.Keys.ElementAt(i));
+                            if (null != str && str != "0")
+                            {
+                                attDict[attDict.Keys.ElementAt(i)] = true;
+                            }
+                        }
+                    }
+                }
+                foreach(String str in attDict.Keys)
+                {
+                    if (attDict[str])
+                    {
+                        qResult.Add(str);
+                    }
+                }
+                dataReader.Close();
+                CloseConnection();
+                //qResult = attDict.Keys.ToList<String>();
+            }
+            return qResult;
         }
 
         // Execute SELECT Query - return single attribute
@@ -96,12 +141,12 @@ namespace Yelp_Business_App
         public List<String> SQLSELECTExec(string querySTR, string column_name)
         {
             List<String> qResult = new List<String>();
-            
-            if(this.OpenConnection() == true) //open the connection
+
+            if (this.OpenConnection() == true) //open the connection
             {
                 MySqlCommand cmd = new MySqlCommand(querySTR, connection);
                 MySqlDataReader dataReader = cmd.ExecuteReader();
-                while(dataReader.Read())
+                while (dataReader.Read())
                 {
                     qResult.Add(dataReader.GetString(column_name));
                 }
@@ -112,14 +157,123 @@ namespace Yelp_Business_App
             }
             return qResult;
         }
+        public int SQLCOUNTExec(string querySTR)
+        {
+            int qResult = 0;
+            if (this.OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(querySTR, connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    qResult = dataReader.GetInt32(0);
+                }
+                dataReader.Close();
+                this.CloseConnection();
+            }
+            return qResult;
+        }
+        public double SQLAVGExec(string querySTR)
+        {
+            double qResult = 0;
+            if (this.OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(querySTR, connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    qResult = dataReader.GetDouble(0);
+                }
+                dataReader.Close();
+                this.CloseConnection();
+            }
+            return qResult;
+        }
 
         public String QueryZipcode(string column_name, string zip)
         {
-            string qstr = "SELECT " + column_name + " FROM censusdata WHERE zipcode = " + "'" + zip + "';";
+            string qstr = "SELECT " + column_name + " FROM demographics WHERE zipcode = " + "'" + zip + "';";
 
             List<String> qResult = SQLSELECTExec(qstr, column_name);
 
             return qResult[0];
         }
+
+        public Dictionary<string,double> QueryState(string state)
+        {
+            string qstr = "SELECT AVG(under18years), AVG(18_to_24years), AVG(25_to_44years), AVG(45_to_64years), AVG(65_and_over) FROM demographics WHERE state_code = " + "'" + state + "';";
+            Dictionary<string, double> qResult = new Dictionary<string, double>()
+            {
+                {"AVG(under18years)", 0.0 },
+                {"AVG(18_to_24years)", 0.0 },
+                {"AVG(25_to_44years)", 0.0 },
+                {"AVG(45_to_64years)", 0.0 },
+                {"AVG(65_and_over)", 0.0 }
+            };
+            if(this.OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(qstr, connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                int i = 0;
+                while(dataReader.Read())
+                {
+                    if (!dataReader.IsDBNull(i))
+                    {
+                        for(int j = 0; j < qResult.Keys.Count; j++)
+                        {
+                            string column_name = dataReader.GetName(j);
+                            double temp = 0.0;
+                            double.TryParse(dataReader.GetString(column_name), out temp);
+                            qResult[qResult.Keys.ElementAt(j)] = temp;
+                        }
+
+                    }
+                    i++;
+                }
+                dataReader.Close();
+                this.CloseConnection();
+            }
+
+            return qResult;
+        }
+
+        public Dictionary<string, double> QueryCity(string state, string city)
+        {
+            string qstr = "SELECT AVG(under18years), AVG(18_to_24years), AVG(25_to_44years), AVG(45_to_64years), AVG(65_and_over) FROM demographics WHERE state_code = " + "'" + state + "' AND city = " + "'" + city + "';";
+            Dictionary<string, double> qResult = new Dictionary<string, double>()
+            {
+                {"AVG(under18years)", 0.0 },
+                {"AVG(18_to_24years)", 0.0 },
+                {"AVG(25_to_44years)", 0.0 },
+                {"AVG(45_to_64years)", 0.0 },
+                {"AVG(65_and_over)", 0.0 }
+            };
+            if (this.OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(qstr, connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                int i = 0;
+                while (dataReader.Read())
+                {
+                    if (!dataReader.IsDBNull(i))
+                    {
+                        for (int j = 0; j < qResult.Keys.Count; j++)
+                        {
+                            string column_name = dataReader.GetName(j);
+                            double temp = 0.0;
+                            double.TryParse(dataReader.GetString(column_name), out temp);
+                            qResult[qResult.Keys.ElementAt(j)] = temp;
+                        }
+
+                    }
+                    i++;
+                }
+                dataReader.Close();
+                this.CloseConnection();
+            }
+
+            return qResult;
+        }
+
     }
 }

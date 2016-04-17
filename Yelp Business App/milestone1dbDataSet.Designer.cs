@@ -20,11 +20,11 @@ namespace Yelp_Business_App {
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
-    [global::System.Xml.Serialization.XmlRootAttribute("milestone1dbDataSet")]
+    [global::System.Xml.Serialization.XmlRootAttribute("milestone2dbDataSet")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
     public partial class milestone1dbDataSet : global::System.Data.DataSet {
         
-        private censusdataDataTable tablecensusdata;
+        private demographicsDataTable tabledemographics;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -54,8 +54,8 @@ namespace Yelp_Business_App {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["censusdata"] != null)) {
-                    base.Tables.Add(new censusdataDataTable(ds.Tables["censusdata"]));
+                if ((ds.Tables["demographics"] != null)) {
+                    base.Tables.Add(new demographicsDataTable(ds.Tables["demographics"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace Yelp_Business_App {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public censusdataDataTable censusdata {
+        public demographicsDataTable demographics {
             get {
-                return this.tablecensusdata;
+                return this.tabledemographics;
             }
         }
         
@@ -152,8 +152,8 @@ namespace Yelp_Business_App {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["censusdata"] != null)) {
-                    base.Tables.Add(new censusdataDataTable(ds.Tables["censusdata"]));
+                if ((ds.Tables["demographics"] != null)) {
+                    base.Tables.Add(new demographicsDataTable(ds.Tables["demographics"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace Yelp_Business_App {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tablecensusdata = ((censusdataDataTable)(base.Tables["censusdata"]));
+            this.tabledemographics = ((demographicsDataTable)(base.Tables["demographics"]));
             if ((initTable == true)) {
-                if ((this.tablecensusdata != null)) {
-                    this.tablecensusdata.InitVars();
+                if ((this.tabledemographics != null)) {
+                    this.tabledemographics.InitVars();
                 }
             }
         }
@@ -204,13 +204,13 @@ namespace Yelp_Business_App {
             this.Namespace = "http://tempuri.org/milestone1dbDataSet.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tablecensusdata = new censusdataDataTable();
-            base.Tables.Add(this.tablecensusdata);
+            this.tabledemographics = new demographicsDataTable();
+            base.Tables.Add(this.tabledemographics);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializecensusdata() {
+        private bool ShouldSerializedemographics() {
             return false;
         }
         
@@ -270,14 +270,14 @@ namespace Yelp_Business_App {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void censusdataRowChangeEventHandler(object sender, censusdataRowChangeEvent e);
+        public delegate void demographicsRowChangeEventHandler(object sender, demographicsRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class censusdataDataTable : global::System.Data.TypedTableBase<censusdataRow> {
+        public partial class demographicsDataTable : global::System.Data.TypedTableBase<demographicsRow> {
             
             private global::System.Data.DataColumn columnzipcode;
             
@@ -311,8 +311,8 @@ namespace Yelp_Business_App {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public censusdataDataTable() {
-                this.TableName = "censusdata";
+            public demographicsDataTable() {
+                this.TableName = "demographics";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -320,7 +320,7 @@ namespace Yelp_Business_App {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal censusdataDataTable(global::System.Data.DataTable table) {
+            internal demographicsDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -337,7 +337,7 @@ namespace Yelp_Business_App {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected censusdataDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected demographicsDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
@@ -473,34 +473,34 @@ namespace Yelp_Business_App {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public censusdataRow this[int index] {
+            public demographicsRow this[int index] {
                 get {
-                    return ((censusdataRow)(this.Rows[index]));
+                    return ((demographicsRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event censusdataRowChangeEventHandler censusdataRowChanging;
+            public event demographicsRowChangeEventHandler demographicsRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event censusdataRowChangeEventHandler censusdataRowChanged;
+            public event demographicsRowChangeEventHandler demographicsRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event censusdataRowChangeEventHandler censusdataRowDeleting;
+            public event demographicsRowChangeEventHandler demographicsRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event censusdataRowChangeEventHandler censusdataRowDeleted;
+            public event demographicsRowChangeEventHandler demographicsRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddcensusdataRow(censusdataRow row) {
+            public void AdddemographicsRow(demographicsRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public censusdataRow AddcensusdataRow(int zipcode, string state, string state_code, string city, int population, decimal under18years, decimal _18_to_24years, decimal _25_to_44years, decimal _45_to_64years, decimal _65_and_over, int median_age, decimal percentage_of_females, int num_employee, decimal annual_payroll, decimal avg_income) {
-                censusdataRow rowcensusdataRow = ((censusdataRow)(this.NewRow()));
+            public demographicsRow AdddemographicsRow(int zipcode, string state, string state_code, string city, int population, decimal under18years, decimal _18_to_24years, decimal _25_to_44years, decimal _45_to_64years, decimal _65_and_over, int median_age, decimal percentage_of_females, int num_employee, decimal annual_payroll, decimal avg_income) {
+                demographicsRow rowdemographicsRow = ((demographicsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         zipcode,
                         state,
@@ -517,22 +517,22 @@ namespace Yelp_Business_App {
                         num_employee,
                         annual_payroll,
                         avg_income};
-                rowcensusdataRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowcensusdataRow);
-                return rowcensusdataRow;
+                rowdemographicsRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowdemographicsRow);
+                return rowdemographicsRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public censusdataRow FindByzipcode(int zipcode) {
-                return ((censusdataRow)(this.Rows.Find(new object[] {
+            public demographicsRow FindByzipcode(int zipcode) {
+                return ((demographicsRow)(this.Rows.Find(new object[] {
                             zipcode})));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                censusdataDataTable cln = ((censusdataDataTable)(base.Clone()));
+                demographicsDataTable cln = ((demographicsDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -540,7 +540,7 @@ namespace Yelp_Business_App {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new censusdataDataTable();
+                return new demographicsDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -615,28 +615,28 @@ namespace Yelp_Business_App {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public censusdataRow NewcensusdataRow() {
-                return ((censusdataRow)(this.NewRow()));
+            public demographicsRow NewdemographicsRow() {
+                return ((demographicsRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new censusdataRow(builder);
+                return new demographicsRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(censusdataRow);
+                return typeof(demographicsRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.censusdataRowChanged != null)) {
-                    this.censusdataRowChanged(this, new censusdataRowChangeEvent(((censusdataRow)(e.Row)), e.Action));
+                if ((this.demographicsRowChanged != null)) {
+                    this.demographicsRowChanged(this, new demographicsRowChangeEvent(((demographicsRow)(e.Row)), e.Action));
                 }
             }
             
@@ -644,8 +644,8 @@ namespace Yelp_Business_App {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.censusdataRowChanging != null)) {
-                    this.censusdataRowChanging(this, new censusdataRowChangeEvent(((censusdataRow)(e.Row)), e.Action));
+                if ((this.demographicsRowChanging != null)) {
+                    this.demographicsRowChanging(this, new demographicsRowChangeEvent(((demographicsRow)(e.Row)), e.Action));
                 }
             }
             
@@ -653,8 +653,8 @@ namespace Yelp_Business_App {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.censusdataRowDeleted != null)) {
-                    this.censusdataRowDeleted(this, new censusdataRowChangeEvent(((censusdataRow)(e.Row)), e.Action));
+                if ((this.demographicsRowDeleted != null)) {
+                    this.demographicsRowDeleted(this, new demographicsRowChangeEvent(((demographicsRow)(e.Row)), e.Action));
                 }
             }
             
@@ -662,14 +662,14 @@ namespace Yelp_Business_App {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.censusdataRowDeleting != null)) {
-                    this.censusdataRowDeleting(this, new censusdataRowChangeEvent(((censusdataRow)(e.Row)), e.Action));
+                if ((this.demographicsRowDeleting != null)) {
+                    this.demographicsRowDeleting(this, new demographicsRowChangeEvent(((demographicsRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemovecensusdataRow(censusdataRow row) {
+            public void RemovedemographicsRow(demographicsRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -696,7 +696,7 @@ namespace Yelp_Business_App {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "censusdataDataTable";
+                attribute2.FixedValue = "demographicsDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -740,25 +740,25 @@ namespace Yelp_Business_App {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class censusdataRow : global::System.Data.DataRow {
+        public partial class demographicsRow : global::System.Data.DataRow {
             
-            private censusdataDataTable tablecensusdata;
+            private demographicsDataTable tabledemographics;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal censusdataRow(global::System.Data.DataRowBuilder rb) : 
+            internal demographicsRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tablecensusdata = ((censusdataDataTable)(this.Table));
+                this.tabledemographics = ((demographicsDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public int zipcode {
                 get {
-                    return ((int)(this[this.tablecensusdata.zipcodeColumn]));
+                    return ((int)(this[this.tabledemographics.zipcodeColumn]));
                 }
                 set {
-                    this[this.tablecensusdata.zipcodeColumn] = value;
+                    this[this.tabledemographics.zipcodeColumn] = value;
                 }
             }
             
@@ -767,14 +767,14 @@ namespace Yelp_Business_App {
             public string state {
                 get {
                     try {
-                        return ((string)(this[this.tablecensusdata.stateColumn]));
+                        return ((string)(this[this.tabledemographics.stateColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'state\' in table \'censusdata\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'state\' in table \'demographics\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecensusdata.stateColumn] = value;
+                    this[this.tabledemographics.stateColumn] = value;
                 }
             }
             
@@ -783,14 +783,14 @@ namespace Yelp_Business_App {
             public string state_code {
                 get {
                     try {
-                        return ((string)(this[this.tablecensusdata.state_codeColumn]));
+                        return ((string)(this[this.tabledemographics.state_codeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'state_code\' in table \'censusdata\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'state_code\' in table \'demographics\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecensusdata.state_codeColumn] = value;
+                    this[this.tabledemographics.state_codeColumn] = value;
                 }
             }
             
@@ -799,14 +799,14 @@ namespace Yelp_Business_App {
             public string city {
                 get {
                     try {
-                        return ((string)(this[this.tablecensusdata.cityColumn]));
+                        return ((string)(this[this.tabledemographics.cityColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'city\' in table \'censusdata\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'city\' in table \'demographics\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecensusdata.cityColumn] = value;
+                    this[this.tabledemographics.cityColumn] = value;
                 }
             }
             
@@ -815,14 +815,14 @@ namespace Yelp_Business_App {
             public int population {
                 get {
                     try {
-                        return ((int)(this[this.tablecensusdata.populationColumn]));
+                        return ((int)(this[this.tabledemographics.populationColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'population\' in table \'censusdata\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'population\' in table \'demographics\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecensusdata.populationColumn] = value;
+                    this[this.tabledemographics.populationColumn] = value;
                 }
             }
             
@@ -831,14 +831,14 @@ namespace Yelp_Business_App {
             public decimal under18years {
                 get {
                     try {
-                        return ((decimal)(this[this.tablecensusdata.under18yearsColumn]));
+                        return ((decimal)(this[this.tabledemographics.under18yearsColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'under18years\' in table \'censusdata\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'under18years\' in table \'demographics\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecensusdata.under18yearsColumn] = value;
+                    this[this.tabledemographics.under18yearsColumn] = value;
                 }
             }
             
@@ -847,14 +847,14 @@ namespace Yelp_Business_App {
             public decimal _18_to_24years {
                 get {
                     try {
-                        return ((decimal)(this[this.tablecensusdata._18_to_24yearsColumn]));
+                        return ((decimal)(this[this.tabledemographics._18_to_24yearsColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'18_to_24years\' in table \'censusdata\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'18_to_24years\' in table \'demographics\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecensusdata._18_to_24yearsColumn] = value;
+                    this[this.tabledemographics._18_to_24yearsColumn] = value;
                 }
             }
             
@@ -863,14 +863,14 @@ namespace Yelp_Business_App {
             public decimal _25_to_44years {
                 get {
                     try {
-                        return ((decimal)(this[this.tablecensusdata._25_to_44yearsColumn]));
+                        return ((decimal)(this[this.tabledemographics._25_to_44yearsColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'25_to_44years\' in table \'censusdata\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'25_to_44years\' in table \'demographics\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecensusdata._25_to_44yearsColumn] = value;
+                    this[this.tabledemographics._25_to_44yearsColumn] = value;
                 }
             }
             
@@ -879,14 +879,14 @@ namespace Yelp_Business_App {
             public decimal _45_to_64years {
                 get {
                     try {
-                        return ((decimal)(this[this.tablecensusdata._45_to_64yearsColumn]));
+                        return ((decimal)(this[this.tabledemographics._45_to_64yearsColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'45_to_64years\' in table \'censusdata\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'45_to_64years\' in table \'demographics\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecensusdata._45_to_64yearsColumn] = value;
+                    this[this.tabledemographics._45_to_64yearsColumn] = value;
                 }
             }
             
@@ -895,14 +895,14 @@ namespace Yelp_Business_App {
             public decimal _65_and_over {
                 get {
                     try {
-                        return ((decimal)(this[this.tablecensusdata._65_and_overColumn]));
+                        return ((decimal)(this[this.tabledemographics._65_and_overColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'65_and_over\' in table \'censusdata\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'65_and_over\' in table \'demographics\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecensusdata._65_and_overColumn] = value;
+                    this[this.tabledemographics._65_and_overColumn] = value;
                 }
             }
             
@@ -911,14 +911,14 @@ namespace Yelp_Business_App {
             public int median_age {
                 get {
                     try {
-                        return ((int)(this[this.tablecensusdata.median_ageColumn]));
+                        return ((int)(this[this.tabledemographics.median_ageColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'median_age\' in table \'censusdata\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'median_age\' in table \'demographics\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecensusdata.median_ageColumn] = value;
+                    this[this.tabledemographics.median_ageColumn] = value;
                 }
             }
             
@@ -927,14 +927,14 @@ namespace Yelp_Business_App {
             public decimal percentage_of_females {
                 get {
                     try {
-                        return ((decimal)(this[this.tablecensusdata.percentage_of_femalesColumn]));
+                        return ((decimal)(this[this.tabledemographics.percentage_of_femalesColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'percentage_of_females\' in table \'censusdata\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'percentage_of_females\' in table \'demographics\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecensusdata.percentage_of_femalesColumn] = value;
+                    this[this.tabledemographics.percentage_of_femalesColumn] = value;
                 }
             }
             
@@ -943,14 +943,14 @@ namespace Yelp_Business_App {
             public int num_employee {
                 get {
                     try {
-                        return ((int)(this[this.tablecensusdata.num_employeeColumn]));
+                        return ((int)(this[this.tabledemographics.num_employeeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'num_employee\' in table \'censusdata\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'num_employee\' in table \'demographics\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecensusdata.num_employeeColumn] = value;
+                    this[this.tabledemographics.num_employeeColumn] = value;
                 }
             }
             
@@ -959,14 +959,14 @@ namespace Yelp_Business_App {
             public decimal annual_payroll {
                 get {
                     try {
-                        return ((decimal)(this[this.tablecensusdata.annual_payrollColumn]));
+                        return ((decimal)(this[this.tabledemographics.annual_payrollColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'annual_payroll\' in table \'censusdata\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'annual_payroll\' in table \'demographics\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecensusdata.annual_payrollColumn] = value;
+                    this[this.tabledemographics.annual_payrollColumn] = value;
                 }
             }
             
@@ -975,183 +975,183 @@ namespace Yelp_Business_App {
             public decimal avg_income {
                 get {
                     try {
-                        return ((decimal)(this[this.tablecensusdata.avg_incomeColumn]));
+                        return ((decimal)(this[this.tabledemographics.avg_incomeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'avg_income\' in table \'censusdata\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'avg_income\' in table \'demographics\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecensusdata.avg_incomeColumn] = value;
+                    this[this.tabledemographics.avg_incomeColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsstateNull() {
-                return this.IsNull(this.tablecensusdata.stateColumn);
+                return this.IsNull(this.tabledemographics.stateColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetstateNull() {
-                this[this.tablecensusdata.stateColumn] = global::System.Convert.DBNull;
+                this[this.tabledemographics.stateColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Isstate_codeNull() {
-                return this.IsNull(this.tablecensusdata.state_codeColumn);
+                return this.IsNull(this.tabledemographics.state_codeColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void Setstate_codeNull() {
-                this[this.tablecensusdata.state_codeColumn] = global::System.Convert.DBNull;
+                this[this.tabledemographics.state_codeColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IscityNull() {
-                return this.IsNull(this.tablecensusdata.cityColumn);
+                return this.IsNull(this.tabledemographics.cityColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetcityNull() {
-                this[this.tablecensusdata.cityColumn] = global::System.Convert.DBNull;
+                this[this.tabledemographics.cityColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IspopulationNull() {
-                return this.IsNull(this.tablecensusdata.populationColumn);
+                return this.IsNull(this.tabledemographics.populationColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetpopulationNull() {
-                this[this.tablecensusdata.populationColumn] = global::System.Convert.DBNull;
+                this[this.tabledemographics.populationColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Isunder18yearsNull() {
-                return this.IsNull(this.tablecensusdata.under18yearsColumn);
+                return this.IsNull(this.tabledemographics.under18yearsColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void Setunder18yearsNull() {
-                this[this.tablecensusdata.under18yearsColumn] = global::System.Convert.DBNull;
+                this[this.tabledemographics.under18yearsColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Is_18_to_24yearsNull() {
-                return this.IsNull(this.tablecensusdata._18_to_24yearsColumn);
+                return this.IsNull(this.tabledemographics._18_to_24yearsColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void Set_18_to_24yearsNull() {
-                this[this.tablecensusdata._18_to_24yearsColumn] = global::System.Convert.DBNull;
+                this[this.tabledemographics._18_to_24yearsColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Is_25_to_44yearsNull() {
-                return this.IsNull(this.tablecensusdata._25_to_44yearsColumn);
+                return this.IsNull(this.tabledemographics._25_to_44yearsColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void Set_25_to_44yearsNull() {
-                this[this.tablecensusdata._25_to_44yearsColumn] = global::System.Convert.DBNull;
+                this[this.tabledemographics._25_to_44yearsColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Is_45_to_64yearsNull() {
-                return this.IsNull(this.tablecensusdata._45_to_64yearsColumn);
+                return this.IsNull(this.tabledemographics._45_to_64yearsColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void Set_45_to_64yearsNull() {
-                this[this.tablecensusdata._45_to_64yearsColumn] = global::System.Convert.DBNull;
+                this[this.tabledemographics._45_to_64yearsColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Is_65_and_overNull() {
-                return this.IsNull(this.tablecensusdata._65_and_overColumn);
+                return this.IsNull(this.tabledemographics._65_and_overColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void Set_65_and_overNull() {
-                this[this.tablecensusdata._65_and_overColumn] = global::System.Convert.DBNull;
+                this[this.tabledemographics._65_and_overColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Ismedian_ageNull() {
-                return this.IsNull(this.tablecensusdata.median_ageColumn);
+                return this.IsNull(this.tabledemographics.median_ageColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void Setmedian_ageNull() {
-                this[this.tablecensusdata.median_ageColumn] = global::System.Convert.DBNull;
+                this[this.tabledemographics.median_ageColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Ispercentage_of_femalesNull() {
-                return this.IsNull(this.tablecensusdata.percentage_of_femalesColumn);
+                return this.IsNull(this.tabledemographics.percentage_of_femalesColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void Setpercentage_of_femalesNull() {
-                this[this.tablecensusdata.percentage_of_femalesColumn] = global::System.Convert.DBNull;
+                this[this.tabledemographics.percentage_of_femalesColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Isnum_employeeNull() {
-                return this.IsNull(this.tablecensusdata.num_employeeColumn);
+                return this.IsNull(this.tabledemographics.num_employeeColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void Setnum_employeeNull() {
-                this[this.tablecensusdata.num_employeeColumn] = global::System.Convert.DBNull;
+                this[this.tabledemographics.num_employeeColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Isannual_payrollNull() {
-                return this.IsNull(this.tablecensusdata.annual_payrollColumn);
+                return this.IsNull(this.tabledemographics.annual_payrollColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void Setannual_payrollNull() {
-                this[this.tablecensusdata.annual_payrollColumn] = global::System.Convert.DBNull;
+                this[this.tabledemographics.annual_payrollColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Isavg_incomeNull() {
-                return this.IsNull(this.tablecensusdata.avg_incomeColumn);
+                return this.IsNull(this.tabledemographics.avg_incomeColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void Setavg_incomeNull() {
-                this[this.tablecensusdata.avg_incomeColumn] = global::System.Convert.DBNull;
+                this[this.tabledemographics.avg_incomeColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -1159,22 +1159,22 @@ namespace Yelp_Business_App {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class censusdataRowChangeEvent : global::System.EventArgs {
+        public class demographicsRowChangeEvent : global::System.EventArgs {
             
-            private censusdataRow eventRow;
+            private demographicsRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public censusdataRowChangeEvent(censusdataRow row, global::System.Data.DataRowAction action) {
+            public demographicsRowChangeEvent(demographicsRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public censusdataRow Row {
+            public demographicsRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -1202,7 +1202,7 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
     [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
         ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-    public partial class censusdataTableAdapter : global::System.ComponentModel.Component {
+    public partial class demographicsTableAdapter : global::System.ComponentModel.Component {
         
         private global::MySql.Data.MySqlClient.MySqlDataAdapter _adapter;
         
@@ -1216,7 +1216,7 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public censusdataTableAdapter() {
+        public demographicsTableAdapter() {
             this.ClearBeforeFill = true;
         }
         
@@ -1313,7 +1313,7 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
             this._adapter = new global::MySql.Data.MySqlClient.MySqlDataAdapter();
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
-            tableMapping.DataSetTable = "censusdata";
+            tableMapping.DataSetTable = "demographics";
             tableMapping.ColumnMappings.Add("zipcode", "zipcode");
             tableMapping.ColumnMappings.Add("state", "state");
             tableMapping.ColumnMappings.Add("state_code", "state_code");
@@ -1332,7 +1332,7 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::MySql.Data.MySqlClient.MySqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM `censusdata` WHERE ((`zipcode` = @p1) AND ((@p2 = 1 AND `state` IS NULL) OR (`state` = @p3)) AND ((@p4 = 1 AND `state_code` IS NULL) OR (`state_code` = @p5)) AND ((@p6 = 1 AND `city` IS NULL) OR (`city` = @p7)) AND ((@p8 = 1 AND `population` IS NULL) OR (`population` = @p9)) AND ((@p10 = 1 AND `under18years` IS NULL) OR (`under18years` = @p11)) AND ((@p12 = 1 AND `18_to_24years` IS NULL) OR (`18_to_24years` = @p13)) AND ((@p14 = 1 AND `25_to_44years` IS NULL) OR (`25_to_44years` = @p15)) AND ((@p16 = 1 AND `45_to_64years` IS NULL) OR (`45_to_64years` = @p17)) AND ((@p18 = 1 AND `65_and_over` IS NULL) OR (`65_and_over` = @p19)) AND ((@p20 = 1 AND `median_age` IS NULL) OR (`median_age` = @p21)) AND ((@p22 = 1 AND `percentage_of_females` IS NULL) OR (`percentage_of_females` = @p23)) AND ((@p24 = 1 AND `num_employee` IS NULL) OR (`num_employee` = @p25)) AND ((@p26 = 1 AND `annual_payroll` IS NULL) OR (`annual_payroll` = @p27)) AND ((@p28 = 1 AND `avg_income` IS NULL) OR (`avg_income` = @p29)))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM `demographics` WHERE ((`zipcode` = @p1) AND ((@p2 = 1 AND `state` IS NULL) OR (`state` = @p3)) AND ((@p4 = 1 AND `state_code` IS NULL) OR (`state_code` = @p5)) AND ((@p6 = 1 AND `city` IS NULL) OR (`city` = @p7)) AND ((@p8 = 1 AND `population` IS NULL) OR (`population` = @p9)) AND ((@p10 = 1 AND `under18years` IS NULL) OR (`under18years` = @p11)) AND ((@p12 = 1 AND `18_to_24years` IS NULL) OR (`18_to_24years` = @p13)) AND ((@p14 = 1 AND `25_to_44years` IS NULL) OR (`25_to_44years` = @p15)) AND ((@p16 = 1 AND `45_to_64years` IS NULL) OR (`45_to_64years` = @p17)) AND ((@p18 = 1 AND `65_and_over` IS NULL) OR (`65_and_over` = @p19)) AND ((@p20 = 1 AND `median_age` IS NULL) OR (`median_age` = @p21)) AND ((@p22 = 1 AND `percentage_of_females` IS NULL) OR (`percentage_of_females` = @p23)) AND ((@p24 = 1 AND `num_employee` IS NULL) OR (`num_employee` = @p25)) AND ((@p26 = 1 AND `annual_payroll` IS NULL) OR (`annual_payroll` = @p27)) AND ((@p28 = 1 AND `avg_income` IS NULL) OR (`avg_income` = @p29)))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             global::MySql.Data.MySqlClient.MySqlParameter param = new global::MySql.Data.MySqlClient.MySqlParameter();
             param.ParameterName = "@p1";
@@ -1582,7 +1582,7 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
             this._adapter.DeleteCommand.Parameters.Add(param);
             this._adapter.InsertCommand = new global::MySql.Data.MySqlClient.MySqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO `censusdata` (`zipcode`, `state`, `state_code`, `city`, `population`, `under18years`, `18_to_24years`, `25_to_44years`, `45_to_64years`, `65_and_over`, `median_age`, `percentage_of_females`, `num_employee`, `annual_payroll`, `avg_income`) VALUES (@p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15)";
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO `demographics` (`zipcode`, `state`, `state_code`, `city`, `population`, `under18years`, `18_to_24years`, `25_to_44years`, `45_to_64years`, `65_and_over`, `median_age`, `percentage_of_females`, `num_employee`, `annual_payroll`, `avg_income`) VALUES (@p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             param = new global::MySql.Data.MySqlClient.MySqlParameter();
             param.ParameterName = "@p1";
@@ -1691,7 +1691,7 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
             this._adapter.InsertCommand.Parameters.Add(param);
             this._adapter.UpdateCommand = new global::MySql.Data.MySqlClient.MySqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE `censusdata` SET `zipcode` = @p1, `state` = @p2, `state_code` = @p3, `city` = @p4, `population` = @p5, `under18years` = @p6, `18_to_24years` = @p7, `25_to_44years` = @p8, `45_to_64years` = @p9, `65_and_over` = @p10, `median_age` = @p11, `percentage_of_females` = @p12, `num_employee` = @p13, `annual_payroll` = @p14, `avg_income` = @p15 WHERE ((`zipcode` = @p16) AND ((@p17 = 1 AND `state` IS NULL) OR (`state` = @p18)) AND ((@p19 = 1 AND `state_code` IS NULL) OR (`state_code` = @p20)) AND ((@p21 = 1 AND `city` IS NULL) OR (`city` = @p22)) AND ((@p23 = 1 AND `population` IS NULL) OR (`population` = @p24)) AND ((@p25 = 1 AND `under18years` IS NULL) OR (`under18years` = @p26)) AND ((@p27 = 1 AND `18_to_24years` IS NULL) OR (`18_to_24years` = @p28)) AND ((@p29 = 1 AND `25_to_44years` IS NULL) OR (`25_to_44years` = @p30)) AND ((@p31 = 1 AND `45_to_64years` IS NULL) OR (`45_to_64years` = @p32)) AND ((@p33 = 1 AND `65_and_over` IS NULL) OR (`65_and_over` = @p34)) AND ((@p35 = 1 AND `median_age` IS NULL) OR (`median_age` = @p36)) AND ((@p37 = 1 AND `percentage_of_females` IS NULL) OR (`percentage_of_females` = @p38)) AND ((@p39 = 1 AND `num_employee` IS NULL) OR (`num_employee` = @p40)) AND ((@p41 = 1 AND `annual_payroll` IS NULL) OR (`annual_payroll` = @p42)) AND ((@p43 = 1 AND `avg_income` IS NULL) OR (`avg_income` = @p44)))";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE `demographics` SET `zipcode` = @p1, `state` = @p2, `state_code` = @p3, `city` = @p4, `population` = @p5, `under18years` = @p6, `18_to_24years` = @p7, `25_to_44years` = @p8, `45_to_64years` = @p9, `65_and_over` = @p10, `median_age` = @p11, `percentage_of_females` = @p12, `num_employee` = @p13, `annual_payroll` = @p14, `avg_income` = @p15 WHERE ((`zipcode` = @p16) AND ((@p17 = 1 AND `state` IS NULL) OR (`state` = @p18)) AND ((@p19 = 1 AND `state_code` IS NULL) OR (`state_code` = @p20)) AND ((@p21 = 1 AND `city` IS NULL) OR (`city` = @p22)) AND ((@p23 = 1 AND `population` IS NULL) OR (`population` = @p24)) AND ((@p25 = 1 AND `under18years` IS NULL) OR (`under18years` = @p26)) AND ((@p27 = 1 AND `18_to_24years` IS NULL) OR (`18_to_24years` = @p28)) AND ((@p29 = 1 AND `25_to_44years` IS NULL) OR (`25_to_44years` = @p30)) AND ((@p31 = 1 AND `45_to_64years` IS NULL) OR (`45_to_64years` = @p32)) AND ((@p33 = 1 AND `65_and_over` IS NULL) OR (`65_and_over` = @p34)) AND ((@p35 = 1 AND `median_age` IS NULL) OR (`median_age` = @p36)) AND ((@p37 = 1 AND `percentage_of_females` IS NULL) OR (`percentage_of_females` = @p38)) AND ((@p39 = 1 AND `num_employee` IS NULL) OR (`num_employee` = @p40)) AND ((@p41 = 1 AND `annual_payroll` IS NULL) OR (`annual_payroll` = @p42)) AND ((@p43 = 1 AND `avg_income` IS NULL) OR (`avg_income` = @p44)))";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             param = new global::MySql.Data.MySqlClient.MySqlParameter();
             param.ParameterName = "@p1";
@@ -2061,8 +2061,8 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT `zipcode`, `state`, `state_code`, `city`, `population`, `under18years`, `1" +
                 "8_to_24years`, `25_to_44years`, `45_to_64years`, `65_and_over`, `median_age`, `p" +
-                "ercentage_of_females`, `num_employee`, `annual_payroll`, `avg_income` FROM `cens" +
-                "usdata`";
+                "ercentage_of_females`, `num_employee`, `annual_payroll`, `avg_income` FROM `demo" +
+                "graphics`";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -2070,7 +2070,7 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(milestone1dbDataSet.censusdataDataTable dataTable) {
+        public virtual int Fill(milestone1dbDataSet.demographicsDataTable dataTable) {
             this.Adapter.SelectCommand = this.CommandCollection[0];
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -2083,9 +2083,9 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual milestone1dbDataSet.censusdataDataTable GetData() {
+        public virtual milestone1dbDataSet.demographicsDataTable GetData() {
             this.Adapter.SelectCommand = this.CommandCollection[0];
-            milestone1dbDataSet.censusdataDataTable dataTable = new milestone1dbDataSet.censusdataDataTable();
+            milestone1dbDataSet.demographicsDataTable dataTable = new milestone1dbDataSet.demographicsDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
         }
@@ -2093,7 +2093,7 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(milestone1dbDataSet.censusdataDataTable dataTable) {
+        public virtual int Update(milestone1dbDataSet.demographicsDataTable dataTable) {
             return this.Adapter.Update(dataTable);
         }
         
@@ -2101,7 +2101,7 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         public virtual int Update(milestone1dbDataSet dataSet) {
-            return this.Adapter.Update(dataSet, "censusdata");
+            return this.Adapter.Update(dataSet, "demographics");
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2658,7 +2658,7 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
         
         private UpdateOrderOption _updateOrder;
         
-        private censusdataTableAdapter _censusdataTableAdapter;
+        private demographicsTableAdapter _demographicsTableAdapter;
         
         private bool _backupDataSetBeforeUpdate;
         
@@ -2680,12 +2680,12 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
         [global::System.ComponentModel.EditorAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterManagerPropertyEditor, Microso" +
             "ft.VSDesigner, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3" +
             "a", "System.Drawing.Design.UITypeEditor")]
-        public censusdataTableAdapter censusdataTableAdapter {
+        public demographicsTableAdapter demographicsTableAdapter {
             get {
-                return this._censusdataTableAdapter;
+                return this._demographicsTableAdapter;
             }
             set {
-                this._censusdataTableAdapter = value;
+                this._demographicsTableAdapter = value;
             }
         }
         
@@ -2708,9 +2708,9 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
                 if ((this._connection != null)) {
                     return this._connection;
                 }
-                if (((this._censusdataTableAdapter != null) 
-                            && (this._censusdataTableAdapter.Connection != null))) {
-                    return this._censusdataTableAdapter.Connection;
+                if (((this._demographicsTableAdapter != null) 
+                            && (this._demographicsTableAdapter.Connection != null))) {
+                    return this._demographicsTableAdapter.Connection;
                 }
                 return null;
             }
@@ -2725,7 +2725,7 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
         public int TableAdapterInstanceCount {
             get {
                 int count = 0;
-                if ((this._censusdataTableAdapter != null)) {
+                if ((this._demographicsTableAdapter != null)) {
                     count = (count + 1);
                 }
                 return count;
@@ -2739,12 +2739,12 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private int UpdateUpdatedRows(milestone1dbDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._censusdataTableAdapter != null)) {
-                global::System.Data.DataRow[] updatedRows = dataSet.censusdata.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
+            if ((this._demographicsTableAdapter != null)) {
+                global::System.Data.DataRow[] updatedRows = dataSet.demographics.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
                 updatedRows = this.GetRealUpdatedRows(updatedRows, allAddedRows);
                 if (((updatedRows != null) 
                             && (0 < updatedRows.Length))) {
-                    result = (result + this._censusdataTableAdapter.Update(updatedRows));
+                    result = (result + this._demographicsTableAdapter.Update(updatedRows));
                     allChangedRows.AddRange(updatedRows);
                 }
             }
@@ -2758,11 +2758,11 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private int UpdateInsertedRows(milestone1dbDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._censusdataTableAdapter != null)) {
-                global::System.Data.DataRow[] addedRows = dataSet.censusdata.Select(null, null, global::System.Data.DataViewRowState.Added);
+            if ((this._demographicsTableAdapter != null)) {
+                global::System.Data.DataRow[] addedRows = dataSet.demographics.Select(null, null, global::System.Data.DataViewRowState.Added);
                 if (((addedRows != null) 
                             && (0 < addedRows.Length))) {
-                    result = (result + this._censusdataTableAdapter.Update(addedRows));
+                    result = (result + this._demographicsTableAdapter.Update(addedRows));
                     allAddedRows.AddRange(addedRows);
                 }
             }
@@ -2776,11 +2776,11 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private int UpdateDeletedRows(milestone1dbDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
             int result = 0;
-            if ((this._censusdataTableAdapter != null)) {
-                global::System.Data.DataRow[] deletedRows = dataSet.censusdata.Select(null, null, global::System.Data.DataViewRowState.Deleted);
+            if ((this._demographicsTableAdapter != null)) {
+                global::System.Data.DataRow[] deletedRows = dataSet.demographics.Select(null, null, global::System.Data.DataViewRowState.Deleted);
                 if (((deletedRows != null) 
                             && (0 < deletedRows.Length))) {
-                    result = (result + this._censusdataTableAdapter.Update(deletedRows));
+                    result = (result + this._demographicsTableAdapter.Update(deletedRows));
                     allChangedRows.AddRange(deletedRows);
                 }
             }
@@ -2823,8 +2823,8 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
             if ((dataSet.HasChanges() == false)) {
                 return 0;
             }
-            if (((this._censusdataTableAdapter != null) 
-                        && (this.MatchTableAdapterConnection(this._censusdataTableAdapter.Connection) == false))) {
+            if (((this._demographicsTableAdapter != null) 
+                        && (this.MatchTableAdapterConnection(this._demographicsTableAdapter.Connection) == false))) {
                 throw new global::System.ArgumentException("All TableAdapters managed by a TableAdapterManager must use the same connection s" +
                         "tring.");
             }
@@ -2860,13 +2860,13 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
             try {
                 // ---- Prepare for update -----------
                 //
-                if ((this._censusdataTableAdapter != null)) {
-                    revertConnections.Add(this._censusdataTableAdapter, this._censusdataTableAdapter.Connection);
-                    this._censusdataTableAdapter.Connection = ((global::MySql.Data.MySqlClient.MySqlConnection)(workConnection));
-                    this._censusdataTableAdapter.Transaction = ((global::MySql.Data.MySqlClient.MySqlTransaction)(workTransaction));
-                    if (this._censusdataTableAdapter.Adapter.AcceptChangesDuringUpdate) {
-                        this._censusdataTableAdapter.Adapter.AcceptChangesDuringUpdate = false;
-                        adaptersWithAcceptChangesDuringUpdate.Add(this._censusdataTableAdapter.Adapter);
+                if ((this._demographicsTableAdapter != null)) {
+                    revertConnections.Add(this._demographicsTableAdapter, this._demographicsTableAdapter.Connection);
+                    this._demographicsTableAdapter.Connection = ((global::MySql.Data.MySqlClient.MySqlConnection)(workConnection));
+                    this._demographicsTableAdapter.Transaction = ((global::MySql.Data.MySqlClient.MySqlTransaction)(workTransaction));
+                    if (this._demographicsTableAdapter.Adapter.AcceptChangesDuringUpdate) {
+                        this._demographicsTableAdapter.Adapter.AcceptChangesDuringUpdate = false;
+                        adaptersWithAcceptChangesDuringUpdate.Add(this._demographicsTableAdapter.Adapter);
                     }
                 }
                 // 
@@ -2927,9 +2927,9 @@ namespace Yelp_Business_App.milestone1dbDataSetTableAdapters {
                 if (workConnOpened) {
                     workConnection.Close();
                 }
-                if ((this._censusdataTableAdapter != null)) {
-                    this._censusdataTableAdapter.Connection = ((global::MySql.Data.MySqlClient.MySqlConnection)(revertConnections[this._censusdataTableAdapter]));
-                    this._censusdataTableAdapter.Transaction = null;
+                if ((this._demographicsTableAdapter != null)) {
+                    this._demographicsTableAdapter.Connection = ((global::MySql.Data.MySqlClient.MySqlConnection)(revertConnections[this._demographicsTableAdapter]));
+                    this._demographicsTableAdapter.Transaction = null;
                 }
                 if ((0 < adaptersWithAcceptChangesDuringUpdate.Count)) {
                     global::System.Data.Common.DataAdapter[] adapters = new System.Data.Common.DataAdapter[adaptersWithAcceptChangesDuringUpdate.Count];
