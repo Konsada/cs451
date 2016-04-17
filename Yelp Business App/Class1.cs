@@ -99,7 +99,7 @@ namespace Yelp_Business_App
             if (OpenConnection() == true)
             {
                 DataTable schemaTable = new DataTable();
-                Dictionary<String,bool> attDict = new Dictionary<string, bool>();
+                Dictionary<String, bool> attDict = new Dictionary<string, bool>();
                 MySqlCommand cmd = new MySqlCommand(querySTR, connection);
                 MySqlDataReader dataReader = cmd.ExecuteReader();
 
@@ -122,7 +122,7 @@ namespace Yelp_Business_App
                         }
                     }
                 }
-                foreach(String str in attDict.Keys)
+                foreach (String str in attDict.Keys)
                 {
                     if (attDict[str])
                     {
@@ -199,7 +199,7 @@ namespace Yelp_Business_App
             return qResult[0];
         }
 
-        public Dictionary<string,double> QueryState(string state)
+        public Dictionary<string, double> QueryState(string state)
         {
             string qstr = "SELECT AVG(under18years), AVG(18_to_24years), AVG(25_to_44years), AVG(45_to_64years), AVG(65_and_over) FROM demographics WHERE state_code = " + "'" + state + "';";
             Dictionary<string, double> qResult = new Dictionary<string, double>()
@@ -210,16 +210,16 @@ namespace Yelp_Business_App
                 {"AVG(45_to_64years)", 0.0 },
                 {"AVG(65_and_over)", 0.0 }
             };
-            if(this.OpenConnection() == true)
+            if (this.OpenConnection() == true)
             {
                 MySqlCommand cmd = new MySqlCommand(qstr, connection);
                 MySqlDataReader dataReader = cmd.ExecuteReader();
                 int i = 0;
-                while(dataReader.Read())
+                while (dataReader.Read())
                 {
                     if (!dataReader.IsDBNull(i))
                     {
-                        for(int j = 0; j < qResult.Keys.Count; j++)
+                        for (int j = 0; j < qResult.Keys.Count; j++)
                         {
                             string column_name = dataReader.GetName(j);
                             double temp = 0.0;
@@ -274,6 +274,31 @@ namespace Yelp_Business_App
 
             return qResult;
         }
+        public List<string> QueryBusinessSearch(string qStr)
+        {
+            List<string> qResult = new List<string>();
+            if (this.OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(qStr, connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    for(int i = 0; i < dataReader.FieldCount; i++)
+                    {
+                        qResult.Add(dataReader[i].ToString());
+                        //object dataType = dataReader.GetFieldType(i);
+                        //qResult.Add(dataReader.GetFieldValue<dataType.GetType()> (i++).ToString());
+                        //MySql.Data.Types.MySqlDecimal d = (MySql.Data.Types.MySqlDecimal)dataReader.GetFieldValue<object>(i++);
+                        //qResult.Add(d.Value.ToString());
+                        //qResult.Add(dataReader.GetFieldValue<Decimal>(i++).ToString());
+                    }
+                }
+                dataReader.Close();
+                this.CloseConnection();
+            }
 
+            return qResult;
+
+        }
     }
 }

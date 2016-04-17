@@ -36,19 +36,19 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.label18 = new System.Windows.Forms.Label();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.zipcodeNumberOfBusinessesDataGridView = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.label17 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.cityNumberOfBusinessesDataGridView = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.label16 = new System.Windows.Forms.Label();
-            this.stateBusinessSummaryDataGridView = new System.Windows.Forms.DataGridView();
+            this.stateNumberOfBusinessDataGridView = new System.Windows.Forms.DataGridView();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -141,11 +141,11 @@
             this.tabPage1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.zipcodeNumberOfBusinessesDataGridView)).BeginInit();
             this.groupBox8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cityNumberOfBusinessesDataGridView)).BeginInit();
             this.groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.stateBusinessSummaryDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.stateNumberOfBusinessDataGridView)).BeginInit();
             this.groupBox6.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.stateGroupBox.SuspendLayout();
@@ -185,7 +185,7 @@
             // newServerMenuItem
             // 
             this.newServerMenuItem.Name = "newServerMenuItem";
-            this.newServerMenuItem.Size = new System.Drawing.Size(132, 30);
+            this.newServerMenuItem.Size = new System.Drawing.Size(211, 30);
             this.newServerMenuItem.Text = "New";
             this.newServerMenuItem.Click += new System.EventHandler(this.newServerMenuItem_Click);
             // 
@@ -229,7 +229,7 @@
             // groupBox9
             // 
             this.groupBox9.Controls.Add(this.label18);
-            this.groupBox9.Controls.Add(this.dataGridView2);
+            this.groupBox9.Controls.Add(this.zipcodeNumberOfBusinessesDataGridView);
             this.groupBox9.Location = new System.Drawing.Point(1026, 20);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(488, 461);
@@ -246,20 +246,20 @@
             this.label18.TabIndex = 1;
             this.label18.Text = "# of Businesses";
             // 
-            // dataGridView2
+            // zipcodeNumberOfBusinessesDataGridView
             // 
-            this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.zipcodeNumberOfBusinessesDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.zipcodeNumberOfBusinessesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.zipcodeNumberOfBusinessesDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn6,
             this.dataGridViewTextBoxColumn7,
             this.dataGridViewTextBoxColumn8});
-            this.dataGridView2.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dataGridView2.Location = new System.Drawing.Point(8, 95);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.RowTemplate.Height = 28;
-            this.dataGridView2.Size = new System.Drawing.Size(474, 360);
-            this.dataGridView2.TabIndex = 0;
+            this.zipcodeNumberOfBusinessesDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.zipcodeNumberOfBusinessesDataGridView.Location = new System.Drawing.Point(8, 95);
+            this.zipcodeNumberOfBusinessesDataGridView.Name = "zipcodeNumberOfBusinessesDataGridView";
+            this.zipcodeNumberOfBusinessesDataGridView.RowTemplate.Height = 28;
+            this.zipcodeNumberOfBusinessesDataGridView.Size = new System.Drawing.Size(474, 360);
+            this.zipcodeNumberOfBusinessesDataGridView.TabIndex = 0;
             // 
             // dataGridViewTextBoxColumn6
             // 
@@ -282,7 +282,7 @@
             // groupBox8
             // 
             this.groupBox8.Controls.Add(this.label17);
-            this.groupBox8.Controls.Add(this.dataGridView1);
+            this.groupBox8.Controls.Add(this.cityNumberOfBusinessesDataGridView);
             this.groupBox8.Location = new System.Drawing.Point(532, 25);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(488, 461);
@@ -299,19 +299,19 @@
             this.label17.TabIndex = 1;
             this.label17.Text = "# of Businesses";
             // 
-            // dataGridView1
+            // cityNumberOfBusinessesDataGridView
             // 
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.cityNumberOfBusinessesDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.cityNumberOfBusinessesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.cityNumberOfBusinessesDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn3,
             this.dataGridViewTextBoxColumn4,
             this.dataGridViewTextBoxColumn5});
-            this.dataGridView1.Location = new System.Drawing.Point(8, 95);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 28;
-            this.dataGridView1.Size = new System.Drawing.Size(474, 360);
-            this.dataGridView1.TabIndex = 0;
+            this.cityNumberOfBusinessesDataGridView.Location = new System.Drawing.Point(8, 95);
+            this.cityNumberOfBusinessesDataGridView.Name = "cityNumberOfBusinessesDataGridView";
+            this.cityNumberOfBusinessesDataGridView.RowTemplate.Height = 28;
+            this.cityNumberOfBusinessesDataGridView.Size = new System.Drawing.Size(474, 360);
+            this.cityNumberOfBusinessesDataGridView.TabIndex = 0;
             // 
             // dataGridViewTextBoxColumn3
             // 
@@ -334,7 +334,7 @@
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.label16);
-            this.groupBox7.Controls.Add(this.stateBusinessSummaryDataGridView);
+            this.groupBox7.Controls.Add(this.stateNumberOfBusinessDataGridView);
             this.groupBox7.Location = new System.Drawing.Point(38, 25);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(488, 461);
@@ -351,19 +351,19 @@
             this.label16.TabIndex = 1;
             this.label16.Text = "# of Businesses";
             // 
-            // stateBusinessSummaryDataGridView
+            // stateNumberOfBusinessDataGridView
             // 
-            this.stateBusinessSummaryDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.stateBusinessSummaryDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.stateBusinessSummaryDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.stateNumberOfBusinessDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.stateNumberOfBusinessDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.stateNumberOfBusinessDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column2,
             this.Column3,
             this.Column4});
-            this.stateBusinessSummaryDataGridView.Location = new System.Drawing.Point(8, 95);
-            this.stateBusinessSummaryDataGridView.Name = "stateBusinessSummaryDataGridView";
-            this.stateBusinessSummaryDataGridView.RowTemplate.Height = 28;
-            this.stateBusinessSummaryDataGridView.Size = new System.Drawing.Size(474, 360);
-            this.stateBusinessSummaryDataGridView.TabIndex = 0;
+            this.stateNumberOfBusinessDataGridView.Location = new System.Drawing.Point(8, 95);
+            this.stateNumberOfBusinessDataGridView.Name = "stateNumberOfBusinessDataGridView";
+            this.stateNumberOfBusinessDataGridView.RowTemplate.Height = 28;
+            this.stateNumberOfBusinessDataGridView.Size = new System.Drawing.Size(474, 360);
+            this.stateNumberOfBusinessDataGridView.TabIndex = 0;
             // 
             // Column2
             // 
@@ -391,6 +391,7 @@
             this.updateButton.TabIndex = 3;
             this.updateButton.Text = "Update";
             this.updateButton.UseVisualStyleBackColor = true;
+            this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
             // 
             // groupBox6
             // 
@@ -1198,13 +1199,13 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox9.ResumeLayout(false);
             this.groupBox9.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.zipcodeNumberOfBusinessesDataGridView)).EndInit();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cityNumberOfBusinessesDataGridView)).EndInit();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.stateBusinessSummaryDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.stateNumberOfBusinessDataGridView)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.stateGroupBox.ResumeLayout(false);
@@ -1287,19 +1288,19 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.DataGridView zipcodeNumberOfBusinessesDataGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView cityNumberOfBusinessesDataGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.DataGridView stateBusinessSummaryDataGridView;
+        private System.Windows.Forms.DataGridView stateNumberOfBusinessDataGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;

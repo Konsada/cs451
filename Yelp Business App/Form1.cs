@@ -336,7 +336,7 @@ namespace Yelp_Business_App
 
             Dictionary<string, double> qStateResults = mydb.QueryState(stateComboBox.SelectedItem.ToString());
             int j = 0;
-            foreach(string s in qStateResults.Keys)
+            foreach (string s in qStateResults.Keys)
             {
                 //stateDataGridView.Rows.Add(1);
                 //stateDataGridView.Rows[j].HeaderCell.Value = s;
@@ -496,5 +496,99 @@ namespace Yelp_Business_App
         {
 
         }
+
+        private void updateButton_Click(object sender, EventArgs e)
+        {
+            stateDataGridView.Rows.Clear();
+            cityDataGridView.Rows.Clear();
+            zipcodeDataGridView.Rows.Clear();
+            string qStateStr = null, qCityStr = null, qZipcodeStr = null, qStr = null;
+            List<string> qStrList = new List<string>();
+            List<string> qResult = new List<string>();
+            int i = 0;
+
+            if (categoryQueryListBox.Items.Count > 0)
+            {
+                if (stateComboBox.SelectedItem != null)
+                {
+                    qStateStr = "SELECT COUNT(*), AVG(stars), AVG(review_count) FROM businesses b, categories c WHERE b.bid = c.bid AND b.state = '" +
+                        stateComboBox.SelectedItem + "'";
+
+                    if (cityListBox.SelectedItems.Count > 0)
+                    {
+                        qCityStr = "SELECT COUNT(*), AVG(stars), AVG(review_count) FROM businesses b, categories c WHERE b.bid = c.bid AND b.state = '" +
+                                 stateComboBox.SelectedItem + "' AND '" + cityListBox.SelectedItem + "'";
+
+                        if (zipcodeListBox.SelectedItems.Count > 0)
+                        {
+                            qZipcodeStr = "SELECT COUNT(*), AVG(stars), AVG(review_count) FROM businesses b, categories c WHERE b.bid = c.bid AND b.state = '" +
+                                 stateComboBox.SelectedItem + "' AND '" + cityListBox.SelectedItem + "' AND '" + zipcodeListBox.SelectedItem + "'";
+                        }
+                    }
+                }
+                // add each category to qStrList to be querried against for each category
+                foreach (string s in categoryQueryListBox.Items)
+                {
+                    qStr = " AND c.name = '" + s + "'";
+                    qStrList.Add(qStr);
+                }
+                if (qZipcodeStr != null)
+                {
+                    i = 0;
+                    // Query db for every category individually
+                    foreach (string s in qStrList)
+                    {
+                        zipcodeNumberOfBusinessesDataGridView.Rows.Add();
+                        zipcodeNumberOfBusinessesDataGridView.Rows[i].HeaderCell.Value = s.Substring(14);
+                        qResult = mydb.QueryBusinessSearch(qZipcodeStr + s);
+                        int j = 0;
+                        foreach (string t in qResult)
+                        {
+                            zipcodeNumberOfBusinessesDataGridView.Rows[i].Cells[j].Value = t;
+                        }
+                        i++;
+                    }
+                    zipcodeNumberOfBusinessesDataGridView.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
+                }
+                if (qCityStr != null)
+                {
+                    i = 0;
+                    // Query db for every category individually
+                    foreach (string s in qStrList)
+                    {
+                        cityNumberOfBusinessesDataGridView.Rows.Add();
+                        cityNumberOfBusinessesDataGridView.Rows[i].HeaderCell.Value = s.Substring(14);
+                        qResult = mydb.QueryBusinessSearch(qCityStr + s);
+                        int j = 0;
+                        foreach (string t in qResult)
+                        {
+                            cityNumberOfBusinessesDataGridView.Rows[i].Cells[j].Value = t;
+                        }
+                        i++;
+                    }
+                    cityNumberOfBusinessesDataGridView.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
+
+                }
+                if (qStateStr != null)
+                {
+                    i = 0;
+                    // Query db for every category individually
+                    foreach (string s in qStrList)
+                    {
+                        stateNumberOfBusinessDataGridView.Rows.Add();
+                        stateNumberOfBusinessDataGridView.Rows[i].HeaderCell.Value = s.Substring(14);
+                        qResult = mydb.QueryBusinessSearch(qStateStr + s);
+                        int j = 0;
+                        foreach (string t in qResult)
+                        {
+                            stateNumberOfBusinessDataGridView.Rows[i].Cells[j].Value = t;
+                        }
+                        i++;
+                    }
+                    stateNumberOfBusinessDataGridView.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
+                }
+            }
+        }
     }
 }
+
