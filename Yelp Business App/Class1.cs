@@ -264,14 +264,12 @@ namespace Yelp_Business_App
                             double.TryParse(dataReader.GetString(column_name), out temp);
                             qResult[qResult.Keys.ElementAt(j)] = temp;
                         }
-
                     }
                     i++;
                 }
                 dataReader.Close();
                 this.CloseConnection();
             }
-
             return qResult;
         }
         public List<string> QueryBusinessSearch(string qStr)
@@ -286,17 +284,11 @@ namespace Yelp_Business_App
                     for(int i = 0; i < dataReader.FieldCount; i++)
                     {
                         qResult.Add(dataReader[i].ToString());
-                        //object dataType = dataReader.GetFieldType(i);
-                        //qResult.Add(dataReader.GetFieldValue<dataType.GetType()> (i++).ToString());
-                        //MySql.Data.Types.MySqlDecimal d = (MySql.Data.Types.MySqlDecimal)dataReader.GetFieldValue<object>(i++);
-                        //qResult.Add(d.Value.ToString());
-                        //qResult.Add(dataReader.GetFieldValue<Decimal>(i++).ToString());
                     }
                 }
                 dataReader.Close();
                 this.CloseConnection();
             }
-
             return qResult;
 
         }

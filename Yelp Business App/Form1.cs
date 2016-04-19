@@ -511,18 +511,18 @@ namespace Yelp_Business_App
             {
                 if (stateComboBox.SelectedItem != null)
                 {
-                    qStateStr = "SELECT COUNT(*), AVG(stars), AVG(review_count) FROM businesses b, categories c WHERE b.bid = c.bid AND b.state = '" +
+                    qStateStr = "SELECT COUNT(b.bid), AVG(stars), AVG(review_count) FROM businesses b, categories c WHERE b.bid = c.bid AND b.state = '" +
                         stateComboBox.SelectedItem + "'";
 
                     if (cityListBox.SelectedItems.Count > 0)
                     {
-                        qCityStr = "SELECT COUNT(*), AVG(stars), AVG(review_count) FROM businesses b, categories c WHERE b.bid = c.bid AND b.state = '" +
-                                 stateComboBox.SelectedItem + "' AND '" + cityListBox.SelectedItem + "'";
+                        qCityStr = "SELECT COUNT(b.bid), AVG(stars), AVG(review_count) FROM businesses b, categories c WHERE b.bid = c.bid AND b.state = '" +
+                                 stateComboBox.SelectedItem + "' AND b.city = '" + cityListBox.SelectedItem + "'";
 
                         if (zipcodeListBox.SelectedItems.Count > 0)
                         {
-                            qZipcodeStr = "SELECT COUNT(*), AVG(stars), AVG(review_count) FROM businesses b, categories c WHERE b.bid = c.bid AND b.state = '" +
-                                 stateComboBox.SelectedItem + "' AND '" + cityListBox.SelectedItem + "' AND '" + zipcodeListBox.SelectedItem + "'";
+                            qZipcodeStr = "SELECT COUNT(b.bid), AVG(stars), AVG(review_count) FROM businesses b, categories c WHERE b.bid = c.bid AND b.state = '" +
+                                 stateComboBox.SelectedItem + "' AND b.city = '" + cityListBox.SelectedItem + "' AND b.zipcode = '" + zipcodeListBox.SelectedItem + "'";
                         }
                     }
                 }
@@ -532,6 +532,7 @@ namespace Yelp_Business_App
                     qStr = " AND c.name = '" + s + "'";
                     qStrList.Add(qStr);
                 }
+
                 if (qZipcodeStr != null)
                 {
                     i = 0;
@@ -541,7 +542,7 @@ namespace Yelp_Business_App
                         zipcodeNumberOfBusinessesDataGridView.Rows.Add();
                         zipcodeNumberOfBusinessesDataGridView.Rows[i].HeaderCell.Value = s.Substring(14);
                         qResult = mydb.QueryBusinessSearch(qZipcodeStr + s);
-                        int j = 0;
+                        int j = 2;
                         foreach (string t in qResult)
                         {
                             zipcodeNumberOfBusinessesDataGridView.Rows[i].Cells[j].Value = t;
@@ -550,6 +551,7 @@ namespace Yelp_Business_App
                     }
                     zipcodeNumberOfBusinessesDataGridView.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
                 }
+
                 if (qCityStr != null)
                 {
                     i = 0;
@@ -559,7 +561,7 @@ namespace Yelp_Business_App
                         cityNumberOfBusinessesDataGridView.Rows.Add();
                         cityNumberOfBusinessesDataGridView.Rows[i].HeaderCell.Value = s.Substring(14);
                         qResult = mydb.QueryBusinessSearch(qCityStr + s);
-                        int j = 0;
+                        int j = 2;
                         foreach (string t in qResult)
                         {
                             cityNumberOfBusinessesDataGridView.Rows[i].Cells[j].Value = t;
@@ -567,8 +569,8 @@ namespace Yelp_Business_App
                         i++;
                     }
                     cityNumberOfBusinessesDataGridView.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
-
                 }
+
                 if (qStateStr != null)
                 {
                     i = 0;
@@ -578,7 +580,7 @@ namespace Yelp_Business_App
                         stateNumberOfBusinessDataGridView.Rows.Add();
                         stateNumberOfBusinessDataGridView.Rows[i].HeaderCell.Value = s.Substring(14);
                         qResult = mydb.QueryBusinessSearch(qStateStr + s);
-                        int j = 0;
+                        int j = 2;
                         foreach (string t in qResult)
                         {
                             stateNumberOfBusinessDataGridView.Rows[i].Cells[j].Value = t;
