@@ -23,13 +23,13 @@ namespace Yelp_Business_App
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
             mydb = new MySql_Connection();
-            UpdateComboBox1();
+            UpdateStateComboBoxes();
             intitCategories();
             initControls();
         }
         void init()
         {
-            //businessInit();
+            businessInit();
             //reviewInit();
             //userInit();
         }
@@ -270,10 +270,10 @@ namespace Yelp_Business_App
                 mydb.database = databaseName;
                 mydb.uid = userName;
                 mydb.password = passwordName;
-                UpdateComboBox1();
+                UpdateStateComboBoxes();
             }
         }
-        protected void UpdateComboBox1()
+        protected void UpdateStateComboBoxes()
         {
             stateComboBox.Items.Clear();
             string qstr = "SELECT state_code FROM demographics GROUP BY state_code;";
@@ -284,6 +284,10 @@ namespace Yelp_Business_App
             for (int i = 0; i < qResult.Count; i++)
             {
                 stateComboBox.Items.Add(qResult[i]);
+            }
+            for(int i = 0; i < qResult.Count; i++)
+            {
+                stateBusinessSearchComboBox.Items.Add(qResult[i]);
             }
         }
 
@@ -492,10 +496,6 @@ namespace Yelp_Business_App
 
         }
 
-        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void updateButton_Click(object sender, EventArgs e)
         {
@@ -589,6 +589,66 @@ namespace Yelp_Business_App
                     }
                     stateNumberOfBusinessDataGridView.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
                 }
+            }
+        }
+
+        private void stateBusinessSearchComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cityBusinessSearchListBox.Items.Clear();
+            zipcodeBusinessSearchListBox.Items.Clear();
+
+            string qstr = "SELECT city FROM demographics WHERE state_code = " + "'" + stateBusinessSearchComboBox.SelectedItem.ToString() + "'" + "GROUP BY city;";
+
+            List<String> qResult = mydb.SQLSELECTExec(qstr, "city");
+
+            for (int i = 0; i < qResult.Count; i++)
+            {
+                cityBusinessSearchListBox.Items.Add(qResult[i]);
+            }
+
+            businessSearchResultsDataGridView.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
+
+            initControls();
+
+        }
+
+        private void cityBusinessSearchListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            zipcodeBusinessSearchListBox.Items.Clear();
+            foreach(DataGridViewRow r in businessSearchResultsDataGridView.Rows)
+            {
+                businessSearchResultsDataGridView.Rows.Remove(r);
+            }
+
+        }
+
+        private void updateBusinessSearchButton_Click(object sender, EventArgs e)
+        {
+            string qstr = "SELECT name, city, state, zipcode, stars, review_count FROM businesses WHERE";
+            if(stateBusinessSearchComboBox.SelectedItem != null)
+            {
+                qstr += " AND state = '" + stateBusinessSearchComboBox.SelectedItem.ToString() + "'";
+            }
+            if(cityBusinessSearchListBox.SelectedItem != null)
+            {
+                qstr += " AND city = '" + cityBusinessSearchListBox.SelectedItem.ToString() + "'";
+            }
+            if(zipcodeBusinessSearchListBox.SelectedItem != null)
+            {
+                qstr += " AND zipcode = '" + zipcodeBusinessSearchListBox.SelectedItem.ToString() + "'";
+            }
+            if(categoryQueryBusinessSearchListBox.Items.Count > 1)
+            {
+                qstr += " AND (c.name = '" + categoryQueryBusinessSearchListBox.Items[0].ToString() + "'";
+                for(int i = 1; i < categoryQueryBusinessSearchListBox.Items.Count; i++)
+                {
+                    qstr += " OR c.name = '" + categoryQueryBusinessSearchListBox.Items[i].ToString() + "'";
+                }
+                qstr += ")";
+            }
+            else
+            {
+                qstr += " AND c.name = '" + categoryQueryBusinessSearchListBox.Items[0].ToString() + "'";
             }
         }
     }

@@ -63,6 +63,7 @@
             this.stateAverageIncomeTextBox = new System.Windows.Forms.TextBox();
             this.statePopulationTextBox = new System.Windows.Forms.TextBox();
             this.stateDataGridView = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
@@ -72,6 +73,7 @@
             this.cityAverageIncomeTextBox = new System.Windows.Forms.TextBox();
             this.cityPopulationTextBox = new System.Windows.Forms.TextBox();
             this.cityDataGridView = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -81,6 +83,7 @@
             this.zipcodeAverageIncomeTextBox = new System.Windows.Forms.TextBox();
             this.zipcodePopulationTextBox = new System.Windows.Forms.TextBox();
             this.zipcodeDataGridView = new System.Windows.Forms.DataGridView();
+            this.Percentage = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -133,9 +136,6 @@
             this.attributeQueryListBox = new System.Windows.Forms.ListBox();
             this.attributesListBox = new System.Windows.Forms.ListBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.Percentage = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -185,7 +185,7 @@
             // newServerMenuItem
             // 
             this.newServerMenuItem.Name = "newServerMenuItem";
-            this.newServerMenuItem.Size = new System.Drawing.Size(211, 30);
+            this.newServerMenuItem.Size = new System.Drawing.Size(132, 30);
             this.newServerMenuItem.Text = "New";
             this.newServerMenuItem.Click += new System.EventHandler(this.newServerMenuItem_Click);
             // 
@@ -500,6 +500,13 @@
             this.stateDataGridView.Size = new System.Drawing.Size(464, 173);
             this.stateDataGridView.TabIndex = 6;
             // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn2.HeaderText = "Percentage";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
             // label12
             // 
             this.label12.AutoSize = true;
@@ -589,6 +596,13 @@
             this.cityDataGridView.Size = new System.Drawing.Size(464, 173);
             this.cityDataGridView.TabIndex = 6;
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn1.HeaderText = "Percentage";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -677,6 +691,13 @@
             this.zipcodeDataGridView.RowTemplate.Height = 28;
             this.zipcodeDataGridView.Size = new System.Drawing.Size(464, 173);
             this.zipcodeDataGridView.TabIndex = 6;
+            // 
+            // Percentage
+            // 
+            this.Percentage.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Percentage.HeaderText = "Percentage";
+            this.Percentage.Name = "Percentage";
+            this.Percentage.ReadOnly = true;
             // 
             // label7
             // 
@@ -950,6 +971,7 @@
             this.updateBusinessSearchButton.TabIndex = 11;
             this.updateBusinessSearchButton.Text = "Update";
             this.updateBusinessSearchButton.UseVisualStyleBackColor = true;
+            this.updateBusinessSearchButton.Click += new System.EventHandler(this.updateBusinessSearchButton_Click);
             // 
             // groupBox10
             // 
@@ -1033,6 +1055,7 @@
             this.cityBusinessSearchListBox.Name = "cityBusinessSearchListBox";
             this.cityBusinessSearchListBox.Size = new System.Drawing.Size(237, 144);
             this.cityBusinessSearchListBox.TabIndex = 3;
+            this.cityBusinessSearchListBox.SelectedIndexChanged += new System.EventHandler(this.cityBusinessSearchListBox_SelectedIndexChanged);
             // 
             // label24
             // 
@@ -1059,7 +1082,7 @@
             this.stateBusinessSearchComboBox.Name = "stateBusinessSearchComboBox";
             this.stateBusinessSearchComboBox.Size = new System.Drawing.Size(237, 28);
             this.stateBusinessSearchComboBox.TabIndex = 0;
-            this.stateBusinessSearchComboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
+            this.stateBusinessSearchComboBox.SelectedIndexChanged += new System.EventHandler(this.stateBusinessSearchComboBox_SelectedIndexChanged);
             // 
             // groupBox5
             // 
@@ -1159,28 +1182,6 @@
             this.attributesListBox.Name = "attributesListBox";
             this.attributesListBox.Size = new System.Drawing.Size(333, 404);
             this.attributesListBox.TabIndex = 0;
-            // 
-            // Percentage
-            // 
-            this.Percentage.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Percentage.HeaderText = "Percentage";
-            this.Percentage.Name = "Percentage";
-            this.Percentage.ReadOnly = true;
-            this.Percentage.Width = 127;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridViewTextBoxColumn2.HeaderText = "Percentage";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridViewTextBoxColumn1.HeaderText = "Percentage";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
             // 
             // Form1
             // 
@@ -1341,9 +1342,9 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.ComboBox selectValueComboBox;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Percentage;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Percentage;
     }
 }
 

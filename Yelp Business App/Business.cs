@@ -175,6 +175,11 @@ namespace Yelp_Business_App
                     else
                         valuesb.Append(p.GetValue(this));
                     //aTable.Add(p.Name);
+                    if (p.Name == "full_address")
+                    {
+                        insertsb.Append(", zipcode");
+                        valuesb.Append(", \"" + p.GetValue(this).ToString().Substring(p.GetValue(this).ToString().Length-5) + "\"");
+                    }
                 }
             }
             sb.Append(insertsb + ") \r\nVALUES (" + valuesb + ")");
@@ -336,6 +341,11 @@ namespace Yelp_Business_App
                     else
                         valuesb.Append(p.GetValue(this));
                     //aTable.Add(p.Name);
+                    if (p.Name == "full_address")
+                    {
+                        valuesb.Append(", \"" + p.GetValue(this).ToString().Substring(p.GetValue(this).ToString().Length - 5) + "\"");
+                    }
+
                 }
 
             }
