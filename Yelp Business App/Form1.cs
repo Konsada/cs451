@@ -542,10 +542,10 @@ namespace Yelp_Business_App
                         zipcodeNumberOfBusinessesDataGridView.Rows.Add();
                         zipcodeNumberOfBusinessesDataGridView.Rows[i].HeaderCell.Value = s.Substring(14);
                         qResult = mydb.QueryBusinessSearch(qZipcodeStr + s);
-                        int j = 2;
+                        int j = 0;
                         foreach (string t in qResult)
                         {
-                            zipcodeNumberOfBusinessesDataGridView.Rows[i].Cells[j].Value = t;
+                            zipcodeNumberOfBusinessesDataGridView.Rows[i].Cells[j++].Value = t;
                         }
                         i++;
                     }
@@ -561,10 +561,10 @@ namespace Yelp_Business_App
                         cityNumberOfBusinessesDataGridView.Rows.Add();
                         cityNumberOfBusinessesDataGridView.Rows[i].HeaderCell.Value = s.Substring(14);
                         qResult = mydb.QueryBusinessSearch(qCityStr + s);
-                        int j = 2;
+                        int j = 0;
                         foreach (string t in qResult)
                         {
-                            cityNumberOfBusinessesDataGridView.Rows[i].Cells[j].Value = t;
+                            cityNumberOfBusinessesDataGridView.Rows[i].Cells[j++].Value = t;
                         }
                         i++;
                     }
@@ -580,10 +580,10 @@ namespace Yelp_Business_App
                         stateNumberOfBusinessDataGridView.Rows.Add();
                         stateNumberOfBusinessDataGridView.Rows[i].HeaderCell.Value = s.Substring(14);
                         qResult = mydb.QueryBusinessSearch(qStateStr + s);
-                        int j = 2;
+                        int j = 0;
                         foreach (string t in qResult)
                         {
-                            stateNumberOfBusinessDataGridView.Rows[i].Cells[j].Value = t;
+                            stateNumberOfBusinessDataGridView.Rows[i].Cells[j++].Value = t;
                         }
                         i++;
                     }
