@@ -56,7 +56,7 @@ namespace Yelp_Business_App
             categories = mydb.SQLSELECTExec(qStr, "name");
             foreach (string s in categories)
             {
-                zipcodeBusinessSearchListBox.Items.Add(s);
+                categoriesBusinessSearchListBox.Items.Add(s);
                 categoriesListBox.Items.Add(s);
             }
         }
@@ -609,33 +609,41 @@ namespace Yelp_Business_App
             businessSearchResultsDataGridView.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
 
             initControls();
-
         }
 
         private void cityBusinessSearchListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             zipcodeBusinessSearchListBox.Items.Clear();
-            foreach(DataGridViewRow r in businessSearchResultsDataGridView.Rows)
+            if (businessSearchResultsDataGridView.Rows.Count > 0)
             {
-                businessSearchResultsDataGridView.Rows.Remove(r);
+                //foreach (DataGridViewRow r in businessSearchResultsDataGridView.Rows)
+                //{
+                //    businessSearchResultsDataGridView.Rows.Remove(r);
+                //}
+                businessSearchResultsDataGridView.Rows.Clear();
             }
-
+            string qstr = "SELECT zipcode FROM demographics WHERE state_code = '" + stateBusinessSearchComboBox.SelectedItem.ToString() + "'" + " AND city = '" + cityBusinessSearchListBox.SelectedItem.ToString() + "' GROUP BY zipcode" ;
+            List<string> qResult = mydb.SQLSELECTExec(qstr, "zipcode");
+            foreach(string s in qResult)
+            {
+                zipcodeBusinessSearchListBox.Items.Add(s);
+            }
         }
 
         private void updateBusinessSearchButton_Click(object sender, EventArgs e)
         {
-            string qstr = "SELECT name, city, state, zipcode, stars, review_count FROM businesses WHERE";
+            string qstr = "SELECT b.name, b.city, b.state, b.zipcode, b.stars, b.review_count FROM businesses b, categories c WHERE";
             if(stateBusinessSearchComboBox.SelectedItem != null)
             {
-                qstr += " AND state = '" + stateBusinessSearchComboBox.SelectedItem.ToString() + "'";
+                qstr += " b.state = '" + stateBusinessSearchComboBox.SelectedItem.ToString() + "'";
             }
             if(cityBusinessSearchListBox.SelectedItem != null)
             {
-                qstr += " AND city = '" + cityBusinessSearchListBox.SelectedItem.ToString() + "'";
+                qstr += " AND b.city = '" + cityBusinessSearchListBox.SelectedItem.ToString() + "'";
             }
             if(zipcodeBusinessSearchListBox.SelectedItem != null)
             {
-                qstr += " AND zipcode = '" + zipcodeBusinessSearchListBox.SelectedItem.ToString() + "'";
+                qstr += " AND b.zipcode = '" + zipcodeBusinessSearchListBox.SelectedItem.ToString() + "'";
             }
             if(categoryQueryBusinessSearchListBox.Items.Count > 1)
             {
@@ -646,9 +654,40 @@ namespace Yelp_Business_App
                 }
                 qstr += ")";
             }
-            else
+            else if(categoryQueryBusinessSearchListBox.Items.Count > 0)
             {
                 qstr += " AND c.name = '" + categoryQueryBusinessSearchListBox.Items[0].ToString() + "'";
+            }
+
+            qstr += " GROUP BY b.name";
+            businessSearchResultsDataGridView.DataSource = mydb.SQLDATATABLEExec(qstr);
+
+            businessSearchResultsDataGridView.Columns[0].HeaderText = "Business Name";
+            businessSearchResultsDataGridView.Columns[1].HeaderText = "City";
+            businessSearchResultsDataGridView.Columns[2].HeaderText = "State";
+            businessSearchResultsDataGridView.Columns[3].HeaderText = "Zipcode";
+            businessSearchResultsDataGridView.Columns[4].HeaderText = "# of Stars";
+            businessSearchResultsDataGridView.Columns[5].HeaderText = "# of Reviews";
+
+            for(int i = 0; i < businessSearchResultsDataGridView.Columns.Count; i++)
+            {
+                businessSearchResultsDataGridView.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
+
+            businessSearchResultsDataGridView.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
+        }
+
+        private void zipcodeBusinessSearchListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void addCategoryBusinessSearchButton_Click(object sender, EventArgs e)
+        {
+            foreach (string s in categoriesBusinessSearchListBox.SelectedItems)
+            {
+                if (!categoryQueryBusinessSearchListBox.Items.Contains(s))
+                    categoryQueryBusinessSearchListBox.Items.Add(s);
             }
         }
     }

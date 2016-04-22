@@ -153,9 +153,36 @@ namespace Yelp_Business_App
                 //close the reader
                 dataReader.Close();
                 //close the connection
-                this.CloseConnection();
+                CloseConnection();
             }
             return qResult;
+        }
+        public BindingSource SQLDATATABLEExec(string querySTR)
+        {
+            if(OpenConnection() == true)
+            {
+                MySqlDataAdapter dataAdapter = new MySqlDataAdapter();
+                dataAdapter.SelectCommand = new MySqlCommand(querySTR, connection);
+                dataAdapter.SelectCommand.CommandTimeout = 180;
+                DataTable table = new DataTable();
+                try
+                {
+                    dataAdapter.Fill(table);
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show(e.ToString(), "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                
+
+                BindingSource bSource = new BindingSource();
+                bSource.DataSource = table;
+
+                //dataAdapter.Dispose();
+                CloseConnection();
+                return bSource;
+            }
+            return null;
         }
         public int SQLCOUNTExec(string querySTR)
         {

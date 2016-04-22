@@ -97,12 +97,6 @@
             this.stateComboBox = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.businessSearchResultsDataGridView = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label30 = new System.Windows.Forms.Label();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.label29 = new System.Windows.Forms.Label();
@@ -826,48 +820,11 @@
             // businessSearchResultsDataGridView
             // 
             this.businessSearchResultsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.businessSearchResultsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column5,
-            this.Column6,
-            this.Column7,
-            this.Column8,
-            this.Column9});
             this.businessSearchResultsDataGridView.Location = new System.Drawing.Point(358, 216);
             this.businessSearchResultsDataGridView.Name = "businessSearchResultsDataGridView";
             this.businessSearchResultsDataGridView.RowTemplate.Height = 28;
             this.businessSearchResultsDataGridView.Size = new System.Drawing.Size(1170, 741);
             this.businessSearchResultsDataGridView.TabIndex = 14;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Business Name";
-            this.Column1.Name = "Column1";
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "City";
-            this.Column5.Name = "Column5";
-            // 
-            // Column6
-            // 
-            this.Column6.HeaderText = "State";
-            this.Column6.Name = "Column6";
-            // 
-            // Column7
-            // 
-            this.Column7.HeaderText = "Zip";
-            this.Column7.Name = "Column7";
-            // 
-            // Column8
-            // 
-            this.Column8.HeaderText = "Avg Rating";
-            this.Column8.Name = "Column8";
-            // 
-            // Column9
-            // 
-            this.Column9.HeaderText = "# of Reviews";
-            this.Column9.Name = "Column9";
             // 
             // label30
             // 
@@ -1003,6 +960,7 @@
             this.addCategoryBusinessSearchButton.TabIndex = 1;
             this.addCategoryBusinessSearchButton.Text = "Add Category";
             this.addCategoryBusinessSearchButton.UseVisualStyleBackColor = true;
+            this.addCategoryBusinessSearchButton.Click += new System.EventHandler(this.addCategoryBusinessSearchButton_Click);
             // 
             // categoriesBusinessSearchListBox
             // 
@@ -1037,6 +995,7 @@
             this.zipcodeBusinessSearchListBox.Name = "zipcodeBusinessSearchListBox";
             this.zipcodeBusinessSearchListBox.Size = new System.Drawing.Size(237, 144);
             this.zipcodeBusinessSearchListBox.TabIndex = 5;
+            this.zipcodeBusinessSearchListBox.SelectedIndexChanged += new System.EventHandler(this.zipcodeBusinessSearchListBox_SelectedIndexChanged);
             // 
             // label23
             // 
@@ -1309,12 +1268,6 @@
         private System.Windows.Forms.ListBox attributeQueryListBox;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.DataGridView businessSearchResultsDataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.GroupBox groupBox11;
         private System.Windows.Forms.Label label29;
