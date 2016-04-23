@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace Yelp_Business_App
 {
     public partial class Form1 : Form
@@ -49,6 +50,35 @@ namespace Yelp_Business_App
             zipcodeDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             zipcodeDataGridView.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
+            /****** INIT BUSINESS SEARCH TAB *****/
+            if (minRatingComboBox.Items.Count < 5 || maxRatingComboBox.Items.Count < 5)
+            {
+                minRatingComboBox.Items.Clear();
+                maxRatingComboBox.Items.Clear();
+
+                for (int i = 0; i <= 5; i++)
+                {
+                    minRatingComboBox.Items.Add(i);
+                    maxRatingComboBox.Items.Add(i);
+                }
+            }
+            if(minReviewsComboBox.Items.Count == 0 && maxReviewsComboBox.Items.Count == 0)
+            {
+                minReviewsComboBox.Items.Add(0);
+                minReviewsComboBox.Items.Add(5);
+                minReviewsComboBox.Items.Add(10);
+                minReviewsComboBox.Items.Add(50);
+                minReviewsComboBox.Items.Add(100);
+                minReviewsComboBox.Items.Add(500);
+                minReviewsComboBox.Items.Add("1000 +");
+                maxReviewsComboBox.Items.Add(0);
+                maxReviewsComboBox.Items.Add(5);
+                maxReviewsComboBox.Items.Add(10);
+                maxReviewsComboBox.Items.Add(50);
+                maxReviewsComboBox.Items.Add(100);
+                maxReviewsComboBox.Items.Add(500);
+                maxReviewsComboBox.Items.Add("1000 +");
+            }
         }
         protected void intitCategories()
         {
@@ -632,49 +662,93 @@ namespace Yelp_Business_App
 
         private void updateBusinessSearchButton_Click(object sender, EventArgs e)
         {
-            string qstr = "SELECT b.name, b.city, b.state, b.zipcode, b.stars, b.review_count FROM businesses b, categories c WHERE";
+            foreach (DataGridViewRow r in businessSearchResultsDataGridView.Rows)
+            {
+                if(!r.IsNewRow)
+                    businessSearchResultsDataGridView.Rows.Remove(r);
+            }
+            string qstr = "SELECT bid, name, city, state, zipcode, stars, review_count FROM bc WHERE";
+            //string qstr = "SELECT b.name, b.city, b.state, b.zipcode, b.stars, b.review_count FROM businesses b, categories c WHERE";
             if(stateBusinessSearchComboBox.SelectedItem != null)
             {
-                qstr += " b.state = '" + stateBusinessSearchComboBox.SelectedItem.ToString() + "'";
+                qstr += " state = '" + stateBusinessSearchComboBox.SelectedItem.ToString() + "'";
             }
             if(cityBusinessSearchListBox.SelectedItem != null)
             {
-                qstr += " AND b.city = '" + cityBusinessSearchListBox.SelectedItem.ToString() + "'";
+                qstr += " AND city = '" + cityBusinessSearchListBox.SelectedItem.ToString() + "'";
             }
             if(zipcodeBusinessSearchListBox.SelectedItem != null)
             {
-                qstr += " AND b.zipcode = '" + zipcodeBusinessSearchListBox.SelectedItem.ToString() + "'";
+                qstr += " AND zipcode = '" + zipcodeBusinessSearchListBox.SelectedItem.ToString() + "'";
             }
             if(categoryQueryBusinessSearchListBox.Items.Count > 1)
             {
-                qstr += " AND (c.name = '" + categoryQueryBusinessSearchListBox.Items[0].ToString() + "'";
+                qstr += " AND (category = '" + categoryQueryBusinessSearchListBox.Items[0].ToString() + "'";
                 for(int i = 1; i < categoryQueryBusinessSearchListBox.Items.Count; i++)
                 {
-                    qstr += " OR c.name = '" + categoryQueryBusinessSearchListBox.Items[i].ToString() + "'";
+                    qstr += " OR category = '" + categoryQueryBusinessSearchListBox.Items[i].ToString() + "'";
                 }
                 qstr += ")";
             }
             else if(categoryQueryBusinessSearchListBox.Items.Count > 0)
             {
-                qstr += " AND c.name = '" + categoryQueryBusinessSearchListBox.Items[0].ToString() + "'";
+                qstr += " AND category = '" + categoryQueryBusinessSearchListBox.Items[0].ToString() + "'";
             }
-
-            qstr += " GROUP BY b.name";
-            businessSearchResultsDataGridView.DataSource = mydb.SQLDATATABLEExec(qstr);
-
-            businessSearchResultsDataGridView.Columns[0].HeaderText = "Business Name";
-            businessSearchResultsDataGridView.Columns[1].HeaderText = "City";
-            businessSearchResultsDataGridView.Columns[2].HeaderText = "State";
-            businessSearchResultsDataGridView.Columns[3].HeaderText = "Zipcode";
-            businessSearchResultsDataGridView.Columns[4].HeaderText = "# of Stars";
-            businessSearchResultsDataGridView.Columns[5].HeaderText = "# of Reviews";
-
-            for(int i = 0; i < businessSearchResultsDataGridView.Columns.Count; i++)
+            if(minRatingComboBox.SelectedIndex > -1)
             {
-                businessSearchResultsDataGridView.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                qstr += " AND stars >= " + minRatingComboBox.SelectedItem;
             }
+            if(maxRatingComboBox.SelectedIndex > -1)
+            {
+                qstr += " AND stars <= " + maxRatingComboBox.SelectedItem;
+            }
+            if(minReviewsComboBox.SelectedIndex> -1)
+            {
+                if(minReviewsComboBox.SelectedIndex == 6)
+                {
+                    qstr += " AND review_count >= 1000";
+                }
+                else
+                {
+                    qstr += " AND review_count >= " + minReviewsComboBox.SelectedItem;
+                }
+            }
+            if(maxReviewsComboBox.SelectedIndex > -1)
+            {
+                if(maxReviewsComboBox.SelectedIndex == 6)
+                {
+                    qstr += " AND review_count <= 1000";
+                }
+                else
+                {
+                    qstr += " AND review_count <= " + maxReviewsComboBox.SelectedItem;
+                }
+            }
+            //qstr += " GROUP BY b.name";
+            try
+            {
+                businessSearchResultsDataGridView.DataSource = mydb.SQLDATATABLEExec(qstr);
 
-            businessSearchResultsDataGridView.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
+                businessSearchResultsDataGridView.Columns[0].Visible = false;
+                businessSearchResultsDataGridView.Columns[1].HeaderText = "Business Name";
+                businessSearchResultsDataGridView.Columns[2].HeaderText = "City";
+                businessSearchResultsDataGridView.Columns[3].HeaderText = "State";
+                businessSearchResultsDataGridView.Columns[4].HeaderText = "Zipcode";
+                businessSearchResultsDataGridView.Columns[5].HeaderText = "# of Stars";
+                businessSearchResultsDataGridView.Columns[6].HeaderText = "# of Reviews";
+
+                for (int i = 0; i < businessSearchResultsDataGridView.Columns.Count; i++)
+                {
+                    businessSearchResultsDataGridView.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                }
+
+                businessSearchResultsDataGridView.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
+                businessSearchResultsDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void zipcodeBusinessSearchListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -689,6 +763,47 @@ namespace Yelp_Business_App
                 if (!categoryQueryBusinessSearchListBox.Items.Contains(s))
                     categoryQueryBusinessSearchListBox.Items.Add(s);
             }
+        }
+
+        private void businessSearchResultsDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            string qstr = "SELECT date, stars, text, uid, useful FROM reviews WHERE";
+
+            if(businessSearchResultsDataGridView.SelectedRows.Count > 1)
+            {
+                DataGridViewRow r = businessSearchResultsDataGridView.SelectedRows[0];
+
+                qstr += " ( bid = '" + r.Cells[0].Value.ToString() + "'";
+
+                for(int i = 1; i < businessSearchResultsDataGridView.SelectedRows.Count; i++)
+                {
+                    qstr += " OR bid = '" + businessSearchResultsDataGridView.SelectedRows[i].Cells[0].Value.ToString() + "'";
+                }
+                qstr += ")";
+            }
+            else
+            {
+                qstr += " bid = '" + businessSearchResultsDataGridView.SelectedRows[0].Cells[0].Value.ToString() + "'";
+            }
+
+            DataGridView revTable = new DataGridView();
+
+            revTable.DataSource = mydb.SQLDATATABLEExec(qstr);
+
+            Form revCtrl = new Form();
+
+            revCtrl.Controls.Add(revTable);
+            revTable.Visible = true;
+            revCtrl.Visible = false;
+
+            revCtrl.AutoSize = true;
+            revCtrl.Width = 580;
+            revCtrl.Height = 900;
+            revTable.Dock = DockStyle.Fill;
+
+            revCtrl.StartPosition = FormStartPosition.CenterScreen;
+
+            revCtrl.ShowDialog();
         }
     }
 }

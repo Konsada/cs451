@@ -819,12 +819,15 @@
             // 
             // businessSearchResultsDataGridView
             // 
+            this.businessSearchResultsDataGridView.AllowUserToAddRows = false;
+            this.businessSearchResultsDataGridView.AllowUserToDeleteRows = false;
             this.businessSearchResultsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.businessSearchResultsDataGridView.Location = new System.Drawing.Point(358, 216);
             this.businessSearchResultsDataGridView.Name = "businessSearchResultsDataGridView";
             this.businessSearchResultsDataGridView.RowTemplate.Height = 28;
             this.businessSearchResultsDataGridView.Size = new System.Drawing.Size(1170, 741);
             this.businessSearchResultsDataGridView.TabIndex = 14;
+            this.businessSearchResultsDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.businessSearchResultsDataGridView_CellContentClick);
             // 
             // label30
             // 

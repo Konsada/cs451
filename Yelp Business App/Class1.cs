@@ -171,7 +171,7 @@ namespace Yelp_Business_App
                 }
                 catch(Exception e)
                 {
-                    MessageBox.Show(e.ToString(), "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(e.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 
 
