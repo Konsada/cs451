@@ -319,5 +319,22 @@ namespace Yelp_Business_App
             return qResult;
 
         }
+        public List<String> SQLSELECTExec(string querySTR)
+        {
+            List<String> qResult = new List<string>();
+            if(OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(querySTR, connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    qResult.Add(dataReader.GetString(0));
+                }
+
+                dataReader.Close();
+                CloseConnection();
+            }
+            return qResult;
+        }
     }
 }

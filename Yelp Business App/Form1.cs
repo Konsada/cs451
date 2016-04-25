@@ -17,6 +17,7 @@ namespace Yelp_Business_App
     {
         MySql_Connection mydb;
         List<string> categories;
+        Dictionary<string, string> attributeDict = new Dictionary<string, string>();
 
         public Form1()
         {
@@ -79,10 +80,14 @@ namespace Yelp_Business_App
                 maxReviewsComboBox.Items.Add(500);
                 maxReviewsComboBox.Items.Add("1000 +");
             }
-            if (!(attributesListBox.Items.Count > 0))
+            if (!(attributeTreeView.Nodes.Count > 0))
             {
                 string qstr = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'attributes';";
-                attributesListBox.DataSource = mydb.SQLTABLEExec(qstr);
+                attributesList attributeTree = new attributesList();
+                foreach(string s in attributeTree.list)
+                {
+                    attributeTreeView.Nodes.Add(s);
+                }
             }
         }
         protected void intitCategories()
@@ -479,7 +484,7 @@ namespace Yelp_Business_App
 
         private void listBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            attributesListBox.Items.Clear();
+            attributeTreeView.Nodes.Clear();
             if (zipcodeBusinessSearchListBox.SelectedItems.Count > 0)
             {
                 StringBuilder qstr = new StringBuilder();
@@ -511,7 +516,7 @@ namespace Yelp_Business_App
                 List<String> qResult = mydb.SQLTABLEExec(qstr.ToString());
                 foreach (String str in qResult)
                 {
-                    attributesListBox.Items.Add(str);
+                    attributeTreeView.Nodes.Add(str);
                 }
             }
             initControls();
@@ -528,7 +533,26 @@ namespace Yelp_Business_App
 
         private void listBox5_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (attributeQueryListBox.SelectedItem != null && attributeQueryListBox.Items.Count > 0)
+            {
+                selectValueComboBox.Items.Clear();
+                /*string qstr = "SELECT DISTINCT " + attributeQueryListBox.SelectedItem.ToString() + " FROM ac";
 
+                List<string> qresult = mydb.SQLSELECTExec(qstr);
+
+                foreach(string s in qresult)
+                {
+                    selectValueComboBox.Items.Add(s);
+                }
+                */
+                selectValueComboBox.Items.Add(attributeDict[attributeQueryListBox.SelectedItem.ToString()]);
+                selectValueComboBox.SelectedIndex = 0;
+                selectValueComboBox.Items.Clear();
+                selectValueComboBox.SelectedIndex = -1;
+                selectValueComboBox.Text = "";
+                selectValueComboBox.Refresh();
+
+            }
         }
 
 
@@ -575,7 +599,7 @@ namespace Yelp_Business_App
                     foreach (string s in qStrList)
                     {
                         zipcodeNumberOfBusinessesDataGridView.Rows.Add();
-                        zipcodeNumberOfBusinessesDataGridView.Rows[i].HeaderCell.Value = s.Substring(14);
+                        zipcodeNumberOfBusinessesDataGridView.Rows[i].HeaderCell.Value = s.Substring(15);
                         qResult = mydb.QueryBusinessSearch(qZipcodeStr + s);
                         int j = 0;
                         foreach (string t in qResult)
@@ -672,7 +696,7 @@ namespace Yelp_Business_App
                 if (!r.IsNewRow)
                     businessSearchResultsDataGridView.Rows.Remove(r);
             }
-            string qstr = "SELECT bid, name, city, state, zipcode, stars, review_count FROM bc WHERE";
+            string qstr = "SELECT bid, name, city, state, zipcode, stars, review_count FROM bac WHERE";
             //string qstr = "SELECT b.name, b.city, b.state, b.zipcode, b.stars, b.review_count FROM businesses b, categories c WHERE";
             if (stateBusinessSearchComboBox.SelectedItem != null)
             {
@@ -727,6 +751,13 @@ namespace Yelp_Business_App
                 else
                 {
                     qstr += " AND review_count <= " + maxReviewsComboBox.SelectedItem;
+                }
+            }
+            if(attributeQueryListBox.Items.Count > 0)
+            {
+                foreach(string s in attributeQueryListBox.Items)
+                {
+                    qstr += " AND '" + s + "' = '" + attributeDict[s] + "'";
                 }
             }
             //qstr += " GROUP BY b.name";
@@ -809,6 +840,74 @@ namespace Yelp_Business_App
             revCtrl.StartPosition = FormStartPosition.CenterScreen;
 
             revCtrl.ShowDialog();
+        }
+
+        private void attributeTreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            selectValueComboBox.Items.Clear();
+
+            string qstr = "SELECT DISTINCT ";
+
+            if(attributeTreeView.SelectedNode.Text == "Smoking")
+            {
+                qstr += "Smoking ";
+            }
+            else if(attributeTreeView.SelectedNode.Text == "WiFi")
+            {
+                qstr += "WiFi ";
+            }
+            else if(attributeTreeView.SelectedNode.Text == "Noise_level")
+            {
+                qstr += "Noise_level ";
+            }
+            else if(attributeTreeView.SelectedNode.Text == "Attire")
+            {
+                qstr += "Attire ";
+            }
+            else if(attributeTreeView.SelectedNode.Text == "Alcohol")
+            {
+                qstr += "Alcohol ";
+            }
+            else
+            {
+                selectValueComboBox.Items.Add(true);
+                selectValueComboBox.Items.Add(false);
+                return;
+            }
+            qstr += "FROM ac";
+
+            List<string> qResult = mydb.SQLSELECTExec(qstr);
+            foreach(string s in qResult)
+            {
+                selectValueComboBox.Items.Add(s);
+            }
+        }
+
+        private void addAttributeButton_Click(object sender, EventArgs e)
+        {
+            if (attributeTreeView.SelectedNode != null && selectValueComboBox.SelectedItem != null && !attributeQueryListBox.Items.Contains(attributeTreeView.SelectedNode.Text))
+            {
+                attributeDict.Add(attributeTreeView.SelectedNode.Text, selectValueComboBox.SelectedItem.ToString());
+                attributeQueryListBox.Items.Add(attributeTreeView.SelectedNode.Text);
+                selectValueComboBox.Items.Clear();
+                selectValueComboBox.SelectedIndex = -1;
+                selectValueComboBox.Text = "";
+                selectValueComboBox.Refresh();
+            }
+        }
+
+        private void removeAttributeButton_Click(object sender, EventArgs e)
+        {
+            if (attributeQueryListBox.SelectedItem != null && attributeQueryListBox.Items.Count > 0)
+            {
+                attributeDict.Remove(attributeQueryListBox.SelectedItem.ToString());
+                attributeQueryListBox.Items.Remove(attributeQueryListBox.SelectedItem);
+            }
+        }
+
+        private void selectValueComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

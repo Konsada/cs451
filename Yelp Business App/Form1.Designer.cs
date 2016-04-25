@@ -120,15 +120,15 @@
             this.label25 = new System.Windows.Forms.Label();
             this.stateBusinessSearchComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.attributeTreeView = new System.Windows.Forms.TreeView();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.selectValueComboBox = new System.Windows.Forms.ComboBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.removeAttributeButton = new System.Windows.Forms.Button();
+            this.addAttributeButton = new System.Windows.Forms.Button();
             this.attributeQueryListBox = new System.Windows.Forms.ListBox();
-            this.attributesListBox = new System.Windows.Forms.ListBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -1048,21 +1048,29 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.attributeTreeView);
             this.groupBox5.Controls.Add(this.label22);
             this.groupBox5.Controls.Add(this.label21);
             this.groupBox5.Controls.Add(this.label20);
             this.groupBox5.Controls.Add(this.label19);
             this.groupBox5.Controls.Add(this.selectValueComboBox);
-            this.groupBox5.Controls.Add(this.button3);
-            this.groupBox5.Controls.Add(this.button2);
+            this.groupBox5.Controls.Add(this.removeAttributeButton);
+            this.groupBox5.Controls.Add(this.addAttributeButton);
             this.groupBox5.Controls.Add(this.attributeQueryListBox);
-            this.groupBox5.Controls.Add(this.attributesListBox);
             this.groupBox5.Location = new System.Drawing.Point(1534, 6);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(346, 946);
             this.groupBox5.TabIndex = 1;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Select Attribute";
+            // 
+            // attributeTreeView
+            // 
+            this.attributeTreeView.Location = new System.Drawing.Point(6, 49);
+            this.attributeTreeView.Name = "attributeTreeView";
+            this.attributeTreeView.Size = new System.Drawing.Size(333, 443);
+            this.attributeTreeView.TabIndex = 9;
+            this.attributeTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.attributeTreeView_AfterSelect);
             // 
             // label22
             // 
@@ -1107,24 +1115,27 @@
             this.selectValueComboBox.Name = "selectValueComboBox";
             this.selectValueComboBox.Size = new System.Drawing.Size(164, 28);
             this.selectValueComboBox.TabIndex = 4;
+            this.selectValueComboBox.SelectedIndexChanged += new System.EventHandler(this.selectValueComboBox_SelectedIndexChanged);
             // 
-            // button3
+            // removeAttributeButton
             // 
-            this.button3.Location = new System.Drawing.Point(91, 902);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(164, 38);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Remove";
-            this.button3.UseVisualStyleBackColor = true;
+            this.removeAttributeButton.Location = new System.Drawing.Point(91, 902);
+            this.removeAttributeButton.Name = "removeAttributeButton";
+            this.removeAttributeButton.Size = new System.Drawing.Size(164, 38);
+            this.removeAttributeButton.TabIndex = 3;
+            this.removeAttributeButton.Text = "Remove";
+            this.removeAttributeButton.UseVisualStyleBackColor = true;
+            this.removeAttributeButton.Click += new System.EventHandler(this.removeAttributeButton_Click);
             // 
-            // button2
+            // addAttributeButton
             // 
-            this.button2.Location = new System.Drawing.Point(91, 639);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(164, 28);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Add";
-            this.button2.UseVisualStyleBackColor = true;
+            this.addAttributeButton.Location = new System.Drawing.Point(91, 639);
+            this.addAttributeButton.Name = "addAttributeButton";
+            this.addAttributeButton.Size = new System.Drawing.Size(164, 28);
+            this.addAttributeButton.TabIndex = 2;
+            this.addAttributeButton.Text = "Add";
+            this.addAttributeButton.UseVisualStyleBackColor = true;
+            this.addAttributeButton.Click += new System.EventHandler(this.addAttributeButton_Click);
             // 
             // attributeQueryListBox
             // 
@@ -1135,15 +1146,6 @@
             this.attributeQueryListBox.Size = new System.Drawing.Size(333, 184);
             this.attributeQueryListBox.TabIndex = 1;
             this.attributeQueryListBox.SelectedIndexChanged += new System.EventHandler(this.listBox5_SelectedIndexChanged);
-            // 
-            // attributesListBox
-            // 
-            this.attributesListBox.FormattingEnabled = true;
-            this.attributesListBox.ItemHeight = 20;
-            this.attributesListBox.Location = new System.Drawing.Point(6, 49);
-            this.attributesListBox.Name = "attributesListBox";
-            this.attributesListBox.Size = new System.Drawing.Size(333, 404);
-            this.attributesListBox.TabIndex = 0;
             // 
             // Form1
             // 
@@ -1224,7 +1226,6 @@
         private System.Windows.Forms.TextBox zipcodePopulationTextBox;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.ListBox attributesListBox;
         private System.Windows.Forms.Button updateButton;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.ListBox categoryQueryListBox;
@@ -1267,9 +1268,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button addAttributeButton;
         private System.Windows.Forms.ListBox attributeQueryListBox;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button removeAttributeButton;
         private System.Windows.Forms.DataGridView businessSearchResultsDataGridView;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.GroupBox groupBox11;
@@ -1301,6 +1302,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Percentage;
+        private System.Windows.Forms.TreeView attributeTreeView;
     }
 }
 
