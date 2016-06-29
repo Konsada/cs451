@@ -29,6 +29,7 @@ namespace Yelp_Business_App
         public string type { get; set; }
         public StringBuilder ab { get; set; } = new StringBuilder();
         public StringBuilder cb { get; set; } = new StringBuilder();
+        public StringBuilder hb { get; set; } = new StringBuilder();
         public StringBuilder writeBiz()
         {
             StringBuilder insertsb = new StringBuilder();
@@ -58,7 +59,7 @@ namespace Yelp_Business_App
                     }
                     cb.Append(insertcb.ToString() + valuecb.ToString());
                 }
-                else if (p.Name == "ab" || p.Name == "cb" || p.Name == "aTable")
+                else if (p.Name == "ab" || p.Name == "cb" || p.Name == "hb" || p.Name == "aTable")
                 {
 
                 }
@@ -130,10 +131,10 @@ namespace Yelp_Business_App
                             valueab.Append(", ");
                             if (q.PropertyType == typeof(string))
                             {
-                                valueab.Append("\"" + q.GetValue(this.attributes) + "\"");
+                                valueab.Append("\"" + q.GetValue(attributes) + "\"");
                             }
                             else
-                                valueab.Append(q.GetValue(this.attributes));
+                                valueab.Append(q.GetValue(attributes));
                             //valuesb.Append(this.attributes.GetType().GetProperty(q.ToString()).GetValue(this.attributes, null));
                             //aTable.Add(q.Name);
                         }
@@ -146,20 +147,36 @@ namespace Yelp_Business_App
                 else if (p.Name == "hours")
                 {
                     ///Worry about later, maybe make a table with bid and hours
-                    /*
-                        foreach (PropertyInfo q in typeof(Hours).GetProperties())
-                        {
-                            PropertyInfo[] props = q.GetType().GetProperties();
-                            string dayName = q.Name.Substring(1);
-                            foreach(var prop in props)
-                            {
-                                insertsb.Append(", " + prop.Name);
-                                valuesb.Append(", ");
-                                valuesb.Append(this.GetType().GetProperty(prop.ToString()).GetValue(this));
+                    StringBuilder inserthb = new StringBuilder("INSERT INTO hours (bid, day, open, close) \n");
+                    StringBuilder valuehb = new StringBuilder("VALUES ");
 
+                    foreach (PropertyInfo q in typeof(Hours).GetProperties())
+                    {
+                        if(!valuehb.Equals(new StringBuilder("VALUES ")))
+                        {
+                            valuehb.Append(",\r\n");
+                        }
+                        valuehb.Append("(\"" + business_id + "\"");
+                        
+                        
+                        valuehb.Append(", ");
+                        valuehb.Append("\"" + q.Name + "\"");
+
+                        foreach (PropertyInfo r in typeof(Day).GetProperties())
+                        {
+                            if (r.PropertyType == typeof(string))
+                            {
+                                // Append Close/Open values
+                                valuehb.Append(", ");
+                                if (q.GetValue(hours) != null)
+                                    valuehb.Append("\"" + r.GetValue(q.GetValue(hours)) + "\"");
+                                else
+                                    valuehb.Append("NULL");
                             }
                         }
-                      */
+                        valuehb.Append(")");
+                    }
+                    hb.Append(inserthb.Append(valuehb));
                 }
                 else
                 {
@@ -178,7 +195,7 @@ namespace Yelp_Business_App
                     if (p.Name == "full_address")
                     {
                         insertsb.Append(", zipcode");
-                        valuesb.Append(", \"" + p.GetValue(this).ToString().Substring(p.GetValue(this).ToString().Length-5) + "\"");
+                        valuesb.Append(", \"" + p.GetValue(this).ToString().Substring(p.GetValue(this).ToString().Length - 5) + "\"");
                     }
                 }
             }
@@ -224,7 +241,7 @@ namespace Yelp_Business_App
                         }
                     }
                 }
-                else if (p.Name == "ab" || p.Name == "cb" || p.Name == "aTable")
+                else if (p.Name == "ab" || p.Name == "cb" || p.Name == "hb" || p.Name == "aTable")
                 {
 
                 }
@@ -312,20 +329,28 @@ namespace Yelp_Business_App
                 else if (p.Name == "hours")
                 {
                     ///Worry about later, maybe make a table with bid and hours
-                    /*
-                        foreach (PropertyInfo q in typeof(Hours).GetProperties())
-                        {
-                            PropertyInfo[] props = q.GetType().GetProperties();
-                            string dayName = q.Name.Substring(1);
-                            foreach(var prop in props)
-                            {
-                                insertsb.Append(", " + prop.Name);
-                                valuesb.Append(", ");
-                                valuesb.Append(this.GetType().GetProperty(prop.ToString()).GetValue(this));
+                    StringBuilder valuehb = new StringBuilder();
+                    foreach (PropertyInfo q in typeof(Hours).GetProperties())
+                    {
+                        valuehb.Append(",\r\n(\"" + business_id + "\"");
+                        valuehb.Append(", ");
+                        valuehb.Append("\"" + q.Name + "\"");
 
+                        foreach (PropertyInfo r in typeof(Day).GetProperties())
+                        {
+                            if (r.PropertyType == typeof(string))
+                            {
+                                // Append Close/Open values
+                                valuehb.Append(", ");
+                                if (q.GetValue(hours) != null)
+                                    valuehb.Append("\"" + r.GetValue(q.GetValue(hours)) + "\"");
+                                else
+                                    valuehb.Append("NULL");
                             }
                         }
-                      */
+                        valuehb.Append(")");
+                    }
+                    hb.Append(valuehb);
                 }
                 else
                 {
@@ -334,7 +359,7 @@ namespace Yelp_Business_App
                     if (p.PropertyType == typeof(string))
                     {
                         string text = (string)p.GetValue(this);
-                        text = text.Replace("\n",", ");
+                        text = text.Replace("\n", ", ");
                         text = text.Replace("\"", "");
                         valuesb.Append("\"" + text + "\"");
                     }
@@ -446,18 +471,25 @@ namespace Yelp_Business_App
     }
     public class Hours
     {
-        public _Sunday Sunday { get; set; }
+        [JsonProperty("Monday")]
         public _Monday Monday { get; set; }
+        [JsonProperty("Tuesday")]
         public _Tuesday Tuesday { get; set; }
+        [JsonProperty("Wednesday")]
         public _Wednesday Wednesday { get; set; }
+        [JsonProperty("Thursday")]
         public _Thursday Thursday { get; set; }
+        [JsonProperty("Friday")]
         public _Friday Friday { get; set; }
+        [JsonProperty("Saturday")]
         public _Saturday Saturday { get; set; }
+        [JsonProperty("Sunday")]
+        public _Sunday Sunday { get; set; }
     }
     public class Day
     {
-        public string close { get; set; }
         public string open { get; set; }
+        public string close { get; set; }
     }
     public class _Friday : Day
     {

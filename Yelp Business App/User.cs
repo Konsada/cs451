@@ -40,13 +40,17 @@ namespace Yelp_Business_App
             public int more { get; set; }
 
         }
+        public StringBuilder fb { get; set; } = new StringBuilder();
         public StringBuilder writeUzr()
         {
             StringBuilder sb = new StringBuilder();
             StringBuilder insertsb = new StringBuilder();
             StringBuilder valuesb = new StringBuilder("VALUES (");
+            StringBuilder insertfb = new StringBuilder();
+            StringBuilder valuefb = new StringBuilder("VALUES ");
 
             sb.Append("INSERT INTO Users (");
+            fb.Append("INSERT INTO Friends (uid, fid) ");
 
             foreach (PropertyInfo p in typeof(User).GetProperties())
             {
@@ -63,7 +67,17 @@ namespace Yelp_Business_App
                 }
                 else if (p.Name == "friends")
                 {
-
+                    foreach(string s in friends)
+                    {
+                        if (s.Equals(friends[0]))
+                        {
+                            valuefb.Append("\r\n(" + "\"" + uid + "\"" + "," + "\"" + s + "\"" + ")");
+                        }
+                        else
+                        {
+                            valuefb.Append(",\r\n(" + "\"" + uid + "\"" + "," + "\"" + s + "\"" + ")");
+                        }
+                    }
                 }
                 else if (p.Name == "compliments")
                 {
@@ -76,6 +90,10 @@ namespace Yelp_Business_App
 
                 }
                 else if (p.Name == "elite")
+                {
+
+                }
+                else if (p.Name == "fb")
                 {
 
                 }
@@ -98,6 +116,7 @@ namespace Yelp_Business_App
             sb.Append(valuesb);
 
             sb.Remove(19, 1);
+            fb.Append(insertfb.Append(valuefb));
 
             return sb;
         }
@@ -105,7 +124,7 @@ namespace Yelp_Business_App
         {
             StringBuilder sb = new StringBuilder();
             StringBuilder valuesb = new StringBuilder(",\r\n (");
-
+            StringBuilder valuefb = new StringBuilder();
 
             foreach (PropertyInfo p in typeof(User).GetProperties())
             {
@@ -121,7 +140,18 @@ namespace Yelp_Business_App
                 }
                 else if (p.Name == "friends")
                 {
-
+                    foreach (string s in friends)
+                    {
+                        if (s.Equals(friends[0]))
+                        {
+                            valuefb.Append(",\r\n(" + "\"" + uid + "\"" + "," + "\"" + s + "\"" + ")"); // comma necessary?
+                                
+                        }
+                        else
+                        {
+                            valuefb.Append(",\r\n(" + "\"" + uid + "\"" + "," + "\"" + s + "\"" + ")");
+                        }
+                    }
                 }
                 else if (p.Name == "compliments")
                 {
@@ -129,9 +159,12 @@ namespace Yelp_Business_App
                     {
                         valuesb.Append(", " + prop.GetValue(this.compliments));
                     }
-
                 }
                 else if (p.Name == "elite")
+                {
+
+                }
+                else if (p.Name == "fb")
                 {
 
                 }
@@ -148,7 +181,7 @@ namespace Yelp_Business_App
             valuesb.Remove(5, 1);
             sb.Append(valuesb);
             sb.Append(")");
-
+            fb.Append(valuefb);
             return sb;
         }
 

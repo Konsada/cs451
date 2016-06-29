@@ -9,6 +9,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+
+//NOTES FOR ADDITIONAL FUNCTIONALITY: 
+// 1. User select business.json, user.json, review.json, etc.
+// 2. Create DBs into connected server user pics
+//    2a.  Check if DBs already exist
+//    2b.  Insert all info into DBs
+//    2c.  Create Update/Trigger functions for db 
+// 3. Add entries to db through app
 
 
 namespace Yelp_Business_App
@@ -18,24 +27,31 @@ namespace Yelp_Business_App
         MySql_Connection mydb;
         List<string> categories;
         Dictionary<string, string> attributeDict = new Dictionary<string, string>();
+        string localDir = ".\\..\\..\\yelp\\";
 
         public Form1()
         {
-            //init();
+            init();
+            mydb = new MySql_Connection("localhost", "root", "password");
+            databaseInit("db");
+            tablesInit();
+            mydb.demographicsTableName = "demographics";
+            demographicInit();
+            populateTables();
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
-            mydb = new MySql_Connection();
             UpdateStateComboBoxes();
+            initUsernames();
             intitCategories();
             initControls();
         }
         void init()
         {
-            businessInit();
+            //businessInit();
             //reviewInit();
             //userInit();
         }
-        void initControls()
+        protected void initControls()
         {
             businessSearchResultsDataGridView.AutoResizeColumns();
             businessSearchResultsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
@@ -84,11 +100,15 @@ namespace Yelp_Business_App
             {
                 string qstr = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'attributes';";
                 attributesList attributeTree = new attributesList();
-                foreach(string s in attributeTree.list)
+                foreach (string s in attributeTree.list)
                 {
                     attributeTreeView.Nodes.Add(s);
                 }
             }
+            List<string> query = mydb.SQLSELECTExec("SELECT DISTINCT uid FROM Users;");
+            foreach (string s in query)
+                username.Items.Add(s);
+            hour.Hide();
         }
         protected void intitCategories()
         {
@@ -112,6 +132,7 @@ namespace Yelp_Business_App
                     StringBuilder sb = new StringBuilder();
                     StringBuilder ab = new StringBuilder();
                     StringBuilder cb = new StringBuilder();
+                    StringBuilder hb = new StringBuilder();
                     int count = 0;
 
                     while ((contents = jsonFile.ReadLine()) != null)
@@ -124,6 +145,7 @@ namespace Yelp_Business_App
                             {
                                 sb.Append(";\r\n");
                                 cb.Append(";\r\n");
+                                hb.Append(";\r\n");
                                 outfile.Write(sb);
                                 outfile.Write(cb);
                                 sb.Clear();
@@ -134,6 +156,7 @@ namespace Yelp_Business_App
                             //biz.hashAttributes(atts);
                             ab.Append(biz.ab);
                             cb.Append(biz.cb);
+                            hb.Append(biz.hb);
                         }
                         else
                         {
@@ -141,15 +164,18 @@ namespace Yelp_Business_App
                             //biz.hashAttributes(atts);
                             ab.Append(biz.ab);
                             cb.Append(biz.cb);
+                            hb.Append(biz.hb);
                         }
                         count++;
                     }
                     sb.Append(";\r\n");
                     cb.Append(";\r\n");
+                    hb.Append(";\r\n");
 
                     outfile.Write(sb);
                     outfile.Write(cb);
                     outfile.Write(ab);
+                    outfile.Write(hb);
                 }
             }
         }
@@ -167,7 +193,7 @@ namespace Yelp_Business_App
                     while ((contents = jsonFile.ReadLine()) != null)
                     {
                         Review rev = JsonConvert.DeserializeObject<Review>(contents);
-                        if (count % 3000 == 0)
+                        if (count % 30000 == 0)
                         {
                             if (count > 0)
                             {
@@ -195,36 +221,183 @@ namespace Yelp_Business_App
             string contents;
             using (System.IO.StreamReader jsonFile = new System.IO.StreamReader(dataDir + "yelp_user.json"))
             {
+                StringBuilder fb = new StringBuilder();
+
                 using (System.IO.StreamWriter outfile = new System.IO.StreamWriter(dataDir + "user.sql"))
                 {
                     StringBuilder sb = new StringBuilder();
+                    System.IO.StreamWriter friendfile = new System.IO.StreamWriter(dataDir + "friend.sql");
                     contents = jsonFile.ReadLine();
                     while ((contents = jsonFile.ReadLine()) != null)
                     {
                         User uzr = JsonConvert.DeserializeObject<User>(contents);
 
-                        if (count % 5000 == 0)
+                        if (count % 500000 == 0)
                         {
                             if (count > 0)
                             {
                                 sb.Append(";\r\n");
+                                fb.Append(";\r\n");
                             }
                             sb.Append(uzr.writeUzr());
+                            fb.Append(uzr.fb);
                         }
                         else
                         {
                             sb.Append(uzr.writeUzrValue());
+                            fb.Append(uzr.fb);
                         }
                         count++;
                     }
                     sb.Append(";\r\n");
+                    fb.Append(";\r\n");
                     outfile.Write(sb);
+                    friendfile.Write(fb);
+                    friendfile.Close();
                 }
             }
         }
+        protected void demographicsFileInit()
+        {
+            List<Demographics> dems = new List<Demographics>();
+            string demographicCreatorFileName = "demographics.csv";
+            string demographicDir = "./../../yelp/" + demographicCreatorFileName;
+            using(var reader = new StreamReader(File.OpenRead(demographicDir)))
+            {
+                int i = 0;
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    if (i > 0)
+                    {
+                        Demographics dem = new Demographics();
+                        var values = line.Split(',');
+
+                        int.TryParse(values[0], out dem.zipcode);
+                        dem.state = values[1];
+                        dem.state_code = values[2];
+                        dem.city = values[3];
+                        int.TryParse(values[4], out dem.population);
+                        double.TryParse(values[5], out dem.under18);
+                        double.TryParse(values[6], out dem._18to24);
+                        double.TryParse(values[7], out dem._25to44);
+                        double.TryParse(values[8], out dem._45to64);
+                        double.TryParse(values[9], out dem._65andover);
+                        int.TryParse(values[10], out dem.median_age);
+                        double.TryParse(values[11], out dem.percentage_of_females);
+                        int.TryParse(values[12], out dem.num_employee);
+                        double.TryParse(values[13], out dem.annual_payroll);
+                        double.TryParse(values[14], out dem.avg_income);
+
+                        dems.Add(dem);
+                    }
+                    i++;
+                }
+            }
+            using(StreamWriter outfile = new StreamWriter("./../../yelp/dem.sql"))
+            {
+                outfile.WriteLine("INSERT INTO " + mydb.demographicsTableName + " (zipcode, state, state_code, city, population, under18, 18to24, 25to44, 45to64, 65andover, median_age, percentage_of_females, num_employee, annual_payroll, avg_income) VALUES ");
+                foreach(Demographics dem in dems)
+                {
+                    if(dem != dems[dems.Count-1])
+                    {
+                        outfile.WriteLine("(" + dem.zipcode + ",\'" + dem.state + "\',\'" + dem.state_code + "\',\'" + dem.city + "\'," + dem.population.ToString() + "," +
+                            dem.under18.ToString() + "," + dem._18to24.ToString() + "," + dem._25to44.ToString() + "," + dem._45to64.ToString() + "," +
+                            dem._65andover.ToString() + "," + dem.median_age.ToString() + "," + dem.percentage_of_females.ToString() + "," + dem.num_employee.ToString() + "," +
+                            dem.annual_payroll.ToString() + "," + dem.avg_income.ToString() + "),\n");
+                    }
+                    else
+                    {
+                        outfile.WriteLine("(" + dem.zipcode + ",\'" + dem.state + "\',\'" + dem.state_code + "\',\'" + dem.city + "\'," + dem.population.ToString() + "," +
+                            dem.under18.ToString() + "," + dem._18to24.ToString() + "," + dem._25to44.ToString() + "," + dem._45to64.ToString() + "," +
+                            dem._65andover.ToString() + "," + dem.median_age.ToString() + "," + dem.percentage_of_females.ToString() + "," + dem.num_employee.ToString() + "," +
+                            dem.annual_payroll.ToString() + "," + dem.avg_income.ToString() + ");");
+                    }
+                }
+            }
+        }
+        protected void tablesInit() // MYSQL syntax error
+        {
+            string tableCreatorFileName = "Tables.sql";
+            string tableDir = "./../../yelp/" + tableCreatorFileName;
+            string str = File.ReadAllText(tableDir);
+            //string str = @"source C:/Users/keons_000/Documents/Visual Studio 2015/Projects/Yelp Business App/Yelp Business App/yelp/Tables.sql;";
+
+            mydb.SQLNonQueryExec(str);
+            //string demographicsFileName = "dem.sql";
+            //string demographicsDir = "./../../yelp/" + demographicsFileName;
+            //string permission = "--secure-file-priv=" + Path.GetFullPath("./../../yelp").Replace("\\","/");
+            //mydb.SQLNonQueryExec(permission);
+            //str = @"source C:/Users/keons_000/Documents/Visual Studio 2015/Projects/Yelp Business App/Yelp Business App/yelp/dem.sql";
+            //str = File.ReadAllText(demographicsDir);
+            //str = "source " + Path.GetFullPath(demographicsDir);
+            // file path is too long! Max: 99
+            // cannot end "source filename" with ';'
+            //str = @"source C:/Downloads/dem.sql;";
+            
+            //mydb.SQLNonQueryExec(str);
+
+        }
+        protected void databaseInit(string newdatabase)
+        {
+            mydb.SQLNonQueryExec("DROP DATABASE IF EXISTS " + newdatabase);
+            mydb.SQLNonQueryExec("CREATE DATABASE IF NOT EXISTS " + newdatabase);
+            mydb.NewConnection(mydb.server, newdatabase, mydb.uid, mydb.password);
+            mydb.SQLNonQueryExec("USE " + newdatabase);
+        }
+        /// <summary>
+        /// Might need to do this manually, calling SQL infile comand takes wayyyy too long
+        /// </summary>
+        protected void demographicInit()
+        {
+            demographicsFileInit();
+            string demographicFileName = "dem.sql";
+            string demographicFileLocation = "./../../yelp/" + demographicFileName;
+            //StringBuilder str = new StringBuilder();
+            //str.Append(File.ReadAllText(demographicFileLocation));
+            //string str = "SOURCE " + demographicFileLocation;
+            //mydb.SQLNonQueryExec(str.ToString());
+
+            mydb.SQLSourceFile(demographicFileLocation);
+
+            //string absolutePath = Path.GetFullPath(demographicFileLocation);
+            /*
+            mydb.SQLNonQueryExec("LOAD DATA LOCAL INFILE '" + absolutePath + "' \nINTO TABLE " + mydb.database + "." + mydb.demographicsTableName + 
+                " \nFIELDS TERMINATED BY ',' \nENCLOSED BY '\"' \nLINES TERMINATED BY \'\\r\\n\' \nIGNORE 1 LINES " +
+                "\n(zipcode, state, state_code, city, population, under18years, 18_to_24years, 25_to_44years, 45_to_64years, " + 
+                "65_and_over, median_age, percentage_of_females, num_employee, annual_payroll, avg_income)", 999999);
+            */
+        }
+        protected void populateTables()
+        {
+            populateBusinessesTable();
+            populateUsersTable();
+            populateReviewsTable();
+            populateFriendTable();
+        }
+        protected void populateBusinessesTable()
+        {
+            string str = localDir + "business.sql";
+            mydb.SQLSourceFile(str, 9999);
+        }
+        protected void populateUsersTable()
+        {
+            string str = localDir + "user.sql";
+            mydb.SQLSourceFile(str, 9999);
+        }
+        protected void populateReviewsTable()
+        {
+            string str = localDir + "review.sql";
+            mydb.SQLSourceFile(str, 9999);
+        }
+        protected void populateFriendTable()
+        {
+            string str = localDir + "friend.sql";
+            mydb.SQLSourceFile(str, 9999);
+        }
         private void button1_Click(object sender, EventArgs e)
         {
-            string qstr = "SELECT distinct state_code FROM demographics ORDER BY state_code;";
+            string qstr = "SELECT distinct state_code FROM " + mydb.demographicsTableName + " ORDER BY state_code;";
             //execute query
             List<String> qResult = mydb.SQLSELECTExec(qstr, "maincategory");
 
@@ -233,11 +406,6 @@ namespace Yelp_Business_App
             {
                 cityListBox.Items.Add(qResult[i]);
             }
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void newServerMenuItem_Click(object sender, EventArgs e)
@@ -305,12 +473,22 @@ namespace Yelp_Business_App
         {
             if (mydb.server != serverName || mydb.database != databaseName || mydb.uid != userName || mydb.password != passwordName)
             {
-                mydb = new MySql_Connection();
-                mydb.server = serverName;
-                mydb.database = databaseName;
-                mydb.uid = userName;
-                mydb.password = passwordName;
-                UpdateStateComboBoxes();
+                try
+                {
+                    mydb.NewConnection(serverName, userName, passwordName);
+                    mydb.database = databaseName;
+                    //databaseInit(databaseName);
+                    //tablesInit();
+                    //demographicInit();
+                    //populateTables();
+                    intitCategories();
+                    initControls();
+                    UpdateStateComboBoxes();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Unable to connect to " + databaseName + " on " + serverName + " with username: " + userName + " password: " + passwordName);
+                }
             }
         }
         protected void UpdateStateComboBoxes()
@@ -330,7 +508,15 @@ namespace Yelp_Business_App
                 stateBusinessSearchComboBox.Items.Add(qResult[i]);
             }
         }
-
+        protected void initUsernames()
+        {
+            string qstr = "SELECT DISTINCT uid FROM friends";
+            List<String> qResult = mydb.SQLSELECTExec(qstr, "uid");
+            foreach(string user in qResult)
+            {
+                username.Items.Add(user);
+            }
+        }
         private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             cityListBox.Items.Clear();
@@ -349,7 +535,7 @@ namespace Yelp_Business_App
             cityMedianAgeTextBox.Clear();
             cityDataGridView.Rows.Clear();
 
-            string qstr = "SELECT city FROM demographics WHERE state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "'" + "GROUP BY city;";
+            string qstr = "SELECT city FROM " + mydb.demographicsTableName + " WHERE state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "'" + "GROUP BY city;";
 
             List<String> qResult = mydb.SQLSELECTExec(qstr, "city");
 
@@ -358,16 +544,16 @@ namespace Yelp_Business_App
                 cityListBox.Items.Add(qResult[i]);
             }
 
-            qstr = "SELECT SUM(population) FROM demographics where state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "'";
+            qstr = "SELECT SUM(population) FROM " + mydb.demographicsTableName + " where state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "'";
 
             string qPopulationResult = mydb.SQLCOUNTExec(qstr).ToString("N0");
             statePopulationTextBox.Text = qPopulationResult;
 
-            qstr = "SELECT AVG(avg_income) FROM demographics WHERE state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "'";
+            qstr = "SELECT AVG(avg_income) FROM " + mydb.demographicsTableName + " WHERE state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "'";
             string qAverageIncomeResult = mydb.SQLAVGExec(qstr).ToString("C2");
             stateAverageIncomeTextBox.Text = qAverageIncomeResult;
 
-            qstr = "SELECT AVG(median_age) FROM demographics WHERE state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "'";
+            qstr = "SELECT AVG(median_age) FROM " + mydb.demographicsTableName + " WHERE state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "'";
             string qAverageMedianAgeResult = mydb.SQLAVGExec(qstr).ToString("N0");
             stateMedianAgeTextBox.Text = qAverageMedianAgeResult;
 
@@ -404,7 +590,7 @@ namespace Yelp_Business_App
             zipcodeMedianAgeTextBox.Clear();
             zipcodeDataGridView.Rows.Clear();
 
-            string qstr = "SELECT zipcode FROM demographics WHERE city = " + "'" + cityListBox.SelectedItem.ToString() + "' AND state_code = " + "'" +
+            string qstr = "SELECT zipcode FROM " + mydb.demographicsTableName + " WHERE city = " + "'" + cityListBox.SelectedItem.ToString() + "' AND state_code = " + "'" +
                 stateComboBox.SelectedItem.ToString() + "'" + "GROUP BY zipcode;";
 
             List<String> qResult = mydb.SQLSELECTExec(qstr, "zipcode");
@@ -414,16 +600,16 @@ namespace Yelp_Business_App
                 zipcodeListBox.Items.Add(qResult[i]);
             }
 
-            qstr = "SELECT SUM(population) FROM demographics where state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "' AND city = " + "'" + cityListBox.SelectedItem.ToString() + "'";
+            qstr = "SELECT SUM(population) FROM " + mydb.demographicsTableName + " where state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "' AND city = " + "'" + cityListBox.SelectedItem.ToString() + "'";
 
             string qPopulationResult = mydb.SQLCOUNTExec(qstr).ToString("N0");
             cityPopulationTextBox.Text = qPopulationResult;
 
-            qstr = "SELECT AVG(avg_income) FROM demographics WHERE state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "' AND city = " + "'" + cityListBox.SelectedItem.ToString() + "'";
+            qstr = "SELECT AVG(avg_income) FROM " + mydb.demographicsTableName + " WHERE state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "' AND city = " + "'" + cityListBox.SelectedItem.ToString() + "'";
             string qAverageIncomeResult = mydb.SQLAVGExec(qstr).ToString("C2");
             cityAverageIncomeTextBox.Text = qAverageIncomeResult;
 
-            qstr = "SELECT AVG(median_age) FROM demographics WHERE state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "' AND city = " + "'" + cityListBox.SelectedItem.ToString() + "'";
+            qstr = "SELECT AVG(median_age) FROM " + mydb.demographicsTableName + " WHERE state_code = " + "'" + stateComboBox.SelectedItem.ToString() + "' AND city = " + "'" + cityListBox.SelectedItem.ToString() + "'";
             string qAverageMedianAgeResult = mydb.SQLAVGExec(qstr).ToString("N0");
             cityMedianAgeTextBox.Text = qAverageMedianAgeResult;
 
@@ -691,10 +877,15 @@ namespace Yelp_Business_App
 
         private void updateBusinessSearchButton_Click(object sender, EventArgs e)
         {
-            foreach (DataGridViewRow r in businessSearchResultsDataGridView.Rows)
+            //foreach (DataGridViewRow r in businessSearchResultsDataGridView.Rows)
+            //{
+            //    if (!r.IsNewRow)
+            //        businessSearchResultsDataGridView.Rows.Remove(r);
+            //}
+            if (businessSearchResultsDataGridView.Rows.Count > 0)
             {
-                if (!r.IsNewRow)
-                    businessSearchResultsDataGridView.Rows.Remove(r);
+                businessSearchResultsDataGridView.DataSource = null;
+                businessSearchResultsDataGridView.Refresh();
             }
             string qstr = "SELECT bid, name, city, state, zipcode, stars, review_count FROM bac WHERE";
             //string qstr = "SELECT b.name, b.city, b.state, b.zipcode, b.stars, b.review_count FROM businesses b, categories c WHERE";
@@ -709,19 +900,6 @@ namespace Yelp_Business_App
             if (zipcodeBusinessSearchListBox.SelectedItem != null)
             {
                 qstr += " AND zipcode = '" + zipcodeBusinessSearchListBox.SelectedItem.ToString() + "'";
-            }
-            if (categoryQueryBusinessSearchListBox.Items.Count > 1)
-            {
-                qstr += " AND (category = '" + categoryQueryBusinessSearchListBox.Items[0].ToString() + "'";
-                for (int i = 1; i < categoryQueryBusinessSearchListBox.Items.Count; i++)
-                {
-                    qstr += " OR category = '" + categoryQueryBusinessSearchListBox.Items[i].ToString() + "'";
-                }
-                qstr += ")";
-            }
-            else if (categoryQueryBusinessSearchListBox.Items.Count > 0)
-            {
-                qstr += " AND category = '" + categoryQueryBusinessSearchListBox.Items[0].ToString() + "'";
             }
             if (minRatingComboBox.SelectedIndex > -1)
             {
@@ -753,18 +931,120 @@ namespace Yelp_Business_App
                     qstr += " AND review_count <= " + maxReviewsComboBox.SelectedItem;
                 }
             }
-            if(attributeQueryListBox.Items.Count > 0)
+            if (attributeQueryListBox.Items.Count > 0)
             {
-                foreach(string s in attributeQueryListBox.Items)
+                foreach (string s in attributeQueryListBox.Items)
                 {
-                    qstr += " AND '" + s + "' = '" + attributeDict[s] + "'";
+                    qstr += " AND " + s + " = " + attributeDict[s];
                 }
             }
+            //if(categoryQueryBusinessSearchListBox.Items.Count > 1)
+            //{
+            //    qstr += " GROUP BY bid HAVING COUNT(*) >=" + categoryQueryBusinessSearchListBox.Items.Count;
+            //}
             //qstr += " GROUP BY b.name";
+            /************** MANY CAT **********************/
+            if (categoryQueryBusinessSearchListBox.Items.Count > 1)
+            {
+                string[] catViews = new string[categoryQueryBusinessSearchListBox.Items.Count];
+                string[] catViewQuery = new string[categoryQueryBusinessSearchListBox.Items.Count];
+                string newQStr = "SELECT DISTINCT * FROM ";
+                for(int i = 0; i < categoryQueryBusinessSearchListBox.Items.Count; i++)
+                {
+                    catViews[i] += categoryQueryBusinessSearchListBox.Items[i] + "view";
+                    catViewQuery[i] += "CREATE OR REPLACE VIEW " + catViews[i] + " AS " + qstr + " AND category = '" + categoryQueryBusinessSearchListBox.Items[i] + "'";
+                    mydb.SQLNonQueryExec(catViewQuery[i]);
+
+                    newQStr += catViews[i];  // add list item
+
+                    if(i < (catViews.Count() - 1)) // check if last item in list
+                    {
+                        newQStr += " WHERE bid IN (SELECT bid FROM ";
+                    }
+                }
+                // CREATE HOURSVIEW
+                if (day.CheckedItems.Count > 0)
+                {
+                    string ocQStr = "SELECT * FROM Hours WHERE day=";
+
+                    if (day.CheckedItems.Count > 1)
+                    {
+                        ocQStr += "(";
+                        foreach (string s in day.CheckedItems)
+                        {
+                            if(s.Equals(day.CheckedItems[0])) // first item to add
+                            {
+                                ocQStr += s;
+                            }
+                            else
+                            {
+                                ocQStr += " OR " + s;
+                            }
+
+                        }
+                        ocQStr += ")";
+                    }
+                    else // only one day selected
+                    {
+                        ocQStr += day.CheckedItems[0];
+                    }
+                    // ADD Hour Restrictions
+                    if(hour.SelectedItems.Count > 0)
+                    {
+                        ocQStr += " AND open <= " + hour.SelectedItems[0] + " AND close >= " + hour.SelectedItems[hour.SelectedItems.Count];
+                    }
+
+                    string hourViewQuery = "CREATE OR REPLACE VIEW hourView AS " + ocQStr + ";";
+                    mydb.SQLNonQueryExec(hourViewQuery); // create hourView
+                    string hourViewReturnQuery = "SELECT DISTINCT bid FROM hourView;"; // get list of bid for businesses that are open during specified hours
+
+
+                }
+
+                // CLOSE PARENTHESES
+                for (int i = 0; i < catViews.Count() - 1; i++)
+                {
+                    newQStr += ")";
+                }
+                newQStr += ";";
+                qstr = newQStr;
+
+                // SELECT bid FROM businesses WHERE bid IN (SELECT bid FROM bac WHERE b.bid = c.bid AND category = cat1
+                // AND SELECT bid FROM bac WHERE b.bid = c.bid AND category = cat2 ... etc)
+
+                //qstr += " IN (category = '" + categoryQueryBusinessSearchListBox.Items[0].ToString() + "'";
+                //for (int i = 1; i < categoryQueryBusinessSearchListBox.Items.Count; i++)
+                //{
+                //    qstr += " AND category = '" + categoryQueryBusinessSearchListBox.Items[i].ToString() + "'";
+                //}
+                //qstr += ")";
+
+                //qstr += " AND category IN ('" + categoryQueryBusinessSearchListBox.Items[0] + "'";
+                //for (int i = 1; i < categoryQueryBusinessSearchListBox.Items.Count; i++)
+                //{
+                //    qstr += ",'" + categoryQueryBusinessSearchListBox.Items[i].ToString() + "'";
+                //}
+                //qstr += ")";
+            }
+            /************* ONE CAT ****************************/
+            else if (categoryQueryBusinessSearchListBox.Items.Count < 2)
+            {
+                if(categoryQueryBusinessSearchListBox.Items.Count > 0)
+                    qstr += " AND category = '" + categoryQueryBusinessSearchListBox.Items[0].ToString() + "'";
+            }
+
+            if (friendsGo.Checked)
+            {
+                // check to see if friends have written a review of this business
+            }
+            mydb.SQLNonQueryExec("CREATE OR REPLACE VIEW testView AS " + qstr);
             try
             {
                 businessSearchResultsDataGridView.DataSource = mydb.SQLDATATABLEExec(qstr);
-
+                foreach (DataGridViewRow r in businessSearchResultsDataGridView.Rows)
+                {
+                    r.HeaderCell.Value = String.Format("{0}", r.Index + 1);
+                }
                 businessSearchResultsDataGridView.Columns[0].Visible = false;
                 businessSearchResultsDataGridView.Columns[1].HeaderText = "Business Name";
                 businessSearchResultsDataGridView.Columns[2].HeaderText = "City";
@@ -780,6 +1060,23 @@ namespace Yelp_Business_App
 
                 businessSearchResultsDataGridView.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
                 businessSearchResultsDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+                // Clean up views from database
+                if (categoryQueryBusinessSearchListBox.Items.Count > 1)
+                {
+                    string[] catViews = new string[categoryQueryBusinessSearchListBox.Items.Count];
+                    string[] catViewQuery = new string[categoryQueryBusinessSearchListBox.Items.Count];
+                    for (int i = 0; i < categoryQueryBusinessSearchListBox.Items.Count; i++)
+                    {
+                        catViews[i] += categoryQueryBusinessSearchListBox.Items[i] + "view";
+                        catViewQuery[i] += "DROP VIEW " + catViews[i];
+                        mydb.SQLNonQueryExec(catViewQuery[i]);
+                    }
+                }
+                if(day.SelectedItems.Count > 0)
+                {
+                    mydb.SQLNonQueryExec("DROP VIEW hourView");
+                }
             }
             catch (Exception ex)
             {
@@ -787,10 +1084,6 @@ namespace Yelp_Business_App
             }
         }
 
-        private void zipcodeBusinessSearchListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void addCategoryBusinessSearchButton_Click(object sender, EventArgs e)
         {
@@ -803,13 +1096,13 @@ namespace Yelp_Business_App
 
         private void businessSearchResultsDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            string qstr = "SELECT date, stars, text, uid, useful FROM reviews WHERE";
+            string qstr = "SELECT r.date, r.stars, r.text, r.uid, u.name, r.useful FROM reviews r, users u WHERE r.uid = u.uid";
 
             if (businessSearchResultsDataGridView.SelectedRows.Count > 1)
             {
                 DataGridViewRow r = businessSearchResultsDataGridView.SelectedRows[0];
 
-                qstr += " ( bid = '" + r.Cells[0].Value.ToString() + "'";
+                qstr += " AND ( bid = '" + r.Cells[0].Value.ToString() + "'";
 
                 for (int i = 1; i < businessSearchResultsDataGridView.SelectedRows.Count; i++)
                 {
@@ -819,7 +1112,7 @@ namespace Yelp_Business_App
             }
             else
             {
-                qstr += " bid = '" + businessSearchResultsDataGridView.SelectedRows[0].Cells[0].Value.ToString() + "'";
+                qstr += " AND bid = '" + businessSearchResultsDataGridView.SelectedRows[0].Cells[0].Value.ToString() + "'";
             }
 
             DataGridView revTable = new DataGridView();
@@ -844,27 +1137,28 @@ namespace Yelp_Business_App
 
         private void attributeTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            selectValueComboBox.Text = "";
             selectValueComboBox.Items.Clear();
 
             string qstr = "SELECT DISTINCT ";
 
-            if(attributeTreeView.SelectedNode.Text == "Smoking")
+            if (attributeTreeView.SelectedNode.Text == "Smoking")
             {
                 qstr += "Smoking ";
             }
-            else if(attributeTreeView.SelectedNode.Text == "WiFi")
+            else if (attributeTreeView.SelectedNode.Text == "WiFi")
             {
                 qstr += "WiFi ";
             }
-            else if(attributeTreeView.SelectedNode.Text == "Noise_level")
+            else if (attributeTreeView.SelectedNode.Text == "Noise_level")
             {
                 qstr += "Noise_level ";
             }
-            else if(attributeTreeView.SelectedNode.Text == "Attire")
+            else if (attributeTreeView.SelectedNode.Text == "Attire")
             {
                 qstr += "Attire ";
             }
-            else if(attributeTreeView.SelectedNode.Text == "Alcohol")
+            else if (attributeTreeView.SelectedNode.Text == "Alcohol")
             {
                 qstr += "Alcohol ";
             }
@@ -874,10 +1168,10 @@ namespace Yelp_Business_App
                 selectValueComboBox.Items.Add(false);
                 return;
             }
-            qstr += "FROM ac";
+            qstr += "FROM attributes;";
 
             List<string> qResult = mydb.SQLSELECTExec(qstr);
-            foreach(string s in qResult)
+            foreach (string s in qResult)
             {
                 selectValueComboBox.Items.Add(s);
             }
@@ -905,9 +1199,45 @@ namespace Yelp_Business_App
             }
         }
 
-        private void selectValueComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void newDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
+        }
 
+        private void businessesjsonToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "JSON Files (.json)|*.json|Text Files (.txt)|*.txt";
+                ofd.FilterIndex = 0;
+            }
+        }
+
+        private void removeCategoryButton_Click(object sender, EventArgs e)
+        {
+            if (categoryQueryBusinessSearchListBox.SelectedItems.Count > 0)
+            {
+                categoryQueryBusinessSearchListBox.Items.Remove(categoryQueryBusinessSearchListBox.SelectedItem);
+            }
+        }
+
+        private void username_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string uid = username.SelectedItem.ToString();
+            List<string> query = mydb.SQLSELECTExec("SELECT DISTINCT fid FROM Friends WHERE uid = \'" + uid + "\'");
+            foreach (string s in query)
+                friends.Items.Add(s);
+        }
+
+        private void day_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(day.CheckedItems.Count > 0)
+            {
+                hour.Show();
+            }
+            else
+            {
+                hour.Hide();
+            }
         }
     }
 }

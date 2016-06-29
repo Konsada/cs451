@@ -53,8 +53,21 @@ namespace Yelp_Business_App
                 }
                 else if (p.PropertyType == typeof(string))
                 {
-                    insertsb.Append(", " + p.Name);
-                    valuesb.Append(", \"" + p.GetValue(this) + "\"");
+                    if (p.Name == "text")
+                    {
+                        insertsb.Append(", " + p.Name);
+                        if (p.GetValue(this).ToString().Length >= 100)
+                        {
+                            valuesb.Append(", \"" + p.GetValue(this).ToString().Substring(0, 100) + "..." + "\"");
+                        }
+                        else
+                            valuesb.Append(", \"" + p.GetValue(this).ToString() + "\"");
+                    }
+                    else
+                    {
+                        insertsb.Append(", " + p.Name);
+                        valuesb.Append(", \"" + p.GetValue(this) + "\"");
+                    }
                 }
                 else
                 {
@@ -93,7 +106,18 @@ namespace Yelp_Business_App
                 }
                 else if (p.PropertyType == typeof(string))
                 {
-                    valuesb.Append(", \"" + p.GetValue(this) + "\"");
+                    if (p.Name == "text")
+                    {
+                        if(p.GetValue(this).ToString().Length >= 100)
+                            valuesb.Append(", \"" + p.GetValue(this).ToString().Substring(0, 100) + "..." + "\"");
+                        else
+                            valuesb.Append(", \"" + p.GetValue(this).ToString() + "\"");
+
+                    }
+                    else
+                    {
+                        valuesb.Append(", \"" + p.GetValue(this) + "\"");
+                    }
                 }
                 else
                 {

@@ -16,6 +16,7 @@ namespace Yelp_Business_App
         public string database;
         public string uid;
         public string password;
+        public string demographicsTableName;
 
 
         //Constructor calls initialize function that establishes database connection
@@ -31,16 +32,27 @@ namespace Yelp_Business_App
                 // handle exception here
             }
         }
-
+        public MySql_Connection(string newserv, string newuid, string newpw)
+        {
+            try
+            {
+                NewConnection(newserv, newuid, newpw);
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
         // Initialize Connection - sets all connection parameters, creates connection string and calls MySql_Connection constructor
         private void Initialize()
         {
             server = "127.0.0.1";
-            database = "milestone2db";
+            database = "db";
             uid = "root";
             password = "password";
-            // server=127.0.0.1;user id=root;password=Kahle$$0217;persistsecurityinfo=True;database=milestone1db
-            string connectionString = "server=" + server + ";" + "user id=" + uid + ";" + "password=" + password + ";" + "persistsecurityinfo=True;" + "database=" + database + ";";
+            demographicsTableName = "demographics";
+            //string connectionString = "server=" + server + ";" + "user id=" + uid + ";" + "password=" + password + ";" + "persistsecurityinfo=True;" + "database=" + database + ";";
+            string connectionString = "server=" + server + ";" + "database=" + database + ";" + "uid=" + uid + ";" + "password=" + password + ";";
             connection = new MySqlConnection(connectionString);
         }
 
@@ -50,9 +62,20 @@ namespace Yelp_Business_App
             database = newdb;
             uid = newuid;
             password = newpw;
-            string connectionString = "server=" + server + ";" + "user id=" + uid + ";" + "password=" + password + ";" + "persistsecurityinfo=True;" + "database=" + database + ";";
+            //string connectionString = "server=" + server + ";" + "user id=" + uid + ";" + "password=" + password + ";" + "persistsecurityinfo=True;" + "database=" + database + ";";
+            string connectionString = "server=" + server + ";" + "database=" + database + ";" + "uid=" + uid + ";" + "password=" + password + ";";
             connection = new MySqlConnection(connectionString);
         }
+        public void NewConnection(string newserv, string newuid, string newpw)
+        {
+            server = newserv;
+            uid = newuid;
+            password = newpw;
+            //string connectionString = "server=" + server + ";" + "user id=" + uid + ";" + "password=" + password + ";" + "persistsecurityinfo=True;" + "database=" + database + ";";
+            string connectionString = "server=" + server + ";" + "uid=" + uid + ";" + "password=" + password + ";";
+            connection = new MySqlConnection(connectionString);
+        }
+
         //open connection to DB
         private bool OpenConnection()
         {
@@ -142,16 +165,26 @@ namespace Yelp_Business_App
         {
             List<String> qResult = new List<String>();
 
-            if (this.OpenConnection() == true) //open the connection
+            try
             {
-                MySqlCommand cmd = new MySqlCommand(querySTR, connection);
-                MySqlDataReader dataReader = cmd.ExecuteReader();
-                while (dataReader.Read())
+                if (this.OpenConnection() == true) //open the connection
                 {
-                    qResult.Add(dataReader.GetString(column_name));
+                    MySqlCommand cmd = new MySqlCommand(querySTR, connection);
+                    MySqlDataReader dataReader = cmd.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        qResult.Add(dataReader.GetString(column_name));
+                    }
+                    //close the reader
+                    dataReader.Close();
                 }
-                //close the reader
-                dataReader.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
                 //close the connection
                 CloseConnection();
             }
@@ -159,7 +192,7 @@ namespace Yelp_Business_App
         }
         public BindingSource SQLDATATABLEExec(string querySTR)
         {
-            if(OpenConnection() == true)
+            if (OpenConnection() == true)
             {
                 MySqlDataAdapter dataAdapter = new MySqlDataAdapter();
                 dataAdapter.SelectCommand = new MySqlCommand(querySTR, connection);
@@ -169,11 +202,11 @@ namespace Yelp_Business_App
                 {
                     dataAdapter.Fill(table);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     MessageBox.Show(e.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                
+
 
                 BindingSource bSource = new BindingSource();
                 bSource.DataSource = table;
@@ -308,7 +341,7 @@ namespace Yelp_Business_App
                 MySqlDataReader dataReader = cmd.ExecuteReader();
                 while (dataReader.Read())
                 {
-                    for(int i = 0; i < dataReader.FieldCount; i++)
+                    for (int i = 0; i < dataReader.FieldCount; i++)
                     {
                         qResult.Add(dataReader[i].ToString());
                     }
@@ -322,7 +355,7 @@ namespace Yelp_Business_App
         public List<String> SQLSELECTExec(string querySTR)
         {
             List<String> qResult = new List<string>();
-            if(OpenConnection() == true)
+            if (OpenConnection() == true)
             {
                 MySqlCommand cmd = new MySqlCommand(querySTR, connection);
                 MySqlDataReader dataReader = cmd.ExecuteReader();
@@ -335,6 +368,103 @@ namespace Yelp_Business_App
                 CloseConnection();
             }
             return qResult;
+        }
+        /// <summary>
+        /// NOT SAFE, ONLY USE TEMPORARILY
+        /// </summary>
+        /// <param name="querySTR"></param>
+        public void SQLNonQueryExec(string querySTR)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand(querySTR, connection);
+                if (OpenConnection() == true)
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+        public void SQLNonQueryExec(string querySTR, int maxTimeOut)
+        {
+            try
+            {
+                MySqlCommand cmd = new MySqlCommand("set net_write_timeout = " + maxTimeOut.ToString() + "; set net_read_timeout = " +
+                    maxTimeOut.ToString(), connection);
+
+                if (OpenConnection() == true)
+                {
+                    cmd.ExecuteNonQuery();
+                    cmd = new MySqlCommand(querySTR, connection);
+                    cmd.CommandTimeout = maxTimeOut;
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+        public void SQLSourceFile(string file)
+        {
+            try
+            {
+                //MySqlScript script = new MySqlScript(connection, "SOURCE " + System.IO.Path.GetFullPath(file).Replace("\\","/"));
+                MySqlCommand cmd = new MySqlCommand();
+                //cmd.CommandText = "SOURCE " + System.IO.Path.GetFullPath(file).Replace("\\","/");
+                cmd.CommandText = System.IO.File.ReadAllText(file);
+                cmd.Connection = connection;
+
+                if (OpenConnection() == true)
+                {
+                    cmd.ExecuteNonQuery();
+                    //script.Execute();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+        public void SQLSourceFile(string file, int maxTimeOut)
+        {
+            try
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    cmd.CommandText = System.IO.File.ReadAllText(file);
+                    cmd.Connection = connection;
+                    cmd.CommandTimeout = maxTimeOut;
+
+                    if (OpenConnection() == true)
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                CloseConnection();
+            }
         }
     }
 }

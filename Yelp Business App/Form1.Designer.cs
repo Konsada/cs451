@@ -31,7 +31,13 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.serverInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newServerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.businessesjsonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.businessesjsonToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.reviewsjsonToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.usersjsonToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.newDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AddFilters = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
@@ -99,6 +105,7 @@
             this.businessSearchResultsDataGridView = new System.Windows.Forms.DataGridView();
             this.label30 = new System.Windows.Forms.Label();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.friendsGo = new System.Windows.Forms.CheckBox();
             this.label29 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
@@ -109,6 +116,7 @@
             this.minRatingComboBox = new System.Windows.Forms.ComboBox();
             this.updateBusinessSearchButton = new System.Windows.Forms.Button();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.removeCategoryButton = new System.Windows.Forms.Button();
             this.categoryQueryBusinessSearchListBox = new System.Windows.Forms.ListBox();
             this.addCategoryBusinessSearchButton = new System.Windows.Forms.Button();
             this.categoriesBusinessSearchListBox = new System.Windows.Forms.ListBox();
@@ -129,9 +137,14 @@
             this.removeAttributeButton = new System.Windows.Forms.Button();
             this.addAttributeButton = new System.Windows.Forms.Button();
             this.attributeQueryListBox = new System.Windows.Forms.ListBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.hour = new System.Windows.Forms.CheckedListBox();
+            this.day = new System.Windows.Forms.CheckedListBox();
+            this.friends = new System.Windows.Forms.ListBox();
+            this.username = new System.Windows.Forms.ComboBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.AddFilters.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox9.SuspendLayout();
@@ -155,16 +168,18 @@
             this.groupBox10.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.serverInformationToolStripMenuItem});
+            this.serverInformationToolStripMenuItem,
+            this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1894, 33);
+            this.menuStrip1.Size = new System.Drawing.Size(1892, 33);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -173,8 +188,8 @@
             this.serverInformationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newServerMenuItem});
             this.serverInformationToolStripMenuItem.Name = "serverInformationToolStripMenuItem";
-            this.serverInformationToolStripMenuItem.Size = new System.Drawing.Size(172, 29);
-            this.serverInformationToolStripMenuItem.Text = "Server Information";
+            this.serverInformationToolStripMenuItem.Size = new System.Drawing.Size(73, 29);
+            this.serverInformationToolStripMenuItem.Text = "Server";
             // 
             // newServerMenuItem
             // 
@@ -183,16 +198,62 @@
             this.newServerMenuItem.Text = "New";
             this.newServerMenuItem.Click += new System.EventHandler(this.newServerMenuItem_Click);
             // 
-            // tabControl1
+            // toolStripMenuItem1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 33);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1894, 993);
-            this.tabControl1.TabIndex = 1;
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.businessesjsonToolStripMenuItem,
+            this.newDatabaseToolStripMenuItem});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(63, 29);
+            this.toolStripMenuItem1.Text = "Load";
+            // 
+            // businessesjsonToolStripMenuItem
+            // 
+            this.businessesjsonToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.businessesjsonToolStripMenuItem1,
+            this.reviewsjsonToolStripMenuItem1,
+            this.usersjsonToolStripMenuItem1});
+            this.businessesjsonToolStripMenuItem.Name = "businessesjsonToolStripMenuItem";
+            this.businessesjsonToolStripMenuItem.Size = new System.Drawing.Size(211, 30);
+            this.businessesjsonToolStripMenuItem.Text = "Data";
+            // 
+            // businessesjsonToolStripMenuItem1
+            // 
+            this.businessesjsonToolStripMenuItem1.Name = "businessesjsonToolStripMenuItem1";
+            this.businessesjsonToolStripMenuItem1.Size = new System.Drawing.Size(238, 30);
+            this.businessesjsonToolStripMenuItem1.Text = "Businesses<json>";
+            this.businessesjsonToolStripMenuItem1.Click += new System.EventHandler(this.businessesjsonToolStripMenuItem1_Click);
+            // 
+            // reviewsjsonToolStripMenuItem1
+            // 
+            this.reviewsjsonToolStripMenuItem1.Name = "reviewsjsonToolStripMenuItem1";
+            this.reviewsjsonToolStripMenuItem1.Size = new System.Drawing.Size(238, 30);
+            this.reviewsjsonToolStripMenuItem1.Text = "Reviews<json>";
+            // 
+            // usersjsonToolStripMenuItem1
+            // 
+            this.usersjsonToolStripMenuItem1.Name = "usersjsonToolStripMenuItem1";
+            this.usersjsonToolStripMenuItem1.Size = new System.Drawing.Size(238, 30);
+            this.usersjsonToolStripMenuItem1.Text = "Users<json>";
+            // 
+            // newDatabaseToolStripMenuItem
+            // 
+            this.newDatabaseToolStripMenuItem.Name = "newDatabaseToolStripMenuItem";
+            this.newDatabaseToolStripMenuItem.Size = new System.Drawing.Size(211, 30);
+            this.newDatabaseToolStripMenuItem.Text = "New Database";
+            this.newDatabaseToolStripMenuItem.Click += new System.EventHandler(this.newDatabaseToolStripMenuItem_Click);
+            // 
+            // AddFilters
+            // 
+            this.AddFilters.Controls.Add(this.tabPage1);
+            this.AddFilters.Controls.Add(this.tabPage2);
+            this.AddFilters.Controls.Add(this.tabPage3);
+            this.AddFilters.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddFilters.Location = new System.Drawing.Point(0, 33);
+            this.AddFilters.Name = "AddFilters";
+            this.AddFilters.SelectedIndex = 0;
+            this.AddFilters.Size = new System.Drawing.Size(1892, 659);
+            this.AddFilters.TabIndex = 1;
             // 
             // tabPage1
             // 
@@ -203,7 +264,7 @@
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(1886, 960);
+            this.tabPage1.Size = new System.Drawing.Size(1884, 626);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Business Demographics";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -215,7 +276,7 @@
             this.groupBox3.Controls.Add(this.groupBox7);
             this.groupBox3.Location = new System.Drawing.Point(358, 465);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1520, 487);
+            this.groupBox3.Size = new System.Drawing.Size(1520, 488);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Business Summary";
@@ -226,7 +287,7 @@
             this.groupBox9.Controls.Add(this.zipcodeNumberOfBusinessesDataGridView);
             this.groupBox9.Location = new System.Drawing.Point(1026, 20);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(488, 461);
+            this.groupBox9.Size = new System.Drawing.Size(488, 462);
             this.groupBox9.TabIndex = 3;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "ZIPCODE";
@@ -234,7 +295,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(17, 45);
+            this.label18.Location = new System.Drawing.Point(16, 45);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(122, 20);
             this.label18.TabIndex = 1;
@@ -279,7 +340,7 @@
             this.groupBox8.Controls.Add(this.cityNumberOfBusinessesDataGridView);
             this.groupBox8.Location = new System.Drawing.Point(532, 25);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(488, 461);
+            this.groupBox8.Size = new System.Drawing.Size(488, 462);
             this.groupBox8.TabIndex = 2;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "CITY";
@@ -287,7 +348,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(17, 45);
+            this.label17.Location = new System.Drawing.Point(16, 45);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(122, 20);
             this.label17.TabIndex = 1;
@@ -331,7 +392,7 @@
             this.groupBox7.Controls.Add(this.stateNumberOfBusinessDataGridView);
             this.groupBox7.Location = new System.Drawing.Point(38, 25);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(488, 461);
+            this.groupBox7.Size = new System.Drawing.Size(488, 462);
             this.groupBox7.TabIndex = 0;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "STATE";
@@ -339,7 +400,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(17, 45);
+            this.label16.Location = new System.Drawing.Point(16, 45);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(122, 20);
             this.label16.TabIndex = 1;
@@ -379,7 +440,7 @@
             // 
             // updateButton
             // 
-            this.updateButton.Location = new System.Drawing.Point(109, 914);
+            this.updateButton.Location = new System.Drawing.Point(110, 914);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(160, 35);
             this.updateButton.TabIndex = 3;
@@ -394,7 +455,7 @@
             this.groupBox6.Controls.Add(this.categoriesListBox);
             this.groupBox6.Location = new System.Drawing.Point(9, 460);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(343, 448);
+            this.groupBox6.Size = new System.Drawing.Size(344, 448);
             this.groupBox6.TabIndex = 2;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "SelectBusinessCategory";
@@ -406,7 +467,7 @@
             this.categoryQueryListBox.ItemHeight = 20;
             this.categoryQueryListBox.Location = new System.Drawing.Point(100, 278);
             this.categoryQueryListBox.Name = "categoryQueryListBox";
-            this.categoryQueryListBox.Size = new System.Drawing.Size(237, 164);
+            this.categoryQueryListBox.Size = new System.Drawing.Size(236, 164);
             this.categoryQueryListBox.TabIndex = 2;
             // 
             // addCategoryButton
@@ -426,7 +487,7 @@
             this.categoriesListBox.ItemHeight = 20;
             this.categoriesListBox.Location = new System.Drawing.Point(100, 25);
             this.categoriesListBox.Name = "categoriesListBox";
-            this.categoriesListBox.Size = new System.Drawing.Size(237, 204);
+            this.categoriesListBox.Size = new System.Drawing.Size(236, 204);
             this.categoriesListBox.TabIndex = 0;
             // 
             // groupBox2
@@ -436,7 +497,7 @@
             this.groupBox2.Controls.Add(this.zipcodeGroupBox);
             this.groupBox2.Location = new System.Drawing.Point(358, 9);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1520, 450);
+            this.groupBox2.Size = new System.Drawing.Size(1520, 449);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Demographics Summary";
@@ -453,28 +514,28 @@
             this.stateGroupBox.Controls.Add(this.label15);
             this.stateGroupBox.Location = new System.Drawing.Point(38, 45);
             this.stateGroupBox.Name = "stateGroupBox";
-            this.stateGroupBox.Size = new System.Drawing.Size(488, 413);
+            this.stateGroupBox.Size = new System.Drawing.Size(488, 412);
             this.stateGroupBox.TabIndex = 11;
             this.stateGroupBox.TabStop = false;
             this.stateGroupBox.Text = "STATE";
             // 
             // stateMedianAgeTextBox
             // 
-            this.stateMedianAgeTextBox.Location = new System.Drawing.Point(217, 339);
+            this.stateMedianAgeTextBox.Location = new System.Drawing.Point(218, 338);
             this.stateMedianAgeTextBox.Name = "stateMedianAgeTextBox";
             this.stateMedianAgeTextBox.Size = new System.Drawing.Size(100, 26);
             this.stateMedianAgeTextBox.TabIndex = 9;
             // 
             // stateAverageIncomeTextBox
             // 
-            this.stateAverageIncomeTextBox.Location = new System.Drawing.Point(217, 69);
+            this.stateAverageIncomeTextBox.Location = new System.Drawing.Point(218, 69);
             this.stateAverageIncomeTextBox.Name = "stateAverageIncomeTextBox";
             this.stateAverageIncomeTextBox.Size = new System.Drawing.Size(100, 26);
             this.stateAverageIncomeTextBox.TabIndex = 8;
             // 
             // statePopulationTextBox
             // 
-            this.statePopulationTextBox.Location = new System.Drawing.Point(217, 25);
+            this.statePopulationTextBox.Location = new System.Drawing.Point(218, 25);
             this.statePopulationTextBox.Name = "statePopulationTextBox";
             this.statePopulationTextBox.Size = new System.Drawing.Size(100, 26);
             this.statePopulationTextBox.TabIndex = 7;
@@ -491,7 +552,7 @@
             this.stateDataGridView.Name = "stateDataGridView";
             this.stateDataGridView.ReadOnly = true;
             this.stateDataGridView.RowTemplate.Height = 28;
-            this.stateDataGridView.Size = new System.Drawing.Size(464, 173);
+            this.stateDataGridView.Size = new System.Drawing.Size(464, 172);
             this.stateDataGridView.TabIndex = 6;
             // 
             // dataGridViewTextBoxColumn2
@@ -549,28 +610,28 @@
             this.cityGroupBox.Controls.Add(this.label11);
             this.cityGroupBox.Location = new System.Drawing.Point(532, 45);
             this.cityGroupBox.Name = "cityGroupBox";
-            this.cityGroupBox.Size = new System.Drawing.Size(488, 413);
+            this.cityGroupBox.Size = new System.Drawing.Size(488, 412);
             this.cityGroupBox.TabIndex = 10;
             this.cityGroupBox.TabStop = false;
             this.cityGroupBox.Text = "CITY";
             // 
             // cityMedianAgeTextBox
             // 
-            this.cityMedianAgeTextBox.Location = new System.Drawing.Point(217, 339);
+            this.cityMedianAgeTextBox.Location = new System.Drawing.Point(218, 338);
             this.cityMedianAgeTextBox.Name = "cityMedianAgeTextBox";
             this.cityMedianAgeTextBox.Size = new System.Drawing.Size(100, 26);
             this.cityMedianAgeTextBox.TabIndex = 9;
             // 
             // cityAverageIncomeTextBox
             // 
-            this.cityAverageIncomeTextBox.Location = new System.Drawing.Point(217, 69);
+            this.cityAverageIncomeTextBox.Location = new System.Drawing.Point(218, 69);
             this.cityAverageIncomeTextBox.Name = "cityAverageIncomeTextBox";
             this.cityAverageIncomeTextBox.Size = new System.Drawing.Size(100, 26);
             this.cityAverageIncomeTextBox.TabIndex = 8;
             // 
             // cityPopulationTextBox
             // 
-            this.cityPopulationTextBox.Location = new System.Drawing.Point(217, 25);
+            this.cityPopulationTextBox.Location = new System.Drawing.Point(218, 25);
             this.cityPopulationTextBox.Name = "cityPopulationTextBox";
             this.cityPopulationTextBox.Size = new System.Drawing.Size(100, 26);
             this.cityPopulationTextBox.TabIndex = 7;
@@ -587,7 +648,7 @@
             this.cityDataGridView.Name = "cityDataGridView";
             this.cityDataGridView.ReadOnly = true;
             this.cityDataGridView.RowTemplate.Height = 28;
-            this.cityDataGridView.Size = new System.Drawing.Size(464, 173);
+            this.cityDataGridView.Size = new System.Drawing.Size(464, 172);
             this.cityDataGridView.TabIndex = 6;
             // 
             // dataGridViewTextBoxColumn1
@@ -645,28 +706,28 @@
             this.zipcodeGroupBox.Controls.Add(this.label4);
             this.zipcodeGroupBox.Location = new System.Drawing.Point(1026, 45);
             this.zipcodeGroupBox.Name = "zipcodeGroupBox";
-            this.zipcodeGroupBox.Size = new System.Drawing.Size(488, 413);
+            this.zipcodeGroupBox.Size = new System.Drawing.Size(488, 412);
             this.zipcodeGroupBox.TabIndex = 2;
             this.zipcodeGroupBox.TabStop = false;
             this.zipcodeGroupBox.Text = "ZIPCODE";
             // 
             // zipcodeMedianAgeTextBox
             // 
-            this.zipcodeMedianAgeTextBox.Location = new System.Drawing.Point(217, 339);
+            this.zipcodeMedianAgeTextBox.Location = new System.Drawing.Point(218, 338);
             this.zipcodeMedianAgeTextBox.Name = "zipcodeMedianAgeTextBox";
             this.zipcodeMedianAgeTextBox.Size = new System.Drawing.Size(100, 26);
             this.zipcodeMedianAgeTextBox.TabIndex = 9;
             // 
             // zipcodeAverageIncomeTextBox
             // 
-            this.zipcodeAverageIncomeTextBox.Location = new System.Drawing.Point(217, 69);
+            this.zipcodeAverageIncomeTextBox.Location = new System.Drawing.Point(218, 69);
             this.zipcodeAverageIncomeTextBox.Name = "zipcodeAverageIncomeTextBox";
             this.zipcodeAverageIncomeTextBox.Size = new System.Drawing.Size(100, 26);
             this.zipcodeAverageIncomeTextBox.TabIndex = 8;
             // 
             // zipcodePopulationTextBox
             // 
-            this.zipcodePopulationTextBox.Location = new System.Drawing.Point(217, 25);
+            this.zipcodePopulationTextBox.Location = new System.Drawing.Point(218, 25);
             this.zipcodePopulationTextBox.Name = "zipcodePopulationTextBox";
             this.zipcodePopulationTextBox.Size = new System.Drawing.Size(100, 26);
             this.zipcodePopulationTextBox.TabIndex = 7;
@@ -683,7 +744,7 @@
             this.zipcodeDataGridView.Name = "zipcodeDataGridView";
             this.zipcodeDataGridView.ReadOnly = true;
             this.zipcodeDataGridView.RowTemplate.Height = 28;
-            this.zipcodeDataGridView.Size = new System.Drawing.Size(464, 173);
+            this.zipcodeDataGridView.Size = new System.Drawing.Size(464, 172);
             this.zipcodeDataGridView.TabIndex = 6;
             // 
             // Percentage
@@ -737,9 +798,9 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.stateComboBox);
-            this.groupBox1.Location = new System.Drawing.Point(9, 4);
+            this.groupBox1.Location = new System.Drawing.Point(9, 5);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(343, 450);
+            this.groupBox1.Size = new System.Drawing.Size(344, 449);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Select Location";
@@ -750,14 +811,14 @@
             this.zipcodeListBox.ItemHeight = 20;
             this.zipcodeListBox.Location = new System.Drawing.Point(100, 289);
             this.zipcodeListBox.Name = "zipcodeListBox";
-            this.zipcodeListBox.Size = new System.Drawing.Size(237, 144);
+            this.zipcodeListBox.Size = new System.Drawing.Size(236, 144);
             this.zipcodeListBox.TabIndex = 5;
             this.zipcodeListBox.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(-1, 289);
+            this.label3.Location = new System.Drawing.Point(-2, 289);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(66, 20);
             this.label3.TabIndex = 4;
@@ -767,16 +828,16 @@
             // 
             this.cityListBox.FormattingEnabled = true;
             this.cityListBox.ItemHeight = 20;
-            this.cityListBox.Location = new System.Drawing.Point(100, 110);
+            this.cityListBox.Location = new System.Drawing.Point(100, 109);
             this.cityListBox.Name = "cityListBox";
-            this.cityListBox.Size = new System.Drawing.Size(237, 144);
+            this.cityListBox.Size = new System.Drawing.Size(236, 144);
             this.cityListBox.TabIndex = 3;
             this.cityListBox.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(30, 110);
+            this.label2.Location = new System.Drawing.Point(30, 109);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 20);
             this.label2.TabIndex = 2;
@@ -785,7 +846,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 53);
+            this.label1.Location = new System.Drawing.Point(16, 52);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(48, 20);
             this.label1.TabIndex = 1;
@@ -794,9 +855,9 @@
             // stateComboBox
             // 
             this.stateComboBox.FormattingEnabled = true;
-            this.stateComboBox.Location = new System.Drawing.Point(100, 50);
+            this.stateComboBox.Location = new System.Drawing.Point(100, 49);
             this.stateComboBox.Name = "stateComboBox";
-            this.stateComboBox.Size = new System.Drawing.Size(237, 28);
+            this.stateComboBox.Size = new System.Drawing.Size(236, 28);
             this.stateComboBox.TabIndex = 0;
             this.stateComboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged_1);
             // 
@@ -812,7 +873,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1886, 960);
+            this.tabPage2.Size = new System.Drawing.Size(1884, 626);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Businesses Search";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -822,10 +883,10 @@
             this.businessSearchResultsDataGridView.AllowUserToAddRows = false;
             this.businessSearchResultsDataGridView.AllowUserToDeleteRows = false;
             this.businessSearchResultsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.businessSearchResultsDataGridView.Location = new System.Drawing.Point(358, 216);
+            this.businessSearchResultsDataGridView.Location = new System.Drawing.Point(358, 215);
             this.businessSearchResultsDataGridView.Name = "businessSearchResultsDataGridView";
             this.businessSearchResultsDataGridView.RowTemplate.Height = 28;
-            this.businessSearchResultsDataGridView.Size = new System.Drawing.Size(1170, 741);
+            this.businessSearchResultsDataGridView.Size = new System.Drawing.Size(1170, 742);
             this.businessSearchResultsDataGridView.TabIndex = 14;
             this.businessSearchResultsDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.businessSearchResultsDataGridView_CellContentClick);
             // 
@@ -840,6 +901,7 @@
             // 
             // groupBox11
             // 
+            this.groupBox11.Controls.Add(this.friendsGo);
             this.groupBox11.Controls.Add(this.label29);
             this.groupBox11.Controls.Add(this.label28);
             this.groupBox11.Controls.Add(this.label27);
@@ -848,12 +910,22 @@
             this.groupBox11.Controls.Add(this.minReviewsComboBox);
             this.groupBox11.Controls.Add(this.maxRatingComboBox);
             this.groupBox11.Controls.Add(this.minRatingComboBox);
-            this.groupBox11.Location = new System.Drawing.Point(358, 7);
+            this.groupBox11.Location = new System.Drawing.Point(358, 8);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Size = new System.Drawing.Size(1170, 182);
             this.groupBox11.TabIndex = 12;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Refine Your Search";
+            // 
+            // friendsGo
+            // 
+            this.friendsGo.AutoSize = true;
+            this.friendsGo.Location = new System.Drawing.Point(613, 69);
+            this.friendsGo.Name = "friendsGo";
+            this.friendsGo.Size = new System.Drawing.Size(189, 24);
+            this.friendsGo.TabIndex = 8;
+            this.friendsGo.Text = "Places My Friends Go";
+            this.friendsGo.UseVisualStyleBackColor = true;
             // 
             // label29
             // 
@@ -867,7 +939,7 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(273, 67);
+            this.label28.Location = new System.Drawing.Point(273, 68);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(128, 20);
             this.label28.TabIndex = 6;
@@ -876,7 +948,7 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(19, 112);
+            this.label27.Location = new System.Drawing.Point(20, 112);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(89, 20);
             this.label27.TabIndex = 5;
@@ -885,7 +957,7 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(19, 64);
+            this.label26.Location = new System.Drawing.Point(20, 65);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(85, 20);
             this.label26.TabIndex = 4;
@@ -902,7 +974,7 @@
             // minReviewsComboBox
             // 
             this.minReviewsComboBox.FormattingEnabled = true;
-            this.minReviewsComboBox.Location = new System.Drawing.Point(416, 64);
+            this.minReviewsComboBox.Location = new System.Drawing.Point(416, 65);
             this.minReviewsComboBox.Name = "minReviewsComboBox";
             this.minReviewsComboBox.Size = new System.Drawing.Size(121, 28);
             this.minReviewsComboBox.TabIndex = 2;
@@ -910,7 +982,7 @@
             // maxRatingComboBox
             // 
             this.maxRatingComboBox.FormattingEnabled = true;
-            this.maxRatingComboBox.Location = new System.Drawing.Point(125, 109);
+            this.maxRatingComboBox.Location = new System.Drawing.Point(124, 109);
             this.maxRatingComboBox.Name = "maxRatingComboBox";
             this.maxRatingComboBox.Size = new System.Drawing.Size(121, 28);
             this.maxRatingComboBox.TabIndex = 1;
@@ -918,14 +990,14 @@
             // minRatingComboBox
             // 
             this.minRatingComboBox.FormattingEnabled = true;
-            this.minRatingComboBox.Location = new System.Drawing.Point(125, 64);
+            this.minRatingComboBox.Location = new System.Drawing.Point(124, 65);
             this.minRatingComboBox.Name = "minRatingComboBox";
             this.minRatingComboBox.Size = new System.Drawing.Size(121, 28);
             this.minRatingComboBox.TabIndex = 0;
             // 
             // updateBusinessSearchButton
             // 
-            this.updateBusinessSearchButton.Location = new System.Drawing.Point(108, 919);
+            this.updateBusinessSearchButton.Location = new System.Drawing.Point(108, 918);
             this.updateBusinessSearchButton.Name = "updateBusinessSearchButton";
             this.updateBusinessSearchButton.Size = new System.Drawing.Size(160, 35);
             this.updateBusinessSearchButton.TabIndex = 11;
@@ -935,15 +1007,26 @@
             // 
             // groupBox10
             // 
+            this.groupBox10.Controls.Add(this.removeCategoryButton);
             this.groupBox10.Controls.Add(this.categoryQueryBusinessSearchListBox);
             this.groupBox10.Controls.Add(this.addCategoryBusinessSearchButton);
             this.groupBox10.Controls.Add(this.categoriesBusinessSearchListBox);
             this.groupBox10.Location = new System.Drawing.Point(8, 462);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(343, 448);
+            this.groupBox10.Size = new System.Drawing.Size(344, 448);
             this.groupBox10.TabIndex = 10;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "SelectBusinessCategory";
+            // 
+            // removeCategoryButton
+            // 
+            this.removeCategoryButton.Location = new System.Drawing.Point(166, 232);
+            this.removeCategoryButton.Name = "removeCategoryButton";
+            this.removeCategoryButton.Size = new System.Drawing.Size(160, 35);
+            this.removeCategoryButton.TabIndex = 3;
+            this.removeCategoryButton.Text = "Remove Category";
+            this.removeCategoryButton.UseVisualStyleBackColor = true;
+            this.removeCategoryButton.Click += new System.EventHandler(this.removeCategoryButton_Click);
             // 
             // categoryQueryBusinessSearchListBox
             // 
@@ -952,12 +1035,12 @@
             this.categoryQueryBusinessSearchListBox.ItemHeight = 20;
             this.categoryQueryBusinessSearchListBox.Location = new System.Drawing.Point(100, 278);
             this.categoryQueryBusinessSearchListBox.Name = "categoryQueryBusinessSearchListBox";
-            this.categoryQueryBusinessSearchListBox.Size = new System.Drawing.Size(237, 164);
+            this.categoryQueryBusinessSearchListBox.Size = new System.Drawing.Size(236, 164);
             this.categoryQueryBusinessSearchListBox.TabIndex = 2;
             // 
             // addCategoryBusinessSearchButton
             // 
-            this.addCategoryBusinessSearchButton.Location = new System.Drawing.Point(100, 235);
+            this.addCategoryBusinessSearchButton.Location = new System.Drawing.Point(0, 232);
             this.addCategoryBusinessSearchButton.Name = "addCategoryBusinessSearchButton";
             this.addCategoryBusinessSearchButton.Size = new System.Drawing.Size(160, 35);
             this.addCategoryBusinessSearchButton.TabIndex = 1;
@@ -972,7 +1055,7 @@
             this.categoriesBusinessSearchListBox.ItemHeight = 20;
             this.categoriesBusinessSearchListBox.Location = new System.Drawing.Point(100, 25);
             this.categoriesBusinessSearchListBox.Name = "categoriesBusinessSearchListBox";
-            this.categoriesBusinessSearchListBox.Size = new System.Drawing.Size(237, 204);
+            this.categoriesBusinessSearchListBox.Size = new System.Drawing.Size(236, 204);
             this.categoriesBusinessSearchListBox.TabIndex = 0;
             // 
             // groupBox4
@@ -985,7 +1068,7 @@
             this.groupBox4.Controls.Add(this.stateBusinessSearchComboBox);
             this.groupBox4.Location = new System.Drawing.Point(8, 6);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(343, 450);
+            this.groupBox4.Size = new System.Drawing.Size(344, 449);
             this.groupBox4.TabIndex = 9;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Select Location";
@@ -996,14 +1079,13 @@
             this.zipcodeBusinessSearchListBox.ItemHeight = 20;
             this.zipcodeBusinessSearchListBox.Location = new System.Drawing.Point(100, 289);
             this.zipcodeBusinessSearchListBox.Name = "zipcodeBusinessSearchListBox";
-            this.zipcodeBusinessSearchListBox.Size = new System.Drawing.Size(237, 144);
+            this.zipcodeBusinessSearchListBox.Size = new System.Drawing.Size(236, 144);
             this.zipcodeBusinessSearchListBox.TabIndex = 5;
-            this.zipcodeBusinessSearchListBox.SelectedIndexChanged += new System.EventHandler(this.zipcodeBusinessSearchListBox_SelectedIndexChanged);
             // 
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(-1, 289);
+            this.label23.Location = new System.Drawing.Point(-2, 289);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(66, 20);
             this.label23.TabIndex = 4;
@@ -1013,16 +1095,16 @@
             // 
             this.cityBusinessSearchListBox.FormattingEnabled = true;
             this.cityBusinessSearchListBox.ItemHeight = 20;
-            this.cityBusinessSearchListBox.Location = new System.Drawing.Point(100, 110);
+            this.cityBusinessSearchListBox.Location = new System.Drawing.Point(100, 109);
             this.cityBusinessSearchListBox.Name = "cityBusinessSearchListBox";
-            this.cityBusinessSearchListBox.Size = new System.Drawing.Size(237, 144);
+            this.cityBusinessSearchListBox.Size = new System.Drawing.Size(236, 144);
             this.cityBusinessSearchListBox.TabIndex = 3;
             this.cityBusinessSearchListBox.SelectedIndexChanged += new System.EventHandler(this.cityBusinessSearchListBox_SelectedIndexChanged);
             // 
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(30, 110);
+            this.label24.Location = new System.Drawing.Point(30, 109);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(35, 20);
             this.label24.TabIndex = 2;
@@ -1031,7 +1113,7 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(17, 53);
+            this.label25.Location = new System.Drawing.Point(16, 52);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(48, 20);
             this.label25.TabIndex = 1;
@@ -1040,9 +1122,9 @@
             // stateBusinessSearchComboBox
             // 
             this.stateBusinessSearchComboBox.FormattingEnabled = true;
-            this.stateBusinessSearchComboBox.Location = new System.Drawing.Point(100, 50);
+            this.stateBusinessSearchComboBox.Location = new System.Drawing.Point(100, 49);
             this.stateBusinessSearchComboBox.Name = "stateBusinessSearchComboBox";
-            this.stateBusinessSearchComboBox.Size = new System.Drawing.Size(237, 28);
+            this.stateBusinessSearchComboBox.Size = new System.Drawing.Size(236, 28);
             this.stateBusinessSearchComboBox.TabIndex = 0;
             this.stateBusinessSearchComboBox.SelectedIndexChanged += new System.EventHandler(this.stateBusinessSearchComboBox_SelectedIndexChanged);
             // 
@@ -1068,7 +1150,7 @@
             // 
             this.attributeTreeView.Location = new System.Drawing.Point(6, 49);
             this.attributeTreeView.Name = "attributeTreeView";
-            this.attributeTreeView.Size = new System.Drawing.Size(333, 443);
+            this.attributeTreeView.Size = new System.Drawing.Size(332, 442);
             this.attributeTreeView.TabIndex = 9;
             this.attributeTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.attributeTreeView_AfterSelect);
             // 
@@ -1111,15 +1193,14 @@
             // selectValueComboBox
             // 
             this.selectValueComboBox.FormattingEnabled = true;
-            this.selectValueComboBox.Location = new System.Drawing.Point(91, 528);
+            this.selectValueComboBox.Location = new System.Drawing.Point(92, 528);
             this.selectValueComboBox.Name = "selectValueComboBox";
             this.selectValueComboBox.Size = new System.Drawing.Size(164, 28);
             this.selectValueComboBox.TabIndex = 4;
-            this.selectValueComboBox.SelectedIndexChanged += new System.EventHandler(this.selectValueComboBox_SelectedIndexChanged);
             // 
             // removeAttributeButton
             // 
-            this.removeAttributeButton.Location = new System.Drawing.Point(91, 902);
+            this.removeAttributeButton.Location = new System.Drawing.Point(92, 902);
             this.removeAttributeButton.Name = "removeAttributeButton";
             this.removeAttributeButton.Size = new System.Drawing.Size(164, 38);
             this.removeAttributeButton.TabIndex = 3;
@@ -1129,7 +1210,7 @@
             // 
             // addAttributeButton
             // 
-            this.addAttributeButton.Location = new System.Drawing.Point(91, 639);
+            this.addAttributeButton.Location = new System.Drawing.Point(92, 638);
             this.addAttributeButton.Name = "addAttributeButton";
             this.addAttributeButton.Size = new System.Drawing.Size(164, 28);
             this.addAttributeButton.TabIndex = 2;
@@ -1143,23 +1224,101 @@
             this.attributeQueryListBox.ItemHeight = 20;
             this.attributeQueryListBox.Location = new System.Drawing.Point(6, 712);
             this.attributeQueryListBox.Name = "attributeQueryListBox";
-            this.attributeQueryListBox.Size = new System.Drawing.Size(333, 184);
+            this.attributeQueryListBox.Size = new System.Drawing.Size(332, 184);
             this.attributeQueryListBox.TabIndex = 1;
             this.attributeQueryListBox.SelectedIndexChanged += new System.EventHandler(this.listBox5_SelectedIndexChanged);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.hour);
+            this.tabPage3.Controls.Add(this.day);
+            this.tabPage3.Controls.Add(this.friends);
+            this.tabPage3.Controls.Add(this.username);
+            this.tabPage3.Location = new System.Drawing.Point(4, 29);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(1884, 626);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Friends";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // hour
+            // 
+            this.hour.FormattingEnabled = true;
+            this.hour.Items.AddRange(new object[] {
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24"});
+            this.hour.Location = new System.Drawing.Point(286, 153);
+            this.hour.Name = "hour";
+            this.hour.Size = new System.Drawing.Size(153, 424);
+            this.hour.TabIndex = 3;
+            // 
+            // day
+            // 
+            this.day.FormattingEnabled = true;
+            this.day.Items.AddRange(new object[] {
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"});
+            this.day.Location = new System.Drawing.Point(43, 153);
+            this.day.Name = "day";
+            this.day.Size = new System.Drawing.Size(153, 151);
+            this.day.TabIndex = 2;
+            this.day.SelectedIndexChanged += new System.EventHandler(this.day_SelectedIndexChanged);
+            // 
+            // friends
+            // 
+            this.friends.FormattingEnabled = true;
+            this.friends.ItemHeight = 20;
+            this.friends.Location = new System.Drawing.Point(543, 41);
+            this.friends.Name = "friends";
+            this.friends.Size = new System.Drawing.Size(349, 264);
+            this.friends.TabIndex = 1;
+            // 
+            // username
+            // 
+            this.username.FormattingEnabled = true;
+            this.username.Location = new System.Drawing.Point(8, 41);
+            this.username.Name = "username";
+            this.username.Size = new System.Drawing.Size(343, 28);
+            this.username.TabIndex = 0;
+            this.username.SelectedIndexChanged += new System.EventHandler(this.username_SelectedIndexChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1894, 1026);
-            this.Controls.Add(this.tabControl1);
+            this.ClientSize = new System.Drawing.Size(1892, 692);
+            this.Controls.Add(this.AddFilters);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
+            this.AddFilters.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox9.ResumeLayout(false);
@@ -1194,6 +1353,7 @@
             this.groupBox4.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1204,7 +1364,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem serverInformationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newServerMenuItem;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl AddFilters;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox zipcodeGroupBox;
@@ -1303,6 +1463,19 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Percentage;
         private System.Windows.Forms.TreeView attributeTreeView;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem businessesjsonToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem businessesjsonToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem reviewsjsonToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem usersjsonToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem newDatabaseToolStripMenuItem;
+        private System.Windows.Forms.Button removeCategoryButton;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.ComboBox username;
+        private System.Windows.Forms.ListBox friends;
+        private System.Windows.Forms.CheckBox friendsGo;
+        private System.Windows.Forms.CheckedListBox day;
+        private System.Windows.Forms.CheckedListBox hour;
     }
 }
 
