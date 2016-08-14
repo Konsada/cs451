@@ -24,7 +24,7 @@ namespace Yelp_Business_App
 {
     public partial class Form1 : Form
     {
-        MySql_Connection mydb;
+        MySql_Connection mydb = new MySql_Connection();
         List<string> categories;
         Dictionary<string, string> attributeDict = new Dictionary<string, string>();
         string localDir = ".\\..\\..\\yelp\\";
@@ -32,12 +32,12 @@ namespace Yelp_Business_App
         public Form1()
         {
             init();
-            mydb = new MySql_Connection("localhost", "root", "password");
-            databaseInit("db");
-            tablesInit();
-            mydb.demographicsTableName = "demographics";
-            demographicInit();
-            populateTables();
+            //mydb = new MySql_Connection("localhost", "root", "password");
+            //databaseInit("db");
+            //tablesInit();
+            //mydb.demographicsTableName = "demographics";
+            //demographicInit();
+            //populateTables();
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
             UpdateStateComboBoxes();
@@ -321,22 +321,8 @@ namespace Yelp_Business_App
             string tableCreatorFileName = "Tables.sql";
             string tableDir = "./../../yelp/" + tableCreatorFileName;
             string str = File.ReadAllText(tableDir);
-            //string str = @"source C:/Users/keons_000/Documents/Visual Studio 2015/Projects/Yelp Business App/Yelp Business App/yelp/Tables.sql;";
 
             mydb.SQLNonQueryExec(str);
-            //string demographicsFileName = "dem.sql";
-            //string demographicsDir = "./../../yelp/" + demographicsFileName;
-            //string permission = "--secure-file-priv=" + Path.GetFullPath("./../../yelp").Replace("\\","/");
-            //mydb.SQLNonQueryExec(permission);
-            //str = @"source C:/Users/keons_000/Documents/Visual Studio 2015/Projects/Yelp Business App/Yelp Business App/yelp/dem.sql";
-            //str = File.ReadAllText(demographicsDir);
-            //str = "source " + Path.GetFullPath(demographicsDir);
-            // file path is too long! Max: 99
-            // cannot end "source filename" with ';'
-            //str = @"source C:/Downloads/dem.sql;";
-            
-            //mydb.SQLNonQueryExec(str);
-
         }
         protected void databaseInit(string newdatabase)
         {
@@ -345,9 +331,6 @@ namespace Yelp_Business_App
             mydb.NewConnection(mydb.server, newdatabase, mydb.uid, mydb.password);
             mydb.SQLNonQueryExec("USE " + newdatabase);
         }
-        /// <summary>
-        /// Might need to do this manually, calling SQL infile comand takes wayyyy too long
-        /// </summary>
         protected void demographicInit()
         {
             demographicsFileInit();
@@ -510,7 +493,7 @@ namespace Yelp_Business_App
         }
         protected void initUsernames()
         {
-            string qstr = "SELECT DISTINCT uid FROM friends";
+            string qstr = "SELECT uid,name FROM users GROUP BY name";
             List<String> qResult = mydb.SQLSELECTExec(qstr, "uid");
             foreach(string user in qResult)
             {
@@ -741,7 +724,6 @@ namespace Yelp_Business_App
             }
         }
 
-
         private void updateButton_Click(object sender, EventArgs e)
         {
             stateDataGridView.Rows.Clear();
@@ -874,21 +856,20 @@ namespace Yelp_Business_App
                 zipcodeBusinessSearchListBox.Items.Add(s);
             }
         }
-
+        /// <summary>
+        /// Holy grail of all buttons, runs the query against the db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void updateBusinessSearchButton_Click(object sender, EventArgs e)
         {
-            //foreach (DataGridViewRow r in businessSearchResultsDataGridView.Rows)
-            //{
-            //    if (!r.IsNewRow)
-            //        businessSearchResultsDataGridView.Rows.Remove(r);
-            //}
             if (businessSearchResultsDataGridView.Rows.Count > 0)
             {
                 businessSearchResultsDataGridView.DataSource = null;
                 businessSearchResultsDataGridView.Refresh();
             }
-            string qstr = "SELECT bid, name, city, state, zipcode, stars, review_count FROM bac WHERE";
-            //string qstr = "SELECT b.name, b.city, b.state, b.zipcode, b.stars, b.review_count FROM businesses b, categories c WHERE";
+            string qstr = "SELECT bid, name, city, state, zipcode, stars, review_count FROM bacf WHERE";
+
             if (stateBusinessSearchComboBox.SelectedItem != null)
             {
                 qstr += " state = '" + stateBusinessSearchComboBox.SelectedItem.ToString() + "'";
@@ -938,11 +919,43 @@ namespace Yelp_Business_App
                     qstr += " AND " + s + " = " + attributeDict[s];
                 }
             }
-            //if(categoryQueryBusinessSearchListBox.Items.Count > 1)
-            //{
-            //    qstr += " GROUP BY bid HAVING COUNT(*) >=" + categoryQueryBusinessSearchListBox.Items.Count;
-            //}
-            //qstr += " GROUP BY b.name";
+
+            // CREATE HOURSVIEW
+            if (day.CheckedItems.Count > 0)
+            {
+                string ocQStr = "SELECT * FROM Hours WHERE day="; // open/close query string
+
+                if (day.CheckedItems.Count > 1)
+                {
+                    ocQStr += "(";
+                    foreach (string s in day.CheckedItems)
+                    {
+                        if (s.Equals(day.CheckedItems[0])) // first item to add
+                        {
+                            ocQStr += s;
+                        }
+                        else
+                        {
+                            ocQStr += " OR " + s;
+                        }
+                    }
+                    ocQStr += ")";
+                }
+                else // only one day selected
+                {
+                    ocQStr += day.CheckedItems[0];
+                }
+                // ADD Hour Restrictions
+                if (hour.SelectedItems.Count > 0)
+                {
+                    ocQStr += " AND open <= " + hour.SelectedItems[0] + " AND close >= " + hour.SelectedItems[hour.SelectedItems.Count];
+                }
+
+                string hourViewQuery = "CREATE OR REPLACE VIEW hourView AS " + ocQStr + ";"; // create view called hourView that has the open/close query string results
+                mydb.SQLNonQueryExec(hourViewQuery); // create hourView with open and close times 
+                string hourViewReturnQuery = "SELECT DISTINCT bid FROM hourView;"; // get list of bid for businesses that are open during specified hours
+            }
+
             /************** MANY CAT **********************/
             if (categoryQueryBusinessSearchListBox.Items.Count > 1)
             {
@@ -954,7 +967,7 @@ namespace Yelp_Business_App
                     catViews[i] += categoryQueryBusinessSearchListBox.Items[i] + "view";
                     catViewQuery[i] += "CREATE OR REPLACE VIEW " + catViews[i] + " AS " + qstr + " AND category = '" + categoryQueryBusinessSearchListBox.Items[i] + "'";
                     mydb.SQLNonQueryExec(catViewQuery[i]);
-
+                    
                     newQStr += catViews[i];  // add list item
 
                     if(i < (catViews.Count() - 1)) // check if last item in list
@@ -962,45 +975,7 @@ namespace Yelp_Business_App
                         newQStr += " WHERE bid IN (SELECT bid FROM ";
                     }
                 }
-                // CREATE HOURSVIEW
-                if (day.CheckedItems.Count > 0)
-                {
-                    string ocQStr = "SELECT * FROM Hours WHERE day=";
-
-                    if (day.CheckedItems.Count > 1)
-                    {
-                        ocQStr += "(";
-                        foreach (string s in day.CheckedItems)
-                        {
-                            if(s.Equals(day.CheckedItems[0])) // first item to add
-                            {
-                                ocQStr += s;
-                            }
-                            else
-                            {
-                                ocQStr += " OR " + s;
-                            }
-
-                        }
-                        ocQStr += ")";
-                    }
-                    else // only one day selected
-                    {
-                        ocQStr += day.CheckedItems[0];
-                    }
-                    // ADD Hour Restrictions
-                    if(hour.SelectedItems.Count > 0)
-                    {
-                        ocQStr += " AND open <= " + hour.SelectedItems[0] + " AND close >= " + hour.SelectedItems[hour.SelectedItems.Count];
-                    }
-
-                    string hourViewQuery = "CREATE OR REPLACE VIEW hourView AS " + ocQStr + ";";
-                    mydb.SQLNonQueryExec(hourViewQuery); // create hourView
-                    string hourViewReturnQuery = "SELECT DISTINCT bid FROM hourView;"; // get list of bid for businesses that are open during specified hours
-
-
-                }
-
+                // add 
                 // CLOSE PARENTHESES
                 for (int i = 0; i < catViews.Count() - 1; i++)
                 {
@@ -1008,23 +983,6 @@ namespace Yelp_Business_App
                 }
                 newQStr += ";";
                 qstr = newQStr;
-
-                // SELECT bid FROM businesses WHERE bid IN (SELECT bid FROM bac WHERE b.bid = c.bid AND category = cat1
-                // AND SELECT bid FROM bac WHERE b.bid = c.bid AND category = cat2 ... etc)
-
-                //qstr += " IN (category = '" + categoryQueryBusinessSearchListBox.Items[0].ToString() + "'";
-                //for (int i = 1; i < categoryQueryBusinessSearchListBox.Items.Count; i++)
-                //{
-                //    qstr += " AND category = '" + categoryQueryBusinessSearchListBox.Items[i].ToString() + "'";
-                //}
-                //qstr += ")";
-
-                //qstr += " AND category IN ('" + categoryQueryBusinessSearchListBox.Items[0] + "'";
-                //for (int i = 1; i < categoryQueryBusinessSearchListBox.Items.Count; i++)
-                //{
-                //    qstr += ",'" + categoryQueryBusinessSearchListBox.Items[i].ToString() + "'";
-                //}
-                //qstr += ")";
             }
             /************* ONE CAT ****************************/
             else if (categoryQueryBusinessSearchListBox.Items.Count < 2)
@@ -1033,11 +991,49 @@ namespace Yelp_Business_App
                     qstr += " AND category = '" + categoryQueryBusinessSearchListBox.Items[0].ToString() + "'";
             }
 
-            if (friendsGo.Checked)
-            {
-                // check to see if friends have written a review of this business
-            }
             mydb.SQLNonQueryExec("CREATE OR REPLACE VIEW testView AS " + qstr);
+
+            if(qstr == "SELECT bbid, name, city, state, zipcode, stars, review_count FROM bacf WHERE" && !friendsGo.Checked)
+            {
+                qstr = "SELECT bid, name, city, state, zipcode, stars, review_count from bacf";
+            }
+            else
+            {
+                mydb.SQLNonQueryExec("CREATE OR REPLACE VIEW tempView AS " + qstr);
+
+                string viewQStr;
+
+                if (day.CheckedItems.Count > 0)
+                {
+                    if(hour.CheckedItems.Count > 0)
+                    {
+                        if (friendsGo.Checked)
+                        {
+                            viewQStr = "SELECT A.bbid, A.name, A.city, A.state, A.zipcode, A.stars, A.review_count from tempView A WHERE IN (" +
+                                "SELECT B.* FROM hours B WHERE ";
+                            foreach ()
+                            {
+
+                            }
+                        }
+                    }
+                    else if (friendsGo.Checked)
+                    {
+
+                    }
+                }
+                else if (hour.CheckedItems.Count > 0)
+                {
+                    if (friendsGo.Checked)
+                    {
+
+                    }
+                }
+                else if (friendsGo.Checked)
+                {
+
+                }
+            }
             try
             {
                 businessSearchResultsDataGridView.DataSource = mydb.SQLDATATABLEExec(qstr);
@@ -1083,8 +1079,6 @@ namespace Yelp_Business_App
                 MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
         private void addCategoryBusinessSearchButton_Click(object sender, EventArgs e)
         {
             foreach (string s in categoriesBusinessSearchListBox.SelectedItems)
@@ -1222,10 +1216,16 @@ namespace Yelp_Business_App
 
         private void username_SelectedIndexChanged(object sender, EventArgs e)
         {
+            friends.Items.Clear();
             string uid = username.SelectedItem.ToString();
             List<string> query = mydb.SQLSELECTExec("SELECT DISTINCT fid FROM Friends WHERE uid = \'" + uid + "\'");
-            foreach (string s in query)
-                friends.Items.Add(s);
+            if(query.Count == 0)
+            {
+                friends.Items.Add("<USER HAS NO FRIENDS>");
+            }
+            else 
+                foreach (string s in query)
+                    friends.Items.Add(s);
         }
 
         private void day_SelectedIndexChanged(object sender, EventArgs e)

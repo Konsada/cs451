@@ -169,7 +169,7 @@ namespace Yelp_Business_App
                                 // Append Close/Open values
                                 valuehb.Append(", ");
                                 if (q.GetValue(hours) != null)
-                                    valuehb.Append("\"" + r.GetValue(q.GetValue(hours)) + "\"");
+                                    valuehb.Append("\"" + TimeSpan.Parse((string)r.GetValue(q.GetValue(hours))).TotalHours.ToString() + "\"");
                                 else
                                     valuehb.Append("NULL");
                             }
@@ -343,7 +343,7 @@ namespace Yelp_Business_App
                                 // Append Close/Open values
                                 valuehb.Append(", ");
                                 if (q.GetValue(hours) != null)
-                                    valuehb.Append("\"" + r.GetValue(q.GetValue(hours)) + "\"");
+                                    valuehb.Append("\"" + TimeSpan.Parse((string)r.GetValue(q.GetValue(hours))).TotalHours.ToString() + "\"");
                                 else
                                     valuehb.Append("NULL");
                             }

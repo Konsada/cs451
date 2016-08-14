@@ -138,11 +138,17 @@
             this.addAttributeButton = new System.Windows.Forms.Button();
             this.attributeQueryListBox = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.hour = new System.Windows.Forms.CheckedListBox();
+            this.openLabel = new System.Windows.Forms.Label();
+            this.hour_open = new System.Windows.Forms.ComboBox();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.dayOfWeekLabel = new System.Windows.Forms.Label();
             this.day = new System.Windows.Forms.CheckedListBox();
             this.friends = new System.Windows.Forms.ListBox();
             this.username = new System.Windows.Forms.ComboBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.label33 = new System.Windows.Forms.Label();
+            this.hour_close = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             this.AddFilters.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -1230,7 +1236,13 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.hour);
+            this.tabPage3.Controls.Add(this.label33);
+            this.tabPage3.Controls.Add(this.hour_close);
+            this.tabPage3.Controls.Add(this.openLabel);
+            this.tabPage3.Controls.Add(this.hour_open);
+            this.tabPage3.Controls.Add(this.label32);
+            this.tabPage3.Controls.Add(this.label31);
+            this.tabPage3.Controls.Add(this.dayOfWeekLabel);
             this.tabPage3.Controls.Add(this.day);
             this.tabPage3.Controls.Add(this.friends);
             this.tabPage3.Controls.Add(this.username);
@@ -1242,10 +1254,23 @@
             this.tabPage3.Text = "Friends";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // hour
+            // openLabel
             // 
-            this.hour.FormattingEnabled = true;
-            this.hour.Items.AddRange(new object[] {
+            this.openLabel.AutoSize = true;
+            this.openLabel.Location = new System.Drawing.Point(225, 127);
+            this.openLabel.Name = "openLabel";
+            this.openLabel.Size = new System.Drawing.Size(48, 20);
+            this.openLabel.TabIndex = 9;
+            this.openLabel.Text = "Open";
+            // 
+            // hour_open
+            // 
+            this.hour_open.FormattingEnabled = true;
+            this.hour_open.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
             "5",
             "6",
             "7",
@@ -1266,10 +1291,37 @@
             "22",
             "23",
             "24"});
-            this.hour.Location = new System.Drawing.Point(286, 153);
-            this.hour.Name = "hour";
-            this.hour.Size = new System.Drawing.Size(153, 424);
-            this.hour.TabIndex = 3;
+            this.hour_open.Location = new System.Drawing.Point(229, 153);
+            this.hour_open.Name = "hour_open";
+            this.hour_open.Size = new System.Drawing.Size(121, 28);
+            this.hour_open.TabIndex = 8;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(539, 18);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(69, 20);
+            this.label32.TabIndex = 7;
+            this.label32.Text = "Friend\'s:";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(8, 18);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(68, 20);
+            this.label31.TabIndex = 6;
+            this.label31.Text = "User ID:";
+            // 
+            // dayOfWeekLabel
+            // 
+            this.dayOfWeekLabel.AutoSize = true;
+            this.dayOfWeekLabel.Location = new System.Drawing.Point(39, 127);
+            this.dayOfWeekLabel.Name = "dayOfWeekLabel";
+            this.dayOfWeekLabel.Size = new System.Drawing.Size(100, 20);
+            this.dayOfWeekLabel.TabIndex = 5;
+            this.dayOfWeekLabel.Text = "Day of Week";
             // 
             // day
             // 
@@ -1305,6 +1357,48 @@
             this.username.Size = new System.Drawing.Size(343, 28);
             this.username.TabIndex = 0;
             this.username.SelectedIndexChanged += new System.EventHandler(this.username_SelectedIndexChanged);
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(361, 127);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(49, 20);
+            this.label33.TabIndex = 11;
+            this.label33.Text = "Close";
+            // 
+            // hour_close
+            // 
+            this.hour_close.FormattingEnabled = true;
+            this.hour_close.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24"});
+            this.hour_close.Location = new System.Drawing.Point(365, 153);
+            this.hour_close.Name = "hour_close";
+            this.hour_close.Size = new System.Drawing.Size(121, 28);
+            this.hour_close.TabIndex = 10;
             // 
             // Form1
             // 
@@ -1354,6 +1448,7 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1475,7 +1570,13 @@
         private System.Windows.Forms.ListBox friends;
         private System.Windows.Forms.CheckBox friendsGo;
         private System.Windows.Forms.CheckedListBox day;
-        private System.Windows.Forms.CheckedListBox hour;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label dayOfWeekLabel;
+        private System.Windows.Forms.Label openLabel;
+        private System.Windows.Forms.ComboBox hour_open;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.ComboBox hour_close;
     }
 }
 
