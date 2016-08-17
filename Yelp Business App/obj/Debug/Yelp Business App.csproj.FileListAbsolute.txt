@@ -10,3 +10,7 @@ c:\users\keons_000\documents\visual studio 2015\Projects\Yelp Business App\Yelp 
 c:\users\keons_000\documents\visual studio 2015\Projects\Yelp Business App\Yelp Business App\obj\Debug\Yelp Business App.pdb
 C:\Users\keons_000\Documents\Visual Studio 2015\Projects\Yelp Business App\Yelp Business App\bin\Debug\Newtonsoft.Json.dll
 C:\Users\keons_000\Documents\Visual Studio 2015\Projects\Yelp Business App\Yelp Business App\bin\Debug\Newtonsoft.Json.xml
+C:\Users\keons_000\Documents\Visual Studio 2015\Projects\Yelp Business App\Yelp Business App\bin\Debug\Yelp Business App.exe.manifest
+C:\Users\keons_000\Documents\Visual Studio 2015\Projects\Yelp Business App\Yelp Business App\bin\Debug\Yelp Business App.application
+C:\Users\keons_000\Documents\Visual Studio 2015\Projects\Yelp Business App\Yelp Business App\obj\Debug\Yelp Business App.exe.manifest
+C:\Users\keons_000\Documents\Visual Studio 2015\Projects\Yelp Business App\Yelp Business App\obj\Debug\Yelp Business App.application

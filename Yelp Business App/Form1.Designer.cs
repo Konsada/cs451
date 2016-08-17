@@ -138,6 +138,8 @@
             this.addAttributeButton = new System.Windows.Forms.Button();
             this.attributeQueryListBox = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.hour_close = new System.Windows.Forms.ComboBox();
+            this.label33 = new System.Windows.Forms.Label();
             this.openLabel = new System.Windows.Forms.Label();
             this.hour_open = new System.Windows.Forms.ComboBox();
             this.label32 = new System.Windows.Forms.Label();
@@ -147,8 +149,6 @@
             this.friends = new System.Windows.Forms.ListBox();
             this.username = new System.Windows.Forms.ComboBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.label33 = new System.Windows.Forms.Label();
-            this.hour_close = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             this.AddFilters.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -258,7 +258,7 @@
             this.AddFilters.Location = new System.Drawing.Point(0, 33);
             this.AddFilters.Name = "AddFilters";
             this.AddFilters.SelectedIndex = 0;
-            this.AddFilters.Size = new System.Drawing.Size(1892, 659);
+            this.AddFilters.Size = new System.Drawing.Size(1892, 1005);
             this.AddFilters.TabIndex = 1;
             // 
             // tabPage1
@@ -879,7 +879,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1884, 626);
+            this.tabPage2.Size = new System.Drawing.Size(1884, 972);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Businesses Search";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1236,8 +1236,8 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.label33);
             this.tabPage3.Controls.Add(this.hour_close);
+            this.tabPage3.Controls.Add(this.label33);
             this.tabPage3.Controls.Add(this.openLabel);
             this.tabPage3.Controls.Add(this.hour_open);
             this.tabPage3.Controls.Add(this.label32);
@@ -1253,6 +1253,48 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Friends";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // hour_close
+            // 
+            this.hour_close.FormattingEnabled = true;
+            this.hour_close.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24"});
+            this.hour_close.Location = new System.Drawing.Point(365, 153);
+            this.hour_close.Name = "hour_close";
+            this.hour_close.Size = new System.Drawing.Size(121, 28);
+            this.hour_close.TabIndex = 12;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(361, 127);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(49, 20);
+            this.label33.TabIndex = 11;
+            this.label33.Text = "Close";
             // 
             // openLabel
             // 
@@ -1358,53 +1400,11 @@
             this.username.TabIndex = 0;
             this.username.SelectedIndexChanged += new System.EventHandler(this.username_SelectedIndexChanged);
             // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(361, 127);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(49, 20);
-            this.label33.TabIndex = 11;
-            this.label33.Text = "Close";
-            // 
-            // hour_close
-            // 
-            this.hour_close.FormattingEnabled = true;
-            this.hour_close.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24"});
-            this.hour_close.Location = new System.Drawing.Point(365, 153);
-            this.hour_close.Name = "hour_close";
-            this.hour_close.Size = new System.Drawing.Size(121, 28);
-            this.hour_close.TabIndex = 10;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1892, 692);
+            this.ClientSize = new System.Drawing.Size(1892, 1038);
             this.Controls.Add(this.AddFilters);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;

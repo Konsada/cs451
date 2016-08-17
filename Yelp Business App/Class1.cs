@@ -153,9 +153,9 @@ namespace Yelp_Business_App
                     }
                 }
                 dataReader.Close();
-                CloseConnection();
-                //qResult = attDict.Keys.ToList<String>();
             }
+            CloseConnection();
+            //qResult = attDict.Keys.ToList<String>();
             return qResult;
         }
 
