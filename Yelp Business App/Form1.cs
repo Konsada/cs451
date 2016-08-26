@@ -49,8 +49,6 @@ namespace Yelp_Business_App
             //usernameThread.Start();
             //initUsernames();
 
-            intitCategories();
-            initControls();
         }
         void init()
         {
@@ -64,15 +62,8 @@ namespace Yelp_Business_App
             }
             InitializeComponent();
             initControls();
-            if (!(attributeTreeView.Nodes.Count > 0))
-            {
-                string qstr = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'attributes';";
-                attributesList attributeTree = new attributesList();
-                foreach (string s in attributeTree.list)
-                {
-                    attributeTreeView.Nodes.Add(s);
-                }
-            }
+            intitCategories();
+            initAttributes();
 
             List<string> query = mydb.SQLSELECTExec("SELECT uid FROM friends GROUP BY uid");
             foreach (string s in query)
@@ -84,6 +75,18 @@ namespace Yelp_Business_App
             if (friends.Items.Count > 0)
                 friends.Items.Clear();
 
+        }
+        protected void initAttributes()
+        {
+            if (!(attributeTreeView.Nodes.Count > 0))
+            {
+                string qstr = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'attributes';";
+                attributesList attributeTree = new attributesList();
+                foreach (string s in attributeTree.list)
+                {
+                    attributeTreeView.Nodes.Add(s);
+                }
+            }
         }
         protected void initControls()
         {
@@ -1253,10 +1256,14 @@ namespace Yelp_Business_App
                         }
                         else
                         {
-                            qry = "(SELECT " + alphabet[alphaIndex] + ".* FROM bacfh " + alphabet[alphaIndex]
+                            /*
+                             qry = "(SELECT " + alphabet[alphaIndex] + ".* FROM bacfh " + alphabet[alphaIndex]
                                     + " WHERE " + alphabet[alphaIndex] + ".bid IN " + sub + " AND " + alphabet[alphaIndex] + ".category=\""
                                     + categoryQueryBusinessSearchListBox.Items[i] + "\")";
                             sub = qry;
+                            */
+                            qry += " AND IN (SELECT " + alphabet[alphaIndex] + ".bid FROM bacfh " + alphabet[alphaIndex]
+                                    + " WHERE " + alphabet[alphaIndex] + ".category=\"" + categoryQueryBusinessSearchListBox.Items[i] + "\")";
                             alphaIndex++;
                         }
                     }
@@ -1267,16 +1274,20 @@ namespace Yelp_Business_App
                     {
                         if (i == categoryQueryBusinessSearchListBox.Items.Count - 1) // last category in list; outer most subquery
                         {
-                            qry = "(SELECT " + alphabet[alphaIndex] + ".bid FROM bacfh " + alphabet[alphaIndex] + " WHERE " +
-                                alphabet[alphaIndex] + ".category=\"" + categoryQueryBusinessSearchListBox.Items[i] + "\")";
-                            sub = qry;
+                            qry = "(SELECT " + alphabet[alphaIndex] + ".bid FROM bacfh " + alphabet[alphaIndex] + " WHERE "
+                                + alphabet[alphaIndex] + ".category=\"" + categoryQueryBusinessSearchListBox.Items[i] + "\")";
+                            //sub = qry;
                             alphaIndex++;
                         }
                         else
                         {
-                            qry = "(SELECT " + alphabet[alphaIndex] + ".* FROM bacfh " + alphabet[alphaIndex] + " WHERE " + alphabet[alphaIndex] +
+                            /*
+                              qry = "(SELECT " + alphabet[alphaIndex] + ".* FROM bacfh " + alphabet[alphaIndex] + " WHERE " + alphabet[alphaIndex] +
                                 ".bid IN " + sub + " AND " + alphabet[alphaIndex] + ".category=\"" + categoryQueryBusinessSearchListBox.Items[i] + "\")";
                             sub = qry;
+                            */
+                            qry += " AND IN (SELECT " + alphabet[alphaIndex] + ".bid FROM bacfh " + alphabet[alphaIndex]
+                                + " WHERE " + alphabet[alphaIndex] + ".category=\"" + categoryQueryBusinessSearchListBox.Items[i] + "\")";
                             alphaIndex++;
                         }
                     }
@@ -1287,13 +1298,11 @@ namespace Yelp_Business_App
             if (null != catsQry) // if categories are selected
             {
                 qstr = "SELECT " + alphabet[alphaIndex] + ".bid, " + alphabet[alphaIndex] + ".name, " + alphabet[alphaIndex] + ".city, "
-                     + alphabet[alphaIndex] + ".state, " + alphabet[alphaIndex] + ".zipcode, " + alphabet[alphaIndex] + ".stars, "
-                      + alphabet[alphaIndex] + ".review_count, " + alphabet[alphaIndex] + ".uid FROM bacfh " + alphabet[alphaIndex]
+                      + alphabet[alphaIndex] + ".state, " + alphabet[alphaIndex] + ".zipcode, " + alphabet[alphaIndex] + ".stars, "
+                      + alphabet[alphaIndex] + ".review_count FROM bacfh " + alphabet[alphaIndex]
                       + " WHERE " + alphabet[alphaIndex] + ".bid IN " + catsQry;
                 if (qrys.Count > 0) // if there are any other queries other than categories/friends
                 {
-                    qstr += " GROUP BY " + alphabet[alphaIndex] + ".bid HAVING ";
-
                     for (int i = 0; i < qrys.Count; i++)
                     {
                         if (qrys[i].Contains("day=") && multiDay)
@@ -1307,14 +1316,7 @@ namespace Yelp_Business_App
                         }
                         else
                         {
-                            if (i == 0)
-                            {
-                                qstr += alphabet[alphaIndex] + "." + qrys[i];
-                            }
-                            else
-                            {
-                                qstr += " AND " + alphabet[alphaIndex] + "." + qrys[i];
-                            }
+                            qstr += " AND " + alphabet[alphaIndex] + "." + qrys[i];
                         }
                     }
                 }
@@ -1323,7 +1325,7 @@ namespace Yelp_Business_App
             {
                 qstr += "SELECT " + alphabet[alphaIndex] + ".bid, " + alphabet[alphaIndex] + ".name, " + alphabet[alphaIndex] + ".city, "
                      + alphabet[alphaIndex] + ".state, " + alphabet[alphaIndex] + ".zipcode, " + alphabet[alphaIndex] + ".stars, "
-                      + alphabet[alphaIndex] + ".review_count, " + alphabet[alphaIndex] + ".uid FROM bacfh " + alphabet[alphaIndex] +
+                      + alphabet[alphaIndex] + ".review_count FROM bacfh " + alphabet[alphaIndex] +
                       " WHERE " + alphabet[alphaIndex] + ".uid IN " + friendsQry;
                 if (qrys.Count > 0)
                 {
@@ -1349,12 +1351,7 @@ namespace Yelp_Business_App
             {
                 qstr += "SELECT " + alphabet[alphaIndex] + ".bid, " + alphabet[alphaIndex] + ".name, " + alphabet[alphaIndex] + ".city, "
                      + alphabet[alphaIndex] + ".state, " + alphabet[alphaIndex] + ".zipcode, " + alphabet[alphaIndex] + ".stars, "
-                     + alphabet[alphaIndex] + ".review_count, " + alphabet[alphaIndex] + ".uid FROM bacfh " + alphabet[alphaIndex] +
-                     " GROUP BY " + alphabet[alphaIndex] + ".bid ";
-                if (qrys.Count > 0)
-                {
-                    qstr += "HAVING ";
-                }
+                     + alphabet[alphaIndex] + ".review_count FROM bacfh " + alphabet[alphaIndex] + " WHERE ";
                 for (int i = 0; i < qrys.Count; i++)
                 {
                     if (i == 0)
@@ -1378,14 +1375,7 @@ namespace Yelp_Business_App
                         }
                         else
                         {
-                            if(i == 0)
-                            {
-                                qstr += alphabet[alphaIndex] + "." + qrys[i];
-                            }
-                            else
-                            {
-                                qstr += " AND " + alphabet[alphaIndex] + "." + qrys[i];
-                            }
+                            qstr += " AND " + alphabet[alphaIndex] + "." + qrys[i];
                         }
                     }
                 }
@@ -1394,9 +1384,9 @@ namespace Yelp_Business_App
             {
                 qstr = "SELECT " + alphabet[alphaIndex] + ".bid, " + alphabet[alphaIndex] + ".name, " + alphabet[alphaIndex] + ".city, "
                      + alphabet[alphaIndex] + ".state, " + alphabet[alphaIndex] + ".zipcode, " + alphabet[alphaIndex] + ".stars, "
-                      + alphabet[alphaIndex] + ".review_count, " + alphabet[alphaIndex] + ".uid FROM bacfh " + alphabet[alphaIndex];
+                      + alphabet[alphaIndex] + ".review_count FROM bacfh " + alphabet[alphaIndex];
             }
-
+            qstr += " GROUP BY " + alphabet[alphaIndex] + ".bid";
             try
             {
                 businessSearchResultsDataGridView.DataSource = mydb.SQLDATATABLEExec(qstr);

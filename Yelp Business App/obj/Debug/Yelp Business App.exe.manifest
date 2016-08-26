@@ -66,14 +66,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Yelp Business App.exe" size="154072">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Yelp Business App.exe" size="153560">
       <assemblyIdentity name="Yelp Business App" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Sigp+US4ND0HrgHG9HED81yo7uNgNqzuy5ytFptKYPI=</dsig:DigestValue>
+        <dsig:DigestValue>NF+18CH05OKaI9AVSGyY/QZ4+Q0vxufY4x8DCj/Zf14=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
