@@ -276,7 +276,7 @@
             this.AddFilters.Location = new System.Drawing.Point(0, 33);
             this.AddFilters.Name = "AddFilters";
             this.AddFilters.SelectedIndex = 0;
-            this.AddFilters.Size = new System.Drawing.Size(1892, 1005);
+            this.AddFilters.Size = new System.Drawing.Size(1892, 995);
             this.AddFilters.TabIndex = 1;
             // 
             // tabPage1
@@ -288,7 +288,7 @@
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(1884, 972);
+            this.tabPage1.Size = new System.Drawing.Size(1884, 962);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Business Demographics";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -897,7 +897,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1884, 972);
+            this.tabPage2.Size = new System.Drawing.Size(1884, 962);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Businesses Search";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1422,7 +1422,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1892, 1038);
+            this.ClientSize = new System.Drawing.Size(1892, 1028);
             this.Controls.Add(this.AddFilters);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;

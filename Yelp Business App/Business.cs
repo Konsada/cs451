@@ -73,19 +73,32 @@ namespace Yelp_Business_App
                 }
                 else if (p.Name == "attributes")
                 {
-                    StringBuilder insertab = new StringBuilder("INSERT INTO attributes (bid");
-                    StringBuilder valueab = new StringBuilder("VALUES (\"" + business_id + "\"");
+                    StringBuilder insertab = new StringBuilder("INSERT INTO attributes (bid, attribute, value) VALUES \r\n");
+                    StringBuilder valueab = new StringBuilder();
                     foreach (PropertyInfo q in typeof(Attributes).GetProperties())
                     {
+
                         if (q.Name == "Music")
                         {
                             if (attributes.Music != null)
                             {
-                                foreach (string k in this.attributes.Music.Keys)
+                                for (int i = 0; i < attributes.Music.Keys.Count; i++)
                                 {
-                                    insertab.Append(", " + k);
-                                    valueab.Append(", " + attributes.Music[k]);
-                                    //aTable.Add(k);
+                                    if (attributes.Music[attributes.Music.Keys.ElementAt(i)] != false)
+                                    {
+                                        valueab.Append("(\"" + business_id + "\"");
+                                        if (i == 0)
+                                        {
+                                            valueab.Append(", \"Music\"");
+                                            valueab.Append(", \"" + attributes.Music.Keys.ElementAt(i) + "\")");
+                                        }
+                                        else
+                                        {
+                                            valueab.Append(", \"Music\"");
+                                            valueab.Append(", \"" + attributes.Music.Keys.ElementAt(i) + "\")");
+                                        }
+                                        valueab.Append(",\r\n");
+                                    }
                                 }
                             }
                         }
@@ -93,11 +106,23 @@ namespace Yelp_Business_App
                         {
                             if (attributes.Ambience != null)
                             {
-                                foreach (string k in this.attributes.Ambience.Keys)
+                                for (int i = 0; i < attributes.Ambience.Keys.Count; i++)
                                 {
-                                    insertab.Append(", " + k);
-                                    valueab.Append(", " + attributes.Ambience[k]);
-                                    //aTable.Add(k);
+                                    if (attributes.Ambience[attributes.Ambience.Keys.ElementAt(i)] != false)
+                                    {
+                                        valueab.Append("(\"" + business_id + "\"");
+                                        if (i == 0)
+                                        {
+                                            valueab.Append(", \"Ambience\"");
+                                            valueab.Append(", \"" + attributes.Ambience.Keys.ElementAt(i) + "\")");
+                                        }
+                                        else
+                                        {
+                                            valueab.Append(", \"Ambience\"");
+                                            valueab.Append(", \"" + attributes.Ambience.Keys.ElementAt(i) + "\")");
+                                        }
+                                        valueab.Append(",\r\n");
+                                    }
                                 }
                             }
                         }
@@ -105,11 +130,24 @@ namespace Yelp_Business_App
                         {
                             if (attributes.Goodfor != null)
                             {
-                                foreach (string k in this.attributes.Goodfor.Keys)
+                                for (int i = 0; i < attributes.Goodfor.Keys.Count; i++)
                                 {
-                                    insertab.Append(", " + k);
-                                    valueab.Append(", " + attributes.Goodfor[k]);
-                                    //aTable.Add(k);
+                                    if (attributes.Goodfor[attributes.Goodfor.Keys.ElementAt(i)] != false)
+                                    {
+                                        valueab.Append("(\"" + business_id + "\"");
+                                        if (i == 0)
+                                        {
+                                            valueab.Append(", \"Goodfor\"");
+                                            valueab.Append(", \"" + attributes.Goodfor.Keys.ElementAt(i) + "\")");
+                                        }
+                                        else
+                                        {
+                                            valueab.Append(", \"Goodfor\"");
+                                            valueab.Append(", \"" + attributes.Goodfor.Keys.ElementAt(i) + "\")");
+                                        }
+
+                                        valueab.Append(",\r\n");
+                                    }
                                 }
                             }
                         }
@@ -117,17 +155,30 @@ namespace Yelp_Business_App
                         {
                             if (attributes.Parking != null)
                             {
-                                foreach (string k in attributes.Parking.Keys)
+                                for (int i = 0; i < attributes.Parking.Keys.Count; i++)
                                 {
-                                    insertab.Append(", " + k);
-                                    valueab.Append(", " + attributes.Parking[k]);
-                                    //aTable.Add(k);
+                                    if (attributes.Parking[attributes.Parking.Keys.ElementAt(i)] != false)
+                                    {
+                                        valueab.Append("(\"" + business_id + "\"");
+                                        if (i == 0)
+                                        {
+                                            valueab.Append(", \"Parking\"");
+                                            valueab.Append(", \"" + attributes.Parking.Keys.ElementAt(i) + "\")");
+                                        }
+                                        else
+                                        {
+                                            valueab.Append(", \"Parking\"");
+                                            valueab.Append(", \"" + attributes.Parking.Keys.ElementAt(i) + "\")");
+                                        }
+                                        valueab.Append(",\r\n");
+                                    }
                                 }
                             }
                         }
                         else
                         {
-                            insertab.Append(", " + q.Name);
+                            valueab.Append("(\"" + business_id + "\"");
+                            valueab.Append(", \"" + q.Name + "\"");
                             valueab.Append(", ");
                             if (q.PropertyType == typeof(string))
                             {
@@ -135,13 +186,14 @@ namespace Yelp_Business_App
                             }
                             else
                                 valueab.Append(q.GetValue(attributes));
-                            //valuesb.Append(this.attributes.GetType().GetProperty(q.ToString()).GetValue(this.attributes, null));
-                            //aTable.Add(q.Name);
+                            valueab.Append("),\r\n");
+
                         }
                     }
-                    insertab.Append(") ");
+                    valueab.Remove(valueab.Length - 3, 3);
+                    //insertab.Append(") ");
                     ab.Append(insertab);
-                    ab.Append(valueab + ");\r\n");
+                    ab.Append(valueab + ",\r\n");
                 }
 
                 else if (p.Name == "hours")
@@ -152,13 +204,13 @@ namespace Yelp_Business_App
 
                     foreach (PropertyInfo q in typeof(Hours).GetProperties())
                     {
-                        if(!valuehb.Equals(new StringBuilder("VALUES ")))
+                        if (!valuehb.Equals(new StringBuilder("VALUES ")))
                         {
                             valuehb.Append(",\r\n");
                         }
                         valuehb.Append("(\"" + business_id + "\"");
-                        
-                        
+
+
                         valuehb.Append(", ");
                         valuehb.Append("\"" + q.Name + "\"");
 
@@ -253,21 +305,112 @@ namespace Yelp_Business_App
                 {
 
                 }
+                /*else if (p.Name == "attributes")
+                                {
+                                    StringBuilder insertab = new StringBuilder("INSERT INTO attributes(bid");
+                                    StringBuilder valueab = new StringBuilder("VALUES (\"" + business_id + "\"");
+                                    foreach (PropertyInfo q in typeof(Attributes).GetProperties())
+                                    {
+                                        if (q.Name == "Music")
+                                        {
+                                            if (attributes.Music != null)
+                                            {
+                                                foreach (string k in this.attributes.Music.Keys)
+                                                {
+                                                    insertab.Append(", " + k);
+                                                    valueab.Append(", " + attributes.Music[k]);
+                                                    //aTable.Add(k);
+                                                }
+                                            }
+                                        }
+                                        else if (q.Name == "Ambience")
+                                        {
+                                            if (attributes.Ambience != null)
+                                            {
+                                                foreach (string k in this.attributes.Ambience.Keys)
+                                                {
+                                                    insertab.Append(", " + k);
+                                                    valueab.Append(", " + attributes.Ambience[k]);
+                                                    //aTable.Add(k);
+                                                }
+                                            }
+                                        }
+                                        else if (q.Name == "Goodfor")
+                                        {
+                                            if (attributes.Goodfor != null)
+                                            {
+                                                foreach (string k in this.attributes.Goodfor.Keys)
+                                                {
+                                                    insertab.Append(", " + k);
+                                                    valueab.Append(", " + attributes.Goodfor[k]);
+                                                    //aTable.Add(k);
+                                                }
+                                            }
+                                        }
+                                        else if (q.Name == "Parking")
+                                        {
+                                            if (attributes.Parking != null)
+                                            {
+                                                foreach (string k in attributes.Parking.Keys)
+                                                {
+                                                    insertab.Append(", " + k);
+                                                    valueab.Append(", " + attributes.Parking[k]);
+                                                    //aTable.Add(k);
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            insertab.Append(", " + q.Name);
+                                            valueab.Append(", ");
+                                            if (q.PropertyType == typeof(string))
+                                            {
+                                                valueab.Append("\"" + q.GetValue(this.attributes) + "\"");
+                                            }
+                                            else
+                                                valueab.Append(q.GetValue(this.attributes));
+                                            //valuesb.Append(this.attributes.GetType().GetProperty(q.ToString()).GetValue(this.attributes, null));
+                                            //aTable.Add(q.Name);
+                                        }
+                                    }
+                                    insertab.Append(") ");
+                                    ab.Append(insertab);
+                                    ab.Append(valueab + ");\r\n");
+                                }
+                                */
                 else if (p.Name == "attributes")
                 {
-                    StringBuilder insertab = new StringBuilder("INSERT INTO attributes(bid");
-                    StringBuilder valueab = new StringBuilder("VALUES (\"" + business_id + "\"");
+                    StringBuilder valueab = new StringBuilder();
                     foreach (PropertyInfo q in typeof(Attributes).GetProperties())
                     {
                         if (q.Name == "Music")
                         {
                             if (attributes.Music != null)
                             {
+                                /*
                                 foreach (string k in this.attributes.Music.Keys)
                                 {
-                                    insertab.Append(", " + k);
+                                    valueab.Append(", " + k);
                                     valueab.Append(", " + attributes.Music[k]);
-                                    //aTable.Add(k);
+                                }
+                                */
+                                for (int i = 0; i < attributes.Music.Keys.Count; i++)
+                                {
+                                    if (attributes.Music[attributes.Music.Keys.ElementAt(i)] != false)
+                                    {
+                                        valueab.Append("(\"" + business_id + "\"");
+                                        if (i == 0)
+                                        {
+                                            valueab.Append(", \"Music\"");
+                                            valueab.Append(", \"" + attributes.Music.Keys.ElementAt(i) + "\")");
+                                        }
+                                        else
+                                        {
+                                            valueab.Append(", \"Music\"");
+                                            valueab.Append(", \"" + attributes.Music.Keys.ElementAt(i) + "\")");
+                                        }
+                                        valueab.Append(",\r\n");
+                                    }
                                 }
                             }
                         }
@@ -275,11 +418,23 @@ namespace Yelp_Business_App
                         {
                             if (attributes.Ambience != null)
                             {
-                                foreach (string k in this.attributes.Ambience.Keys)
+                                for (int i = 0; i < attributes.Ambience.Keys.Count; i++)
                                 {
-                                    insertab.Append(", " + k);
-                                    valueab.Append(", " + attributes.Ambience[k]);
-                                    //aTable.Add(k);
+                                    if (attributes.Ambience[attributes.Ambience.Keys.ElementAt(i)] != false)
+                                    {
+                                        valueab.Append("(\"" + business_id + "\"");
+                                        if (i == 0)
+                                        {
+                                            valueab.Append(", \"Ambience\"");
+                                            valueab.Append(", \"" + attributes.Ambience.Keys.ElementAt(i) + "\")");
+                                        }
+                                        else
+                                        {
+                                            valueab.Append(", \"Ambience\"");
+                                            valueab.Append(", \"" + attributes.Ambience.Keys.ElementAt(i) + "\")");
+                                        }
+                                        valueab.Append(",\r\n");
+                                    }
                                 }
                             }
                         }
@@ -287,11 +442,23 @@ namespace Yelp_Business_App
                         {
                             if (attributes.Goodfor != null)
                             {
-                                foreach (string k in this.attributes.Goodfor.Keys)
+                                for (int i = 0; i < attributes.Goodfor.Keys.Count; i++)
                                 {
-                                    insertab.Append(", " + k);
-                                    valueab.Append(", " + attributes.Goodfor[k]);
-                                    //aTable.Add(k);
+                                    if (attributes.Goodfor[attributes.Goodfor.Keys.ElementAt(i)] != false)
+                                    {
+                                        valueab.Append("(\"" + business_id + "\"");
+                                        if (i == 0)
+                                        {
+                                            valueab.Append(", \"Goodfor\"");
+                                            valueab.Append(", \"" + attributes.Goodfor.Keys.ElementAt(i) + "\")");
+                                        }
+                                        else
+                                        {
+                                            valueab.Append(", \"Goodfor\"");
+                                            valueab.Append(", \"" + attributes.Goodfor.Keys.ElementAt(i) + "\")");
+                                        }
+                                        valueab.Append(",\r\n");
+                                    }
                                 }
                             }
                         }
@@ -299,33 +466,43 @@ namespace Yelp_Business_App
                         {
                             if (attributes.Parking != null)
                             {
-                                foreach (string k in attributes.Parking.Keys)
+                                for (int i = 0; i < attributes.Parking.Keys.Count; i++)
                                 {
-                                    insertab.Append(", " + k);
-                                    valueab.Append(", " + attributes.Parking[k]);
-                                    //aTable.Add(k);
+                                    if (attributes.Parking[attributes.Parking.Keys.ElementAt(i)] != false)
+                                    {
+                                        valueab.Append("(\"" + business_id + "\"");
+                                        if (i == 0)
+                                        {
+                                            valueab.Append(", \"Parking\"");
+                                            valueab.Append(", \"" + attributes.Parking.Keys.ElementAt(i) + "\")");
+                                        }
+                                        else
+                                        {
+                                            valueab.Append(", \"Parking\"");
+                                            valueab.Append(", \"" + attributes.Parking.Keys.ElementAt(i) + "\")");
+                                        }
+                                        valueab.Append(",\r\n");
+                                    }
                                 }
                             }
                         }
                         else
                         {
-                            insertab.Append(", " + q.Name);
+                            valueab.Append("(\"" + business_id + "\"");
+                            valueab.Append(", \"" + q.Name + "\"");
                             valueab.Append(", ");
                             if (q.PropertyType == typeof(string))
                             {
-                                valueab.Append("\"" + q.GetValue(this.attributes) + "\"");
+                                valueab.Append("\"" + q.GetValue(attributes) + "\"");
                             }
                             else
-                                valueab.Append(q.GetValue(this.attributes));
-                            //valuesb.Append(this.attributes.GetType().GetProperty(q.ToString()).GetValue(this.attributes, null));
-                            //aTable.Add(q.Name);
+                                valueab.Append(q.GetValue(attributes));
+                            valueab.Append("),\r\n");
                         }
                     }
-                    insertab.Append(") ");
-                    ab.Append(insertab);
-                    ab.Append(valueab + ");\r\n");
+                    valueab.Remove(valueab.Length - 2, 2);
+                    ab.Append(valueab + "\r\n");
                 }
-
                 else if (p.Name == "hours")
                 {
                     ///Worry about later, maybe make a table with bid and hours

@@ -47,12 +47,13 @@ namespace Yelp_Business_App
         private void Initialize()
         {
             server = "127.0.0.1";
-            database = "db";
+            //database = "db1";
             uid = "root";
             password = "password";
             demographicsTableName = "demographics";
             //string connectionString = "server=" + server + ";" + "user id=" + uid + ";" + "password=" + password + ";" + "persistsecurityinfo=True;" + "database=" + database + ";";
-            string connectionString = "server=" + server + ";" + "database=" + database + ";" + "uid=" + uid + ";" + "password=" + password + ";";
+            //string connectionString = "server=" + server + ";" + "database=" + database + ";" + "uid=" + uid + ";" + "password=" + password + ";";
+            string connectionString = "server=" + server + ";" + "uid=" + uid + ";" + "password=" + password + ";";
             connection = new MySqlConnection(connectionString);
         }
 

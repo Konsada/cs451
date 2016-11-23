@@ -36,11 +36,7 @@ namespace Yelp_Business_App
         {
             init();
             //mydb = new MySql_Connection("localhost", "root", "password");
-            //databaseInit("db");
-            //tablesInit();
             //mydb.demographicsTableName = "demographics";
-            //demographicInit();
-            //populateTables();
             //InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
             UpdateStateComboBoxes();
@@ -55,7 +51,15 @@ namespace Yelp_Business_App
             //businessInit();
             //reviewInit();
             //userInit();
-
+            //databaseInit("db2");
+            //tablesInit();
+            //demographicInit();
+            //populateTables();
+            if(mydb.database == null)
+            {
+                mydb.NewConnection(mydb.server, "db2", mydb.uid, mydb.password);
+            }
+            
             for (int i = 0; i < 26; i++)
             {
                 alphabet[i] = ((char)('A' + i)).ToString();
@@ -64,25 +68,17 @@ namespace Yelp_Business_App
             initControls();
             intitCategories();
             initAttributes();
-
-            List<string> query = mydb.SQLSELECTExec("SELECT uid FROM friends GROUP BY uid");
-            foreach (string s in query)
-                username.Items.Add(s);
-
-            hour_open.Hide();
-            hour_close.Hide();
-            username.SelectedIndex = 0;
-            if (friends.Items.Count > 0)
-                friends.Items.Clear();
-
+            initUsernames();
         }
         protected void initAttributes()
         {
             if (!(attributeTreeView.Nodes.Count > 0))
             {
-                string qstr = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'attributes';";
-                attributesList attributeTree = new attributesList();
-                foreach (string s in attributeTree.list)
+                string qstr = "SELECT DISTINCT attribute FROM attributes GROUP BY attribute";
+                //attributesList attributeTree = new attributesList();
+                List<string> attributeTree = new List<string>();
+                attributeTree = mydb.SQLSELECTExec(qstr, "attribute");
+                foreach (string s in attributeTree)
                 {
                     attributeTreeView.Nodes.Add(s);
                 }
@@ -133,6 +129,10 @@ namespace Yelp_Business_App
                 maxReviewsComboBox.Items.Add(500);
                 maxReviewsComboBox.Items.Add("1000 +");
             }
+            hour_open.Hide();
+            hour_close.Hide();
+            if (friends.Items.Count > 0)
+                friends.Items.Clear();
         }
         protected void intitCategories()
         {
@@ -163,13 +163,15 @@ namespace Yelp_Business_App
                     {
                         Business biz = JsonConvert.DeserializeObject<Business>(contents);
                         //HashSet <string> atts = new HashSet<string>();
-                        if (count % 15000 == 0)
+                        if (count % 1500000 == 0)
                         {
                             if (count > 0)
                             {
                                 sb.Append(";\r\n");
                                 cb.Append(";\r\n");
                                 hb.Append(";\r\n");
+                                ab.Remove(ab.Length - 3, 1);
+                                ab.Append(";\r\n");
                                 outfile.Write(sb);
                                 outfile.Write(cb);
                                 sb.Clear();
@@ -198,6 +200,7 @@ namespace Yelp_Business_App
 
                     outfile.Write(sb);
                     outfile.Write(cb);
+                    ab.Replace(',', ';', ab.Length - 3, 1);
                     outfile.Write(ab);
                     outfile.Write(hb);
                 }
@@ -350,8 +353,17 @@ namespace Yelp_Business_App
         }
         protected void databaseInit(string newdatabase)
         {
+            mydb.SQLNonQueryExec("DROP TABLE IF EXISTS " + newdatabase + ".Demographics");
+            mydb.SQLNonQueryExec("DROP TABLE IF EXISTS " + newdatabase + ".Businesses");
+            mydb.SQLNonQueryExec("DROP TABLE IF EXISTS " + newdatabase + ".Attributes");
+            mydb.SQLNonQueryExec("DROP TABLE IF EXISTS " + newdatabase + ".Categories");
+            mydb.SQLNonQueryExec("DROP TABLE IF EXISTS " + newdatabase + ".Users");
+            mydb.SQLNonQueryExec("DROP TABLE IF EXISTS " + newdatabase + ".Hours");
+            mydb.SQLNonQueryExec("DROP TABLE IF EXISTS " + newdatabase + ".Reviews");
+            mydb.SQLNonQueryExec("DROP TABLE IF EXISTS " + newdatabase + ".Friends");
+
             mydb.SQLNonQueryExec("DROP DATABASE IF EXISTS " + newdatabase);
-            mydb.SQLNonQueryExec("CREATE DATABASE IF NOT EXISTS " + newdatabase);
+            mydb.SQLNonQueryExec("CREATE DATABASE " + newdatabase);
             mydb.NewConnection(mydb.server, newdatabase, mydb.uid, mydb.password);
             mydb.SQLNonQueryExec("USE " + newdatabase);
         }
@@ -517,12 +529,12 @@ namespace Yelp_Business_App
         }
         protected void initUsernames()
         {
-            string qstr = "SELECT uid FROM friends GROUP BY name";
-            List<String> qResult = mydb.SQLSELECTExec(qstr, "uid");
-            foreach (string user in qResult)
-            {
-                username.Items.Add(user);
-            }
+
+            List<string> query = mydb.SQLSELECTExec("SELECT uid FROM friends GROUP BY uid");
+            foreach (string s in query)
+                username.Items.Add(s);
+            username.SelectedIndex = 0;
+
         }
         private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
@@ -880,266 +892,6 @@ namespace Yelp_Business_App
         private void updateBusinessSearchButton_Click(object sender, EventArgs e)
         {
             masterUpdateButton_Click();
-            // if (businessSearchResultsDataGridView.Rows.Count > 0)
-            // {
-            //     businessSearchResultsDataGridView.DataSource = null;
-            //     businessSearchResultsDataGridView.Refresh();
-            // }
-            //string qstr = "SELECT bid, name, city, state, zipcode, stars, review_count, uid FROM bacfh WHERE";
-
-            // if (stateBusinessSearchComboBox.SelectedItem != null)
-            // {
-            //     qstr += " state = '" + stateBusinessSearchComboBox.SelectedItem.ToString() + "'";
-            // }
-            // if (cityBusinessSearchListBox.SelectedItem != null)
-            // {
-            //     qstr += " AND city = '" + cityBusinessSearchListBox.SelectedItem.ToString() + "'";
-            // }
-            // if (zipcodeBusinessSearchListBox.SelectedItem != null)
-            // {
-            //     qstr += " AND zipcode = '" + zipcodeBusinessSearchListBox.SelectedItem.ToString() + "'";
-            // }
-            // if (minRatingComboBox.SelectedIndex > -1)
-            // {
-            //     qstr += " AND stars >= " + minRatingComboBox.SelectedItem;
-            // }
-            // if (maxRatingComboBox.SelectedIndex > -1)
-            // {
-            //     qstr += " AND stars <= " + maxRatingComboBox.SelectedItem;
-            // }
-            // if (minReviewsComboBox.SelectedIndex > -1)
-            // {
-            //     if (minReviewsComboBox.SelectedIndex == 6)
-            //     {
-            //         qstr += " AND review_count >= 1000";
-            //     }
-            //     else
-            //     {
-            //         qstr += " AND review_count >= " + minReviewsComboBox.SelectedItem;
-            //     }
-            // }
-            // if (maxReviewsComboBox.SelectedIndex > -1)
-            // {
-            //     if (maxReviewsComboBox.SelectedIndex == 6)
-            //     {
-            //         qstr += " AND review_count <= 1000";
-            //     }
-            //     else
-            //     {
-            //         qstr += " AND review_count <= " + maxReviewsComboBox.SelectedItem;
-            //     }
-            // }
-            // if (attributeQueryListBox.Items.Count > 0)
-            // {
-            //     foreach (string s in attributeQueryListBox.Items)
-            //     {
-            //         if(qstr == "SELECT bid, name, city, state, zipcode, stars, review_count, uid FROM bacfh WHERE")
-            //         {
-            //             qstr += " " + s + " = " + attributeDict[s];
-            //         }
-            //         else
-            //             qstr += " AND " + s + " = " + attributeDict[s];
-            //     }
-            // }
-
-            // /***************** CREATE HOURSVIEW (ocView) ***********************/
-            // string[] ocViewList = new string[day.CheckedItems.Count];
-            // string[] ocQStrList = new string[day.CheckedItems.Count];
-            // string ocQStr = null;
-            // if (day.CheckedItems.Count > 0)
-            // {
-            //     if (day.CheckedItems.Count > 1)
-            //     {
-            //         int i = 0;
-            //         foreach (string s in day.CheckedItems)
-            //         {
-            //             ocViewList[i] = s + "View";
-            //             ocQStrList[i] = "CREATE OR REPLACE VIEW " + ocViewList[i] + " AS SELECT bid FROM hours WHERE day=\"" + s +
-            //                 "\"";
-            //             if(hour_open.SelectedIndex > 0)
-            //             {
-            //                 ocQStrList[i] += " AND open<=" + hour_open.SelectedItem;
-            //             }
-            //             if(hour_close.SelectedIndex > 0)
-            //             {
-            //                 ocQStrList[i] += " AND close>=" + hour_close.SelectedItem;
-            //             }
-            //             mydb.SQLNonQueryExec(ocQStrList[i] + " GROUP BY bid");
-            //             i++;
-            //         }
-            //     }
-            //     else // only one day selected
-            //     {
-            //         ocQStrList[0] = "CREATE OR REPLACE VIEW " + day.CheckedItems[0] + "View AS SELECT bid FROM hours WHERE day=\"" +
-            //             day.CheckedItems[0] + "\"";
-            //         if (hour_open.SelectedIndex > 0)
-            //         {
-            //             ocQStrList[0] += " AND open<=" + hour_open.SelectedItem;
-            //         }
-            //         if (hour_close.SelectedIndex > 0)
-            //         {
-            //             ocQStrList[0] += " AND close>=" + hour_close.SelectedItem;
-            //         }
-            //         mydb.SQLNonQueryExec(ocQStrList[0] + "GROUP BY bid");
-            //     }
-            //     /****************  Create ocView **********************/
-            //     ocQStr = "CREATE OR REPLACE VIEW ocView AS ";
-            //     if (ocViewList.Length < 2)
-            //         ocViewList[0] = "hours ";
-            //     for (int i = 0; i < ocViewList.Count(); i++)
-            //     {
-            //         ocQStr += "(SELECT * FROM " + ocViewList[i];
-            //         if((i+1) < ocViewList.Count())
-            //         {
-            //             ocQStr += " WHERE EXISTS ";
-            //         }
-            //     }
-            //     for (int i = 0; i < ocViewList.Count(); i++)
-            //     {
-            //         if (i == ocViewList.Count() - 1)
-            //         {
-            //             ocQStr += " GROUP BY bid)";
-
-            //         }
-            //         else
-            //         {
-            //             ocQStr += ")";
-            //         }
-            //     }
-            //     mydb.SQLNonQueryExec(ocQStr); // makes ocView
-            // }
-            // else if(hour_open.SelectedIndex > 0) // only hours selected
-            // {
-            //     ocQStr = "CREATE OR REPLACE VIEW ocView VIEW AS ";
-            //     ocQStr += " SELECT * FROM hours WHERE";
-            //     if(hour_close.SelectedIndex > 0)
-            //     {
-            //         ocQStr += " close>=" + hour_close.SelectedValue;
-            //     }
-            //     ocQStr += " open<=" + hour_open.SelectedValue;
-            // }
-            // /************** CREATE friendsView *************/
-            // string friendsView = null;
-            // if (username.SelectedIndex > 0 && friends.Items.Count > 0)
-            // {
-            //     friendsView = "CREATE OR REPLACE VIEW friendsView AS SELECT A.* FROM bacfh A WHERE A.uid IN (SELECT B.fid FROM friends B WHERE uid=\"" + 
-            //         username.SelectedItem + "\") GROUP BY A.bid";
-            //     mydb.SQLNonQueryExec(friendsView);
-            // }
-            // /************** MANY CAT **********************/
-            // if (categoryQueryBusinessSearchListBox.Items.Count > 1)
-            // {
-            //     string[] catViews = new string[categoryQueryBusinessSearchListBox.Items.Count];
-            //     string[] catViewQuery = new string[categoryQueryBusinessSearchListBox.Items.Count];
-            //     string newQStr = "SELECT * FROM ";
-            //     for(int i = 0; i < categoryQueryBusinessSearchListBox.Items.Count; i++)
-            //     {
-            //         //catViews[i] += categoryQueryBusinessSearchListBox.Items[i] + "View";
-            //         catViews[i] += Regex.Replace((string)categoryQueryBusinessSearchListBox.Items[i], @"[^\w]", string.Empty) + "View";
-            //         if (qstr == "SELECT bid, name, city, state, zipcode, stars, review_count, uid FROM bacfh WHERE")
-            //             catViewQuery[i] += "CREATE OR REPLACE VIEW " + catViews[i] + " AS " + qstr + " category = '" + categoryQueryBusinessSearchListBox.Items[i] + "' GROUP BY bid";
-            //         else
-            //         {
-            //             catViewQuery[i] += "CREATE OR REPLACE VIEW " + catViews[i] + " AS " + qstr + " AND category = '" + categoryQueryBusinessSearchListBox.Items[i] + "' GROUP BY bid";
-            //         }
-            //         mydb.SQLNonQueryExec(catViewQuery[i]);
-
-            //         newQStr += catViews[i];  // add list item
-
-            //         if(i < (catViews.Count() - 1)) // check if last item in list
-            //         {
-            //             newQStr += " WHERE bid IN (SELECT bid FROM ";
-            //         }
-            //     }
-            //     // add 
-            //     // CLOSE PARENTHESES
-            //     for (int i = 0; i < catViews.Count() - 1; i++)
-            //     {
-            //         newQStr += ")";
-            //     }
-            //     newQStr += " GROUP BY bid";
-            //     qstr = newQStr;
-            // }
-            // /************* ONE CAT ****************************/
-            // else if (categoryQueryBusinessSearchListBox.Items.Count < 2)
-            // {
-            //     if (categoryQueryBusinessSearchListBox.Items.Count > 0)
-            //         if (qstr == "SELECT bid, name, city, state, zipcode, stars, review_count, uid FROM bacfh WHERE")
-            //         {
-            //             qstr += " category = '" + categoryQueryBusinessSearchListBox.Items[0].ToString() + "'";
-            //         }
-            //         else
-            //         {
-            //             qstr += " AND category = '" + categoryQueryBusinessSearchListBox.Items[0].ToString() + "'";
-            //         }
-            // }
-
-            // //mydb.SQLNonQueryExec("CREATE OR REPLACE VIEW testView AS " + qstr);
-
-            // if(qstr == "SELECT bid, name, city, state, zipcode, stars, review_count, uid FROM bacfh WHERE")
-            // {
-            //     qstr = "SELECT bid, name, city, state, zipcode, stars, review_count, uid FROM bacfh";
-            // }
-            // mydb.SQLNonQueryExec("CREATE OR REPLACE VIEW tempView AS " + qstr);
-
-            // if(null != ocQStr)
-            // {
-            //     if(null != friendsView && friendsGo.Checked)
-            //     {
-            //         qstr = "SELECT A.* FROM (" + qstr + ") A WHERE A.uid IN (SELECT B.bid, C.uid FROM ocView B WHERE B.bid " +
-            //             "IN (SELECT C.* FROM friendsView C)) GROUP BY A.bid";
-            //     }
-            //     qstr = "SELECT A.* FROM (" + qstr + ") A WHERE A.bid IN (SELECT B.bid FROM ocView B) GROUP BY A.bid";
-            // }
-            // else if(null != friendsView && friendsGo.Checked)
-            // {
-            //     qstr = "SELECT A.* FROM (" + qstr + ") A WHERE A.uid IN (SELECT B.uid FROM friendsView B) GROUP BY A.bid";
-            // }
-
-            // try
-            // {
-            //     businessSearchResultsDataGridView.DataSource = mydb.SQLDATATABLEExec(qstr);
-            //     foreach (DataGridViewRow r in businessSearchResultsDataGridView.Rows)
-            //     {
-            //         r.HeaderCell.Value = String.Format("{0}", r.Index + 1);
-            //     }
-            //     businessSearchResultsDataGridView.Columns[0].Visible = false;
-            //     businessSearchResultsDataGridView.Columns[1].HeaderText = "Business Name";
-            //     businessSearchResultsDataGridView.Columns[2].HeaderText = "City";
-            //     businessSearchResultsDataGridView.Columns[3].HeaderText = "State";
-            //     businessSearchResultsDataGridView.Columns[4].HeaderText = "Zipcode";
-            //     businessSearchResultsDataGridView.Columns[5].HeaderText = "# of Stars";
-            //     businessSearchResultsDataGridView.Columns[6].HeaderText = "# of Reviews";
-
-            //     for (int i = 0; i < businessSearchResultsDataGridView.Columns.Count; i++)
-            //     {
-            //         businessSearchResultsDataGridView.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            //     }
-
-            //     businessSearchResultsDataGridView.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
-            //     businessSearchResultsDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
-            //     // Clean up views from database
-            //     if (categoryQueryBusinessSearchListBox.Items.Count > 1)
-            //     {
-            //         string[] catViews = new string[categoryQueryBusinessSearchListBox.Items.Count];
-            //         string[] catViewQuery = new string[categoryQueryBusinessSearchListBox.Items.Count];
-            //         for (int i = 0; i < categoryQueryBusinessSearchListBox.Items.Count; i++)
-            //         {
-            //             catViews[i] += categoryQueryBusinessSearchListBox.Items[i] + "view";
-            //             catViewQuery[i] += "DROP VIEW " + catViews[i];
-            //             mydb.SQLNonQueryExec(catViewQuery[i]);
-            //         }
-            //     }
-            //     if(day.SelectedItems.Count > 0)
-            //     {
-            //         mydb.SQLNonQueryExec("DROP VIEW ocView");
-            //     }
-            // }
-            // catch (Exception ex)
-            // {
-            //     MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            // }
         }
 
         private void masterUpdateButton_Click()
@@ -1471,8 +1223,8 @@ namespace Yelp_Business_App
             selectValueComboBox.Text = "";
             selectValueComboBox.Items.Clear();
 
-            string qstr = "SELECT DISTINCT ";
-
+            string qstr = "SELECT DISTINCT value FROM attributes WHERE attribute=\"" + attributeTreeView.SelectedNode.Text + "\" GROUP BY value";
+            /*
             if (attributeTreeView.SelectedNode.Text == "Smoking")
             {
                 qstr += "Smoking ";
@@ -1500,11 +1252,29 @@ namespace Yelp_Business_App
                 return;
             }
             qstr += "FROM attributes;";
-
+            */
             List<string> qResult = mydb.SQLSELECTExec(qstr);
             foreach (string s in qResult)
             {
-                selectValueComboBox.Items.Add(s);
+                if(attributeTreeView.SelectedNode.Text != "Price_range")
+                {
+                    if(s == "0")
+                    {
+                        selectValueComboBox.Items.Add("false");
+                    }
+                    else if(s == "1")
+                    {
+                        selectValueComboBox.Items.Add("true");
+                    }
+                    else
+                    {
+                        selectValueComboBox.Items.Add(s);
+                    }
+                }
+                else
+                {
+                    selectValueComboBox.Items.Add(s);
+                }
             }
         }
 
